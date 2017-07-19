@@ -133,7 +133,7 @@ function make_new_subassembly() {
                 $new_procdrop.appendTo($new_body);
                 $new_head.appendTo($new_li);
                 $new_body.appendTo($new_li);
-                console.log($new_li);
+                // console.log($new_li);
                 add_inputs($new_head, 'material');
                 $new_head.find("#quantity").val(quantity);
                 $new_head.find("#measurement").val(measurement);
@@ -206,16 +206,34 @@ function build_data() {
 		material["quantity"] = $(this).find("input#quantity").val()
 		material["measurement"] = $(this).find("input#measurement").val()
 
-		var procedures = [];
+        var procedures = [];
 		$(this).find(".process").each(function (index) {
 			procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
 		});
 		material["procedures"] = procedures;
 
 		result.push(material);
-	})
-	//console.log(result)
-	
+	});
+
+    subassembly = []
+    $('.subassembly-section > .material-section').each(function( index ) {
+        var material = {};
+        material["name"] = $(this).find(".material").data("name");
+        material["id"] = $(this).find(".material").data("id");
+        material["quantity"] = $(this).find("input#quantity").val();
+        material["measurement"] = $(this).find("input#measurement").val();
+
+        var procedures = [];
+        $(this).find(".process").each(function (index) {
+            procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
+        });
+
+        material["procedures"] = procedures;
+        subassembly.push(material);
+    });
+
+    result.push(subassembly);
+	// console.log(result);
 	return result;
 }
 
@@ -302,7 +320,8 @@ $(document).on('turbolinks:load', function() {
     $('#add_subassembly').click(function() {
         var $li = make_new_subassembly();
     })
-	
+
+    // TODO add subassembly to the click function
 	$('#save').click(function() {
 		Materialize.toast('Saving...', 2000);
 		$.ajax({
@@ -311,12 +330,16 @@ $(document).on('turbolinks:load', function() {
 			url: SAVE_URL,
 			data: { build: build_data(), assembly_name: $("#assembly-title").val() },
 			success: function(response, status, xhr) {
-				// console.log(response);
-				Materialize.toast('Saved', 2000);
+                if (xhr.status == '200'){
+                    var msg = response;
+                }else{
+                    var msg = "fail to save";
+                }
+                Materialize.toast( msg , 2000);
 			},
 
 			error: function(xhr, status, errorThrown) {
-				// console.log(errorThrown);
+				console.log(errorThrown);
 			},
 
 			complete: function (xhr, status) {
