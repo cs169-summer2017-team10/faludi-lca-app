@@ -63,7 +63,7 @@ function make_new_material_section(name, id, quantity, measurement) {
 	return $li;
 }
 
-function make_new_subassembly() {
+function show_subassembly(name, id, quantity, measurement){
     var $li = $('<li></li>', {
         "class": 'subassembly-section'
     });
@@ -72,6 +72,41 @@ function make_new_subassembly() {
         "class": 'subassembly',
         "text":"\uD83D\uDCC2  " + "Subassembly",
 
+        "data-id": id,
+        "data-name": name,
+        "quantity": quantity,
+        "measurement": measurement
+    });
+
+    var $delButton = make_delete_button($li, 'material');
+    $delButton.appendTo($head);
+
+    var $body = $('<ul></ul>', {
+        "class": 'collection processes'
+    });
+
+    var $procdrop = $('<li></li>', {
+        "class": 'subassembly-item',
+        "text": "Drop items into subassembly here."
+    });
+
+    $procdrop.appendTo($body);
+    $head.appendTo($li);
+    $body.appendTo($li);
+    //add_inputs($head, 'material');
+
+    $li.appendTo($('#build')); //appends material to bottom of build
+    return $li;
+}
+
+function make_new_subassembly() {
+    var $li = $('<li></li>', {
+        "class": 'subassembly-section'
+    });
+
+    var $head = $('<div></div>', {
+        "class": 'subassembly',
+        "text":"\uD83D\uDCC2 " + "Subassembly"
         //"data-id": id,
         //"data-name": name,
         //"quantity": quantity,
@@ -93,7 +128,7 @@ function make_new_subassembly() {
     $procdrop.appendTo($body);
     $head.appendTo($li);
     $body.appendTo($li);
-    //add_inputs($head, 'material');
+    // add_inputs($head, 'material');
 
     $li.droppable({
         greedy: true,
@@ -199,54 +234,74 @@ function make_delete_button(element, css_type) {
 
 function build_data() {
 	var result = [];
-	$('#build > .material-section').each(function( index ) {
-		var material = {};
-		material["name"] = $(this).find(".material").data("name");
-		material["id"] = $(this).find(".material").data("id");
-		material["quantity"] = $(this).find("input#quantity").val()
-		material["measurement"] = $(this).find("input#measurement").val()
+	$('#build > li').each(function( index ) {
 
-        var procedures = [];
-		$(this).find(".process").each(function (index) {
-			procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
-		});
-		material["procedures"] = procedures;
+        if ($(this).attr('class') == "material-section ui-droppable"){
+        // This is a material
+            var material = {};
+            material["name"] = $(this).find(".material").data("name");
+            material["id"] = $(this).find(".material").data("id");
+            material["quantity"] = $(this).find("input#quantity").val();
+            material["measurement"] = $(this).find("input#measurement").val();
 
-		result.push(material);
+            var procedures = [];
+            $(this).find(".process").each(function (index) {
+                procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
+            });
+            material["procedures"] = procedures;
+
+            result.push(material);
+
+        }else if ( $(this).attr('class') == "subassembly-section ui-droppable"){
+        // This is a subassembly
+            subassembly = [];
+            subassembly_name = {};
+            subassembly_name ["name"] = $(this).find(".subassembly").text();
+            subassembly.push(subassembly_name);
+
+            $(".subassembly-section > .material-section").each(function( index ) {
+                var material = {};
+                material["name"] = $(this).find(".material").data("name");
+                material["id"] = $(this).find(".material").data("id");
+                material["quantity"] = $(this).find("input#quantity").val();
+                material["measurement"] = $(this).find("input#measurement").val();
+
+                var procedures = [];
+                $(this).find(".process").each(function (index) {
+                    procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
+                });
+
+                material["procedures"] = procedures;
+                subassembly.push(material);
+            });
+            result.push(subassembly);
+        }else{
+            // console.log("Selecting wrong class name");
+        }
 	});
-
-    subassembly = []
-    $('.subassembly-section > .material-section').each(function( index ) {
-        var material = {};
-        material["name"] = $(this).find(".material").data("name");
-        material["id"] = $(this).find(".material").data("id");
-        material["quantity"] = $(this).find("input#quantity").val();
-        material["measurement"] = $(this).find("input#measurement").val();
-
-        var procedures = [];
-        $(this).find(".process").each(function (index) {
-            procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
-        });
-
-        material["procedures"] = procedures;
-        subassembly.push(material);
-    });
-
-    result.push(subassembly);
-	// console.log(result);
+	console.log(result);
 	return result;
 }
 
 function fill_build(data, name) {
-	//console.log(data)
 	$("#assembly-title").val(name);
 	for (var key in data){
-		var material = data[key];
-		var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
-		for (var key in material["procedures"]) {
-			var proc = material["procedures"][key];
-			add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
-		}
+
+	    if ( !data[key][0] ){
+            // Show material in assembly
+            var material = data[key];
+            var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
+            for (var key in material["procedures"]) {
+                var proc = material["procedures"][key];
+                add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
+            }
+        }else{
+	     //   TODO display assembly
+	     //   Show subassembly in assembly
+            for ( var k in data[key]){
+                var $li = show_subassembly(k["name"], k["id"], k["quantity"], k["measurement"]);
+            }
+        }
 	}
 }
 
@@ -319,7 +374,7 @@ $(document).on('turbolinks:load', function() {
 
     $('#add_subassembly').click(function() {
         var $li = make_new_subassembly();
-    })
+    });
 
     // TODO add subassembly to the click function
 	$('#save').click(function() {
