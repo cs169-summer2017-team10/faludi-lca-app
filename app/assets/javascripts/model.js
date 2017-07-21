@@ -1,6 +1,6 @@
 /* global $, materials, SAVE_URL */
 
-function make_new_material_section(name, id, quantity, measurement) {
+function make_new_material_section(name, id, quantity, measurement, append_to ) {
 	quantity = typeof quantity !== 'undefined' ? quantity : 0;
 	measurement = typeof measurement !== 'undefined' ? measurement : "kg";
 
@@ -58,55 +58,54 @@ function make_new_material_section(name, id, quantity, measurement) {
 
 	var $delButton = make_delete_button($li, 'material');
 	$delButton.appendTo($head);
-
-	$li.appendTo($('#build'));
+	$li.appendTo( $( String(append_to) ) );
 	return $li;
 }
 
-function show_subassembly(name, id, quantity, measurement){
+// function show_subassembly(name, id, quantity, measurement){
+//     var $li = $('<li></li>', {
+//         "class": 'subassembly-section'
+//     });
+//
+//     var $head = $('<div></div>', {
+//         "class": 'subassembly',
+//         "text":"\uD83D\uDCC2  " + "Subassembly",
+//
+//         "data-id": id,
+//         "data-name": name,
+//         "quantity": quantity,
+//         "measurement": measurement
+//     });
+//
+//     var $delButton = make_delete_button($li, 'material');
+//     $delButton.appendTo($head);
+//
+//     var $body = $('<ul></ul>', {
+//         "class": 'collection processes'
+//     });
+//
+//     var $procdrop = $('<li></li>', {
+//         "class": 'subassembly-item',
+//         "text": "Drop items into subassembly here."
+//     });
+//
+//     $procdrop.appendTo($body);
+//     $head.appendTo($li);
+//     $body.appendTo($li);
+//     //add_inputs($head, 'material');
+//
+//     $li.appendTo($('#build')); //appends material to bottom of build
+//     return $li;
+// }
+
+function make_new_subassembly(name) {
     var $li = $('<li></li>', {
         "class": 'subassembly-section'
     });
 
     var $head = $('<div></div>', {
         "class": 'subassembly',
-        "text":"\uD83D\uDCC2  " + "Subassembly",
-
-        "data-id": id,
-        "data-name": name,
-        "quantity": quantity,
-        "measurement": measurement
-    });
-
-    var $delButton = make_delete_button($li, 'material');
-    $delButton.appendTo($head);
-
-    var $body = $('<ul></ul>', {
-        "class": 'collection processes'
-    });
-
-    var $procdrop = $('<li></li>', {
-        "class": 'subassembly-item',
-        "text": "Drop items into subassembly here."
-    });
-
-    $procdrop.appendTo($body);
-    $head.appendTo($li);
-    $body.appendTo($li);
-    //add_inputs($head, 'material');
-
-    $li.appendTo($('#build')); //appends material to bottom of build
-    return $li;
-}
-
-function make_new_subassembly() {
-    var $li = $('<li></li>', {
-        "class": 'subassembly-section'
-    });
-
-    var $head = $('<div></div>', {
-        "class": 'subassembly',
-        "text":"\uD83D\uDCC2 " + "Subassembly"
+        "text":"\uD83D\uDCC2 " + String(name)
         //"data-id": id,
         //"data-name": name,
         //"quantity": quantity,
@@ -189,7 +188,7 @@ function make_new_subassembly() {
         }
     });
 
-    $li.appendTo($('#build')); //appends material to bottom of build
+    $li.appendTo($("#build")); //appends material to bottom of build
     return $li;
 }
 
@@ -286,23 +285,48 @@ function build_data() {
 function fill_build(data, name) {
 	$("#assembly-title").val(name);
 	for (var key in data){
-
-	    if ( !data[key][0] ){
+	    if ( data[key].id ){
             // Show material in assembly
             var material = data[key];
-            var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
+            var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"], "#build");
             for (var key in material["procedures"]) {
                 var proc = material["procedures"][key];
                 add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
             }
         }else{
-	     //   TODO display assembly
 	     //   Show subassembly in assembly
-            for ( var k in data[key]){
-                var $li = show_subassembly(k["name"], k["id"], k["quantity"], k["measurement"]);
+            var sub_assembly_material_array = data[key];
+            var i;
+            for ( i = 0 ; i < getPropertyCount(sub_assembly_material_array) ; i++){
+                if ( i == 0 ){
+                    //    The name for sub assembly
+                    var $li = make_new_subassembly( sub_assembly_material_array[i]["name"] );
+                }else{
+                    //    Materials inside sub assembly
+                    var material = sub_assembly_material_array[i];
+                    var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"], "li.subassembly-section" );
+
+                    for (var j in material["procedures"]) {
+                        var proc = material["procedures"][j];
+                        add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
+                    }
+                }
             }
         }
 	}
+}
+
+// This is a helper function to calculate the length for a list of objects, see here for details https://stackoverflow.com/questions/4346358/how-to-get-size-of-jquery-object
+function getPropertyCount(obj) {
+    var count = 0,
+        key;
+
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            count++;
+        }
+    }
+    return count;
 }
 
 function clear_build() {
@@ -362,7 +386,7 @@ $(document).on('turbolinks:load', function() {
 
 			if ($(item).data('type') == 'material') {
 
-				var $li = make_new_material_section(name, id);
+				var $li = make_new_material_section(name, id, 0, 0, "#build");
 			}
 		}
 	});
