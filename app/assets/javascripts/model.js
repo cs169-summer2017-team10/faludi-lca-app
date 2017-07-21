@@ -103,14 +103,26 @@ function make_new_subassembly(name) {
         "class": 'subassembly-section'
     });
 
-    var $head = $('<div></div>', {
-        "class": 'subassembly',
-        "text":"\uD83D\uDCC2 " + String(name)
-        //"data-id": id,
-        //"data-name": name,
-        //"quantity": quantity,
-        //"measurement": measurement
-    });
+    if (!name){
+        var $head = $('<div></div>', {
+            "class": 'subassembly',
+            "text":"\uD83D\uDCC2 " + "Subassembly"
+            //"data-id": id,
+            //"data-name": name,
+            //"quantity": quantity,
+            //"measurement": measurement
+        });
+    }else{
+        var $head = $('<div></div>', {
+            "class": 'subassembly',
+            "text":"\uD83D\uDCC2 " + String(name)
+            //"data-id": id,
+            //"data-name": name,
+            //"quantity": quantity,
+            //"measurement": measurement
+        });
+    }
+
 
     var $delButton = make_delete_button($li, 'material');
     $delButton.appendTo($head);
@@ -255,7 +267,9 @@ function build_data() {
         // This is a subassembly
             subassembly = [];
             subassembly_name = {};
-            subassembly_name ["name"] = $(this).find(".subassembly").text();
+            var name = $(this).find(".subassembly").text();
+
+            subassembly_name ["name"] = name.substring(2, name.length-2);
             subassembly.push(subassembly_name);
 
             $(".subassembly-section > .material-section").each(function( index ) {
