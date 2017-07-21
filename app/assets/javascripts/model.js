@@ -62,42 +62,6 @@ function make_new_material_section(name, id, quantity, measurement, append_to ) 
 	return $li;
 }
 
-// function show_subassembly(name, id, quantity, measurement){
-//     var $li = $('<li></li>', {
-//         "class": 'subassembly-section'
-//     });
-//
-//     var $head = $('<div></div>', {
-//         "class": 'subassembly',
-//         "text":"\uD83D\uDCC2  " + "Subassembly",
-//
-//         "data-id": id,
-//         "data-name": name,
-//         "quantity": quantity,
-//         "measurement": measurement
-//     });
-//
-//     var $delButton = make_delete_button($li, 'material');
-//     $delButton.appendTo($head);
-//
-//     var $body = $('<ul></ul>', {
-//         "class": 'collection processes'
-//     });
-//
-//     var $procdrop = $('<li></li>', {
-//         "class": 'subassembly-item',
-//         "text": "Drop items into subassembly here."
-//     });
-//
-//     $procdrop.appendTo($body);
-//     $head.appendTo($li);
-//     $body.appendTo($li);
-//     //add_inputs($head, 'material');
-//
-//     $li.appendTo($('#build')); //appends material to bottom of build
-//     return $li;
-// }
-
 function make_new_subassembly(name) {
     var $li = $('<li></li>', {
         "class": 'subassembly-section'

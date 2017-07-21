@@ -48,32 +48,6 @@ class ModelController < ApplicationController
   	]
   end
 
-  # def create
-  #   hash = params[:build]
-  #   if hash == nil
-  #     result = false
-  #     respond_to do |format|
-  #     	format.json { nil.to_json }
-  #     end
-  #   end
-  #
-  #   if session[:assembly_id] == nil
-  #     @assembly = Assembly.create(:user_id => session[:user_id])
-  #     session[:assembly_id] = @assembly.id
-  #   else
-  #       @assembly = Assembly.find(session[:assembly_id])
-  #   end
-  #
-  #   @assembly.components = hash
-  #   @assembly.name = params[:assembly_name]
-  #   result = @assembly.save
-  #
-  #   respond_to do |format|
-  #   	format.json { nil.to_json }
-  #   end
-  #
-  # end
-
   def create
     # Hash with all the parts
     hash = params[:build]
