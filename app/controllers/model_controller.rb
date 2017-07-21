@@ -49,28 +49,40 @@ class ModelController < ApplicationController
   end
 
   def create
+    # Hash with all the parts
     hash = params[:build]
+
     if hash == nil
       result = false
       respond_to do |format|
-      	format.json { nil.to_json }
+        format.json { render :json => "Cannot save an empty assembly".to_json }
       end
+      return
     end
 
     if session[:assembly_id] == nil
+      # This is a new subassembly
       @assembly = Assembly.create(:user_id => session[:user_id])
       session[:assembly_id] = @assembly.id
     else
-        @assembly = Assembly.find(session[:assembly_id])
+      # Existing subassembly
+      @assembly = Assembly.find(session[:assembly_id])
     end
 
+    # Update the component in assembly
     @assembly.components = hash
+    # Update assembly name
     @assembly.name = params[:assembly_name]
+    # Show true if successful
     result = @assembly.save
 
     respond_to do |format|
-    	format.json { nil.to_json }
+      format.json { render :json => ( @assembly.name + " saved").to_json }
     end
+
+    # The saved component will be
+    p @assembly.components
+    p @assembly.name
 
   end
 end
