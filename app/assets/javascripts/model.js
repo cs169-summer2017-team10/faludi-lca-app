@@ -65,6 +65,7 @@ function make_new_subassembly(name) {
     if (!name){
         name = "Subassembly";
     }
+
     var $li = $('<li></li>', {
         "class": 'subassembly-section'
     });
@@ -223,7 +224,7 @@ function build_data() {
             subassembly_name = {};
             var name = $(this).find(".subassembly").text();
 
-            subassembly_name ["name"] = name.substring(2, name.length-2);
+            subassembly_name ["name"] = name.substring(2, name.length-1);
             subassembly.push(subassembly_name);
 
             $(this).children(".material-section").each(function( index ) {
