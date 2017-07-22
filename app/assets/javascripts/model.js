@@ -1,6 +1,5 @@
 /* global $, materials, SAVE_URL */
-
-function make_new_material_section(name, id, quantity, measurement, append_to ) {
+function make_new_material_section(name, id, quantity, measurement ) {
 	quantity = typeof quantity !== 'undefined' ? quantity : 0;
 	measurement = typeof measurement !== 'undefined' ? measurement : "kg";
 
@@ -58,35 +57,26 @@ function make_new_material_section(name, id, quantity, measurement, append_to ) 
 
 	var $delButton = make_delete_button($li, 'material');
 	$delButton.appendTo($head);
-	$li.appendTo( $( String(append_to) ) );
 	return $li;
 }
 
 function make_new_subassembly(name) {
+
+    if (!name){
+        name = "Subassembly";
+    }
     var $li = $('<li></li>', {
         "class": 'subassembly-section'
     });
 
-    if (!name){
-        var $head = $('<div></div>', {
-            "class": 'subassembly',
-            "text":"\uD83D\uDCC2 " + "Subassembly"
-            //"data-id": id,
-            //"data-name": name,
-            //"quantity": quantity,
-            //"measurement": measurement
-        });
-    }else{
-        var $head = $('<div></div>', {
-            "class": 'subassembly',
-            "text":"\uD83D\uDCC2 " + String(name)
-            //"data-id": id,
-            //"data-name": name,
-            //"quantity": quantity,
-            //"measurement": measurement
-        });
-    }
-
+    var $head = $('<div></div>', {
+        "class": 'subassembly',
+        "text":"\uD83D\uDCC2 " + String(name)
+        //"data-id": id,
+        //"data-name": name,
+        //"quantity": quantity,
+        //"measurement": measurement
+    });
 
     var $delButton = make_delete_button($li, 'material');
     $delButton.appendTo($head);
@@ -236,7 +226,7 @@ function build_data() {
             subassembly_name ["name"] = name.substring(2, name.length-2);
             subassembly.push(subassembly_name);
 
-            $(".subassembly-section > .material-section").each(function( index ) {
+            $(this).children(".material-section").each(function( index ) {
                 var material = {};
                 material["name"] = $(this).find(".material").data("name");
                 material["id"] = $(this).find(".material").data("id");
@@ -266,7 +256,8 @@ function fill_build(data, name) {
 	    if ( data[key].id ){
             // Show material in assembly
             var material = data[key];
-            var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"], "#build");
+            var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
+            $('#build').append($mat);
             for (var key in material["procedures"]) {
                 var proc = material["procedures"][key];
                 add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
@@ -274,20 +265,24 @@ function fill_build(data, name) {
         }else{
 	     //   Show subassembly in assembly
             var sub_assembly_material_array = data[key];
+            var current_sub_ass_li_obj = null;
             var i;
             for ( i = 0 ; i < getPropertyCount(sub_assembly_material_array) ; i++){
                 if ( i == 0 ){
-                    //    The name for sub assembly
+                    // The name for sub assembly
                     var $li = make_new_subassembly( sub_assembly_material_array[i]["name"] );
+                    current_sub_ass_li_obj = $li;
+                    $( current_sub_ass_li_obj ).append($li);
                 }else{
-                    //    Materials inside sub assembly
+                    // Materials inside sub assembly
                     var material = sub_assembly_material_array[i];
-                    var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"], "li.subassembly-section" );
+                    var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"] );
 
                     for (var j in material["procedures"]) {
                         var proc = material["procedures"][j];
                         add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
                     }
+                    $(current_sub_ass_li_obj).append($mat);
                 }
             }
         }
@@ -364,7 +359,8 @@ $(document).on('turbolinks:load', function() {
 
 			if ($(item).data('type') == 'material') {
 
-				var $li = make_new_material_section(name, id, 0, 0, "#build");
+				var $li = make_new_material_section(name, id, 0, 0);
+				$('#build').append($li);
 			}
 		}
 	});
@@ -378,7 +374,6 @@ $(document).on('turbolinks:load', function() {
         var $li = make_new_subassembly();
     });
 
-    // TODO add subassembly to the click function
 	$('#save').click(function() {
 		Materialize.toast('Saving...', 2000);
 		$.ajax({
