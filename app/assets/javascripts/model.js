@@ -43,7 +43,7 @@ function make_new_material_section(name, id, quantity, measurement ) {
 			var name = $(from).data("name");
 			if ($(from).data('type') == 'procedure') {
 				//console.log($(this).processes.offsetparent.childElementCount);
-				console.log($(this).find(".processes").children().length);
+				// console.log($(this).find(".processes").children().length);
 				if ($(this).find(".processes").children().length > 1) {
 					add_proc_to($li, name, id, 0,$head.find("#measurement").val());
 				}
@@ -76,12 +76,12 @@ function make_new_subassembly(name) {
     });
 
     $head.click(function(){
-        if ( $( this ).attr("contenteditable") == null || $( this ).attr("contenteditable") == "false") {
-            $( this ).attr("contenteditable", "true");
-            $( this ).children('span').attr("contenteditable", "false");
-            $( this ).focus();
-        }else{
-            $( this ).attr("contenteditable", "false");
+        if ( !( $( this ).attr("contenteditable") == null || $( this ).attr("contenteditable") == "false" ) ) {
+            $(this).attr("contenteditable", "false");
+        } else {
+            $(this).attr("contenteditable", "true");
+            $(this).children('span').attr("contenteditable", "false");
+            $(this).focus();
         }
     });
 
@@ -249,7 +249,9 @@ function build_data() {
         // This is a subassembly
             subassembly = [];
             subassembly_name = {};
+
             var name = $(this).find("div.subassembly").text();
+
             subassembly_name ["name"] = name.replace("×", "");
             subassembly.push(subassembly_name);
 
@@ -285,8 +287,8 @@ function fill_build(data, name) {
             var material = data[key];
             var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
             $('#build').append($mat);
-            for (var key in material["procedures"]) {
-                var proc = material["procedures"][key];
+            for (var p in material["procedures"]) {
+                var proc = material["procedures"][p];
                 add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
             }
         }else{
@@ -296,20 +298,20 @@ function fill_build(data, name) {
             var i;
             for ( i = 0 ; i < getPropertyCount(sub_assembly_material_array) ; i++){
                 if ( i == 0 ){
-                    // The name for sub assembly
+                    // This is the name field for subassembly
                     var $li = make_new_subassembly( sub_assembly_material_array[i]["name"] );
                     current_sub_ass_li_obj = $li;
                     $( current_sub_ass_li_obj ).append($li);
                 }else{
-                    // Materials inside sub assembly
-                    var material = sub_assembly_material_array[i];
-                    var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"] );
+                    // This is a list of materials for this subassembly
+                    var sub_material = sub_assembly_material_array[i];
+                    var $sub_mat = make_new_material_section(sub_material["name"], sub_material["id"], sub_material["quantity"], sub_material["measurement"] );
 
-                    for (var j in material["procedures"]) {
-                        var proc = material["procedures"][j];
-                        add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
+                    for (var j in sub_material["procedures"]) {
+                        var sub_proc = sub_material["procedures"][j];
+                        add_proc_to($sub_mat, sub_proc["name"], sub_proc["id"], sub_proc["quantity"], sub_proc["measurement"]);
                     }
-                    $(current_sub_ass_li_obj).append($mat);
+                    $(current_sub_ass_li_obj).append($sub_mat);
                 }
             }
         }
@@ -341,19 +343,7 @@ function searchKeyPress(e){
     }
     return true;
 }
-/*
-Pretty hack-ey. document.ready doesn't seem to work here. This also causes problems loading custom css.
-*/
-// $(document).load(function() {
-// 	$('#material-search').autocomplete({
-// 		data: materials
-// 	});
-//
-// 	$('.dropdown-content').css({'position': 'absolute', 'width': '350px'});
-//
-// });
 
-    
 $(document).on('turbolinks:load', function() {
 	$('.draggable').draggable({
 		containment: 'window',
@@ -395,7 +385,7 @@ $(document).on('turbolinks:load', function() {
 	$('#build').sortable({
 		containment: "window",
 		appendTo: 'body'
-	})
+	});
 
     $('#add_subassembly').click(function() {
         var $li = make_new_subassembly();
@@ -409,10 +399,9 @@ $(document).on('turbolinks:load', function() {
 			url: SAVE_URL,
 			data: { build: build_data(), assembly_name: $("#assembly-title").val() },
 			success: function(response, status, xhr) {
-                if (xhr.status == '200'){
-                    var msg = response;
-                }else{
-                    var msg = "fail to save";
+                var msg = response;
+                if (xhr.status != '200'){
+                    msg = "fail to save";
                 }
                 Materialize.toast( msg , 2000);
 			},
@@ -425,7 +414,7 @@ $(document).on('turbolinks:load', function() {
 				// console.log(status);
 			}
 		});
-	})
+	});
 
 	$.ajaxSetup({
 		headers: {
@@ -441,13 +430,7 @@ $(document).on('turbolinks:load', function() {
 	var menu_height = $('#menu .collapsible-header').first().height() * 5;
 	var library_height = $('#library').height();
 
-
-	// Tried dynamic height, fix later.
-	// $('<style></style>', {
-	// 	innerHTML: '#menu > li.active > .collapsible-body { max-height: ' + menu_height - library_height + ';}'
-	// }).appendTo($('head'));
 });
-
 
 /* Material search feature: updates drop-down list every time material search text box is updated */
 $(function(){
