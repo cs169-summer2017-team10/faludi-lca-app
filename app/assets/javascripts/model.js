@@ -135,6 +135,7 @@ function make_new_subassembly() {
                 $delButton.appendTo($new_head);
                 $from = $new_li;
             }
+            $from.css('padding-left', '30px');
             $from.css('position', 'relative');
             $from.css('top', '0px');
             $from.css('left', '0px');
@@ -261,11 +262,13 @@ $(document).on('turbolinks:load', function() {
 				"text": event.currentTarget.innerText
 			})
 		},
-
 		cursorAt: {
 			top: 25,
-			left: 50,
-		}
+			left: 50
+		},
+        drag: function () {
+            $(this).css('background-color', '#e1f5fe');
+        }
 	});
 
 	$('#material-search').autocomplete({
