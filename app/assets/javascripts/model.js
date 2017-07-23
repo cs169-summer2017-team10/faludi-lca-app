@@ -72,12 +72,39 @@ function make_new_subassembly(name) {
 
     var $head = $('<div></div>', {
         "class": 'subassembly',
-        "text":"\uD83D\uDCC2 " + String(name)
-        //"data-id": id,
-        //"data-name": name,
-        //"quantity": quantity,
-        //"measurement": measurement
+        "text": String(name)
     });
+
+    $head.click(function(){
+        if ( $( this ).attr("contenteditable") == null || $( this ).attr("contenteditable") == "false") {
+            $( this ).attr("contenteditable", "true");
+            $( this ).children('span').attr("contenteditable", "false");
+            $( this ).focus();
+        }else{
+            $( this ).attr("contenteditable", "false");
+        }
+    });
+
+    $head.keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            // save subassembly to database
+            $( '#save' ).trigger( "click" );
+            var str = $( this ).text().replace("×", "");
+            alert( str + " saved! ");
+            $( this ).attr("contenteditable", "false");
+        }
+    });
+
+    $head.hover(function() {
+            if ( !$(this).is(":focus") ){
+                $( this ).css("color", "blue");
+            }
+        }, function() {
+        $( this ).css("color", "black");
+        }
+    );
 
     var $delButton = make_delete_button($li, 'material');
     $delButton.appendTo($head);
@@ -193,7 +220,7 @@ function add_proc_to($mat, name, id, quantity, measurement) {
 function make_delete_button(element, css_type) {
 	var $delButton = $('<span></span>', {
 		"class": 'close-' + css_type,
-		"text": "\u00D7"
+		"text": "×"
 	}).click(function() {element.remove();});
 	return $delButton;
 }
@@ -222,9 +249,8 @@ function build_data() {
         // This is a subassembly
             subassembly = [];
             subassembly_name = {};
-            var name = $(this).find(".subassembly").text();
-
-            subassembly_name ["name"] = name.substring(2, name.length-1);
+            var name = $(this).find("div.subassembly").text();
+            subassembly_name ["name"] = name.replace("×", "");
             subassembly.push(subassembly_name);
 
             $(this).children(".material-section").each(function( index ) {
