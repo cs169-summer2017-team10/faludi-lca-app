@@ -1,6 +1,5 @@
 /* global $, materials, SAVE_URL */
-
-function make_new_material_section(name, id, quantity, measurement) {
+function make_new_material_section(name, id, quantity, measurement ) {
 	quantity = typeof quantity !== 'undefined' ? quantity : 0;
 	measurement = typeof measurement !== 'undefined' ? measurement : "kg";
 
@@ -44,7 +43,7 @@ function make_new_material_section(name, id, quantity, measurement) {
 			var name = $(from).data("name");
 			if ($(from).data('type') == 'procedure') {
 				//console.log($(this).processes.offsetparent.childElementCount);
-				console.log($(this).find(".processes").children().length);
+				// console.log($(this).find(".processes").children().length);
 				if ($(this).find(".processes").children().length > 1) {
 					add_proc_to($li, name, id, 0,$head.find("#measurement").val());
 				}
@@ -58,19 +57,59 @@ function make_new_material_section(name, id, quantity, measurement) {
 
 	var $delButton = make_delete_button($li, 'material');
 	$delButton.appendTo($head);
-
-	$li.appendTo($('#build'));
 	return $li;
 }
 
-function make_new_subassembly() {
+function make_new_subassembly(name) {
+
+    if (!name){
+        name = "Subassembly";
+    }
+
     var $li = $('<li></li>', {
         "class": 'sub-assembly-section'
     });
 
     var $head = $("<div></div>", {"class": 'sub-assembly'});
+
+    var $head = $('<div></div>', {
+        "class": 'subassembly',
+        "text": String(name)
+    });
+
     $head.append("<i class='material-icons' id='folder'>folder</i>");
-    $head.append("<div id='text'>Sub-assembly</div>");
+
+    $head.click(function(){
+        if ( !( $( this ).attr("contenteditable") == null || $( this ).attr("contenteditable") == "false" ) ) {
+            $(this).attr("contenteditable", "false");
+        } else {
+            $(this).attr("contenteditable", "true");
+            $(this).children('span').attr("contenteditable", "false");
+            $(this).focus();
+        }
+    });
+
+    $head.keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            // save subassembly to database
+            $( '#save' ).trigger( "click" );
+            var str = $( this ).text().replace("×", "");
+            str = str.replace("folder", "");
+            alert( str + " saved! ");
+            $( this ).attr("contenteditable", "false");
+        }
+    });
+
+    $head.hover(function() {
+            if ( !$(this).is(":focus") ){
+                $( this ).css("color", "blue");
+            }
+        }, function() {
+        $( this ).css("color", "black");
+        }
+    );
 
     var $delButton = make_delete_button($li, 'material');
     $delButton.appendTo($head);
@@ -87,7 +126,7 @@ function make_new_subassembly() {
     $procdrop.appendTo($body);
     $head.appendTo($li);
     $body.appendTo($li);
-    //add_inputs($head, 'material');
+    // add_inputs($head, 'material');
 
     $li.droppable({
         greedy: true,
@@ -127,7 +166,7 @@ function make_new_subassembly() {
                 $new_procdrop.appendTo($new_body);
                 $new_head.appendTo($new_li);
                 $new_body.appendTo($new_li);
-                console.log($new_li);
+                // console.log($new_li);
                 add_inputs($new_head, 'material');
                 $new_head.find("#quantity").val(quantity);
                 $new_head.find("#measurement").val(measurement);
@@ -149,7 +188,7 @@ function make_new_subassembly() {
         }
     });
 
-    $li.appendTo($('#build')); //appends material to bottom of build
+    $li.appendTo($("#build")); //appends material to bottom of build
     return $li;
 }
 
@@ -187,44 +226,119 @@ function add_proc_to($mat, name, id, quantity, measurement) {
 function make_delete_button(element, css_type) {
 	var $delButton = $('<span></span>', {
 		"class": 'close-' + css_type,
-		"text": "\u00D7"
+		"text": "×"
 	}).click(function() {element.remove();});
 	return $delButton;
 }
 
 function build_data() {
 	var result = [];
-	$('#build > .material-section').each(function( index ) {
-		var material = {};
-		material["name"] = $(this).find(".material").data("name");
-		material["id"] = $(this).find(".material").data("id");
-		material["quantity"] = $(this).find("input#quantity").val()
-		material["measurement"] = $(this).find("input#measurement").val()
+	$('#build > li').each(function( index ) {
 
-		var procedures = [];
-		$(this).find(".process").each(function (index) {
-			procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
-		});
-		material["procedures"] = procedures;
+        if ($(this).attr('class') == "material-section ui-droppable"){
+        // This is a material
+            var material = {};
+            material["name"] = $(this).find(".material").data("name");
+            material["id"] = $(this).find(".material").data("id");
+            material["quantity"] = $(this).find("input#quantity").val();
+            material["measurement"] = $(this).find("input#measurement").val();
 
-		result.push(material);
-	})
-	//console.log(result)
-	
+            var procedures = [];
+            $(this).find(".process").each(function (index) {
+                procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
+            });
+            material["procedures"] = procedures;
+
+            result.push(material);
+
+        }else if ( $(this).attr('class') == "sub-assembly-section ui-droppable"){
+        // This is a subassembly
+            subassembly = [];
+            subassembly_name = {};
+
+            var name = $(this).find("div.subassembly").text();
+            var inner_text = $(this).find("#folder").text();
+
+            name = name.replace(inner_text, "");
+            name = name.replace("×", "");
+
+            subassembly_name ["name"] = name;
+            subassembly.push(subassembly_name);
+
+            $(this).children(".material-section").each(function( index ) {
+                var material = {};
+                material["name"] = $(this).find(".material").data("name");
+                material["id"] = $(this).find(".material").data("id");
+                material["quantity"] = $(this).find("input#quantity").val();
+                material["measurement"] = $(this).find("input#measurement").val();
+
+                var procedures = [];
+                $(this).find(".process").each(function (index) {
+                    procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
+                });
+
+                material["procedures"] = procedures;
+                subassembly.push(material);
+            });
+            result.push(subassembly);
+        }else{
+            // console.log("Selecting wrong class name");
+        }
+	});
+	console.log(result);
 	return result;
 }
 
 function fill_build(data, name) {
-	//console.log(data)
 	$("#assembly-title").val(name);
 	for (var key in data){
-		var material = data[key];
-		var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
-		for (var key in material["procedures"]) {
-			var proc = material["procedures"][key];
-			add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
-		}
+	    if ( data[key].id ){
+            // Show material in assembly
+            var material = data[key];
+            var $mat = make_new_material_section(material["name"], material["id"], material["quantity"], material["measurement"]);
+            $('#build').append($mat);
+            for (var p in material["procedures"]) {
+                var proc = material["procedures"][p];
+                add_proc_to($mat, proc["name"], proc["id"], proc["quantity"], proc["measurement"]);
+            }
+        }else{
+	     //   Show subassembly in assembly
+            var sub_assembly_material_array = data[key];
+            var current_sub_ass_li_obj = null;
+            var i;
+            for ( i = 0 ; i < getPropertyCount(sub_assembly_material_array) ; i++){
+                if ( i == 0 ){
+                    // This is the name field for subassembly
+                    var $li = make_new_subassembly( sub_assembly_material_array[i]["name"] );
+                    current_sub_ass_li_obj = $li;
+                    $( current_sub_ass_li_obj ).append($li);
+                }else{
+                    // This is a list of materials for this subassembly
+                    var sub_material = sub_assembly_material_array[i];
+                    var $sub_mat = make_new_material_section(sub_material["name"], sub_material["id"], sub_material["quantity"], sub_material["measurement"] );
+
+                    for (var j in sub_material["procedures"]) {
+                        var sub_proc = sub_material["procedures"][j];
+                        add_proc_to($sub_mat, sub_proc["name"], sub_proc["id"], sub_proc["quantity"], sub_proc["measurement"]);
+                    }
+                    $(current_sub_ass_li_obj).append($sub_mat);
+                }
+            }
+        }
 	}
+}
+
+// This is a helper function to calculate the length for a list of objects, see here for details https://stackoverflow.com/questions/4346358/how-to-get-size-of-jquery-object
+function getPropertyCount(obj) {
+    var count = 0,
+        key;
+
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            count++;
+        }
+    }
+    return count;
 }
 
 function clear_build() {
@@ -239,19 +353,7 @@ function searchKeyPress(e){
     }
     return true;
 }
-/*
-Pretty hack-ey. document.ready doesn't seem to work here. This also causes problems loading custom css.
-*/
-// $(document).load(function() {
-// 	$('#material-search').autocomplete({
-// 		data: materials
-// 	});
-//
-// 	$('.dropdown-content').css({'position': 'absolute', 'width': '350px'});
-//
-// });
 
-    
 $(document).on('turbolinks:load', function() {
 	$('.draggable').draggable({
 		containment: 'window',
@@ -286,7 +388,8 @@ $(document).on('turbolinks:load', function() {
 
 			if ($(item).data('type') == 'material') {
 
-				var $li = make_new_material_section(name, id);
+				var $li = make_new_material_section(name, id, 0, 0);
+				$('#build').append($li);
 			}
 		}
 	});
@@ -294,12 +397,12 @@ $(document).on('turbolinks:load', function() {
 	$('#build').sortable({
 		containment: "window",
 		appendTo: 'body'
-	})
+	});
 
     $('#add_subassembly').click(function() {
         var $li = make_new_subassembly();
-    })
-	
+    });
+
 	$('#save').click(function() {
 		Materialize.toast('Saving...', 2000);
 		$.ajax({
@@ -308,19 +411,22 @@ $(document).on('turbolinks:load', function() {
 			url: SAVE_URL,
 			data: { build: build_data(), assembly_name: $("#assembly-title").val() },
 			success: function(response, status, xhr) {
-				// console.log(response);
-				Materialize.toast('Saved', 2000);
+                var msg = response;
+                if (xhr.status != '200'){
+                    msg = "fail to save";
+                }
+                Materialize.toast( msg , 2000);
 			},
 
 			error: function(xhr, status, errorThrown) {
-				// console.log(errorThrown);
+				console.log(errorThrown);
 			},
 
 			complete: function (xhr, status) {
 				// console.log(status);
 			}
 		});
-	})
+	});
 
 	$.ajaxSetup({
 		headers: {
@@ -336,13 +442,7 @@ $(document).on('turbolinks:load', function() {
 	var menu_height = $('#menu .collapsible-header').first().height() * 5;
 	var library_height = $('#library').height();
 
-
-	// Tried dynamic height, fix later.
-	// $('<style></style>', {
-	// 	innerHTML: '#menu > li.active > .collapsible-body { max-height: ' + menu_height - library_height + ';}'
-	// }).appendTo($('head'));
 });
-
 
 /* Material search feature: updates drop-down list every time material search text box is updated */
 $(function(){
