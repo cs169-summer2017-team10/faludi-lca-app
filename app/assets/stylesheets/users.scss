@@ -325,13 +325,24 @@ html {
   -webkit-animation: bounceInUp 1s;
 }
 
-  .site__title {
-    color: #f35626;
-    background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -webkit-animation: hue 60s infinite linear;
-  }
+.site__title {
+  padding: 6px 10px 0px 15px;
+}
+
+.focus {
+  display: inline-block;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #b3e5fc;
+}
+
+.LCA {
+  display: inline-block;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #4caf50;
+}
+
 
 
 table.center {

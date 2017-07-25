@@ -70,16 +70,18 @@ function make_new_subassembly(name) {
         "class": 'sub-assembly-section'
     });
 
-    var $head = $("<div></div>", {"class": 'sub-assembly'});
-
     var $head = $('<div></div>', {
         "class": 'subassembly',
+    });
+
+    $head.append("<i class='material-icons' id='icon-folder'>folder</i>");
+
+    var $assemblyName = $('<div></div>', {
+        "class": 'subassembly-text',
         "text": String(name)
     });
 
-    $head.append("<i class='material-icons' id='folder'>folder</i>");
-
-    $head.click(function(){
+    $assemblyName.click(function(){
         if ( !( $( this ).attr("contenteditable") == null || $( this ).attr("contenteditable") == "false" ) ) {
             $(this).attr("contenteditable", "false");
         } else {
@@ -89,7 +91,7 @@ function make_new_subassembly(name) {
         }
     });
 
-    $head.keypress(function (e) {
+    $assemblyName.keypress(function (e) {
         var key = e.which;
         if (key == 13)  // the enter key code
         {
@@ -102,14 +104,7 @@ function make_new_subassembly(name) {
         }
     });
 
-    $head.hover(function() {
-            if ( !$(this).is(":focus") ){
-                $( this ).css("color", "blue");
-            }
-        }, function() {
-        $( this ).css("color", "black");
-        }
-    );
+    $head.append($assemblyName);
 
     var $delButton = make_delete_button($li, 'material');
     $delButton.appendTo($head);
@@ -119,7 +114,7 @@ function make_new_subassembly(name) {
     });
 
     var $procdrop = $('<li></li>', {
-        "class": 'sub-assembly',
+        "class": 'subassembly',
         "text": "Drop items into sub-assembly here."
     });
 
