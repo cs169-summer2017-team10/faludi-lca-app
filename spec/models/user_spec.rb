@@ -21,4 +21,21 @@ RSpec.describe User, type: :model do
       alice.delete()
   end
 
+  it 'Should replace User password if empty to password' do
+    test = User.create(:username => 'another', :password => 'k', :email => 'another@me.com', :name => 'hey')
+    test.password = ''
+    test.save
+    User.authenticate('another', 'password').should == test
+  end
+
+  it 'Should return false if user doesnt exist' do
+    expect(User.authenticate?('none', 'work')).to eq(false)
+  end
+
+  it 'Should return true since user exists' do
+    mark = User.new(:username => 'marky', :password => 'maaaark', :email => 'my@email.com', :name => 'mark')
+    mark.save!
+    expect(User.authenticate?('marky', 'maaaark')).to eq(true)
+  end
+
 end
