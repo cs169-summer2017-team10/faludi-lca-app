@@ -71,7 +71,7 @@ function make_new_subassembly(name) {
     });
 
     var $head = $('<div></div>', {
-        "class": 'subassembly',
+        "class": 'subassembly'
     });
 
     $head.append("<i class='material-icons' id='icon-folder'>folder</i>");
@@ -251,13 +251,7 @@ function build_data() {
             subassembly = [];
             subassembly_name = {};
 
-            var name = $(this).find("div.subassembly").text();
-            var inner_text = $(this).find("#folder").text();
-
-            name = name.replace(inner_text, "");
-            name = name.replace("×", "");
-
-            subassembly_name ["name"] = name;
+            subassembly_name ["name"] = $(this).find('div.subassembly-text').text();
             subassembly.push(subassembly_name);
 
             $(this).children(".material-section").each(function( index ) {
@@ -299,6 +293,7 @@ function fill_build(data, name) {
         }else{
 	     //   Show subassembly in assembly
             var sub_assembly_material_array = data[key];
+            console.log(sub_assembly_material_array);
             var current_sub_ass_li_obj = null;
             var i;
             for ( i = 0 ; i < getPropertyCount(sub_assembly_material_array) ; i++){
