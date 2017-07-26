@@ -1,10 +1,33 @@
+<head>
+  <link rel="stylesheet" href="../../stylesheets/assembly.scss">
+</head>
+
 <section
-ng-controller="AssemblyController"
+ng-controller="assemblyController"
 ng-app="assembly">
-  <ul>
-    <li ng-repeat="thing in things">
-      {{thing.name}}
-    </li>
-  </ul>
+  <h1>Demo: Simple Lists</h1>
+
+  <div class="simpleDemo row">
+        <div ng-repeat="(listName, list) in models.lists" class="col-md-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">List {{listName}}</h3>
+            </div>
+            <div class="panel-body">
+              <ul dnd-list="list">
+                <li ng-repeat="item in list"
+                    dnd-draggable="item"
+                    dnd-moved="list.splice($index, 1)"
+                    dnd-effect-allowed="move"
+                    dnd-selected="models.selected = item"
+                    ng-class="{'selected': models.selected === item}"
+                >
+                  {{item.label}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+  </div>
 </section>
 <%= javascript_include_tag "assembly/application" %>

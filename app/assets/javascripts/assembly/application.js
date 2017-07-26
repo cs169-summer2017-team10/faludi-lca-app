@@ -1,13 +1,13 @@
 //= require_tree .
-//= require npm-dependencies
+
+//= require angular
+//= require angular-drag-and-drop-lists
 
 angular.module('assembly', ['assembly.controller'])
     .config([
         '$httpProvider',
         '$locationProvider',
         function ($httpProvider, $locationProvider) {
-
-            $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content");
 
             $locationProvider.html5Mode({
                 enabled: true,

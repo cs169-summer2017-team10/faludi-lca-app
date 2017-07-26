@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Add bower to manage js packages
-gem 'npm-rails'
+gem "bower-rails"
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
