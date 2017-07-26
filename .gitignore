@@ -29,3 +29,6 @@
 # Ignore RVM files
 .ruby-gemset
 .ruby-version
+# Added by npm-rails
+/node_modules
+/vendor/assets/javascripts/npm-rails

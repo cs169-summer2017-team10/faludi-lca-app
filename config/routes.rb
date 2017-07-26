@@ -11,5 +11,6 @@ Rails.application.routes.draw do
   match '/logout' => 'users#logout', via: [:get, :post]
   match '/signup' => 'users#signup', via: [:get, :post]
   match '/profile' => 'users#profile', via: [:get, :post]
+  get '/assembly/(*path)' => 'assembly#index'
 
 end

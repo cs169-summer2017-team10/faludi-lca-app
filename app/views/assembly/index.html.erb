@@ -1,0 +1,10 @@
+<section
+ng-controller="AssemblyController"
+ng-app="assembly">
+  <ul>
+    <li ng-repeat="thing in things">
+      {{thing.name}}
+    </li>
+  </ul>
+</section>
+<%= javascript_include_tag "assembly/application" %>
