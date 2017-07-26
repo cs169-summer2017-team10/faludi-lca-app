@@ -1,4 +1,4 @@
-angular.module('assembly.controller', ['dndLists'])
+angular.module('assembly.controller', ['dndLists', 'ui.materialize'])
     .controller('assemblyController', ['$scope', function ($scope) {
 
         $scope.models = {
@@ -11,5 +11,20 @@ angular.module('assembly.controller', ['dndLists'])
             $scope.models.lists.A.push({label: "Item A" + i});
             $scope.models.lists.B.push({label: "Item B" + i});
         }
+
+        $scope.collapsibleElements = [{
+            icon: 'mdi-image-filter-drama',
+            title: 'First',
+            content: 'Lorem ipsum dolor sit amet.'
+        },{
+            icon: 'mdi-maps-place',
+            title: 'Second',
+            content: 'Lorem ipsum dolor sit amet.'
+        },{
+            icon: 'mdi-social-whatshot',
+            title: 'Third',
+            content: 'Lorem ipsum dolor sit amet.'
+        }
+        ];
 
     }]);

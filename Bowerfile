@@ -5,3 +5,4 @@
 
 asset 'angular'
 asset 'angular-drag-and-drop-lists'
+asset 'angular-materialize'
