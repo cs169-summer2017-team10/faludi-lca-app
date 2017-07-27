@@ -224,6 +224,7 @@
         font-size: 10pt;
         background: #f1f8e9;
         padding: 10px 15px 10px 15px;
+        border-radius: 2px;
       }
 
       [class*='close-'] {
@@ -236,37 +237,40 @@
          color: #ef5350 !important;
        }
 
-      div.sub-assembly {
-          cursor: move;
-          text-align: left;
-          font-weight: bold;
-          font-size: 11pt;
-          padding: 4px 15px 10px 15px;
+      div.subassembly {
+        cursor: move;
+        text-align: left;
+        font-weight: bold;
+        font-size: 11pt;
+        padding: 4px 15px 10px 15px;
 
-          #folder {
-            top: 5px;
-          }
+        .subassembly-text {
+          display: inline-block;
+          margin-left: 15px;
+          max-width: 350px;
+        }
 
-          #text {
-            padding-left: 15px;
-            display: inline-block;
-          }
+        #icon-folder {
+          top: 5px;
+        }
 
       }
 
-     div.sub-assembly:hover {
+     div.subassembly:hover {
        background: #e1f5fe;
      }
 
-     div.sub-assembly:hover [class*='close-'] {
+     div.subassembly:hover [class*='close-'] {
+       margin-top: 4px;
        color: #9e9e9e;
      }
 
-     li.sub-assembly {
+     li.subassembly {
        font-size: 10pt;
        font-weight: normal;
        background: #c5e1a5;
        padding: 10px 15px 10px 15px;
+       border-radius: 2px;
      }
 
 
@@ -282,15 +286,25 @@
     font-size: 20px;
   }
 
+  #add_subassembly:hover {
+    color: #616161;
+  }
+
    #save {
-       border: 0;
-       float: right;
-       background: white;
+     border: 0;
+     float: right;
+     background: white;
      padding-top: 20px;
    }
+
+  #save:hover {
+    color: #616161;
+  }
+
   #folder-add {
     font-size: 29px;
   }
+
   #save-icon {
     font-size: 29px;
   }
