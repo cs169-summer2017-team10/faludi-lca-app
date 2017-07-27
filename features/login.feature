@@ -41,7 +41,7 @@ Scenario: Visit Login Page
 
    Given I am on the loginpage
    Then I fill in "username" with "user123"
-   And I fill in "password" with "secet_pass1234"
+   And I fill in "password" with "secret_pass1234"
 
 Scenario: Visit Login Page
 
@@ -97,10 +97,21 @@ Scenario: Signup Errors
       Then I should see "Error"
       And I should not see "Library"
 
-   Scenario:
+   Scenario: No username found
       Given I am on the loginpage
       And I fill in "username" with "someRandom"
       And I fill in "password" with "whatever"
       And I press "Login"
       Then I should be on the login page
       And I should see "No Login Found, Try Again!"
+
+   Scenario: Signing up and passwords don't match
+     Given I am on the signuppage
+     And I fill in "username" with "newuser"
+     And I fill in "name" with "Name"
+     And I fill in "email" with "fake@me.com"
+     And I fill in "password" with "pass"
+     And I fill in "confirm_password" with "word"
+     And I press "Signup"
+     Then I should see "Your Passwords do not match!"
+     And I should not see "Library"

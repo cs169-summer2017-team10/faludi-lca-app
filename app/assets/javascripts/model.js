@@ -82,7 +82,7 @@ function make_new_subassembly(name) {
     });
 
     $assemblyName.click(function(){
-        if ( !( $( this ).attr("contenteditable") == null || $( this ).attr("contenteditable") == "false" ) ) {
+        if ( !( $( this ).attr("contenteditable") === null || $( this ).attr("contenteditable") == "false" ) ) {
             $(this).attr("contenteditable", "false");
         } else {
             $(this).attr("contenteditable", "true");
@@ -255,19 +255,19 @@ function build_data() {
             subassembly.push(subassembly_name);
 
             $(this).children(".material-section").each(function( index ) {
-                var material = {};
-                material["name"] = $(this).find(".material").data("name");
-                material["id"] = $(this).find(".material").data("id");
-                material["quantity"] = $(this).find("input#quantity").val();
-                material["measurement"] = $(this).find("input#measurement").val();
+                var sub_material = {};
+                sub_material["name"] = $(this).find(".material").data("name");
+                sub_material["id"] = $(this).find(".material").data("id");
+                sub_material["quantity"] = $(this).find("input#quantity").val();
+                sub_material["measurement"] = $(this).find("input#measurement").val();
 
                 var procedures = [];
                 $(this).find(".process").each(function (index) {
                     procedures.push({"name": $(this).data("name"), "id": $(this).data("id"), "quantity": $(this).find("input#quantity").val(), "measurement": $(this).find("input#measurement").val()});
                 });
 
-                material["procedures"] = procedures;
-                subassembly.push(material);
+                sub_material["procedures"] = procedures;
+                subassembly.push(sub_material);
             });
             result.push(subassembly);
         }else{
@@ -402,7 +402,7 @@ $(document).on('turbolinks:load', function() {
 			data: { build: build_data(), assembly_name: $("#assembly-title").val() },
 			success: function(response, status, xhr) {
                 var msg = response;
-                if (xhr.status != '200'){
+                if (xhr.status !== '200'){
                     msg = "fail to save";
                 }
                 Materialize.toast( msg , 2000);

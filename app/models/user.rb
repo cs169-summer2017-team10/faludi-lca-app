@@ -26,7 +26,7 @@ class User < ApplicationRecord
    def self.authenticate?(login, pass)
       user = self.authenticate(login, pass)
       return false if user.nil?
-      return true if user.login == login
+      return true if user.username == login
 
       false
    end
