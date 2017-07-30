@@ -1,0 +1,29 @@
+<header>
+   <%= render 'users/navigation' %>
+</header>
+
+
+
+<br>
+
+<body>
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<!-- JQuery UI -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+
+<% javascript_include_tag "graph" %>
+
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	
+	<h1>Graphs</h1>
+	<div>
+		<button id="barGraph" class="butt">Bar</button>
+		<button id="pieGraph" class="butt">Pie</button>
+	</div>
+	<canvas id="myCanvas" width="1400" height="900" style="border:1px solid #000000;"></canvas>
+</body>
+
+<br>
