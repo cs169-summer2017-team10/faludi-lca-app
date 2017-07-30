@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   resources :model
+  # resources :graph
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -11,5 +12,7 @@ Rails.application.routes.draw do
   match '/logout' => 'users#logout', via: [:get, :post]
   match '/signup' => 'users#signup', via: [:get, :post]
   match '/profile' => 'users#profile', via: [:get, :post]
+
+  get '/test/graph' => 'graph#impact_by_process'
 
 end
