@@ -41,7 +41,7 @@ function make_new_material_section(name, id, quantity, measurement ) {
 			var from = ui.draggable[0];
 			var id = $(from).data("id");
 			var name = $(from).data("name");
-			if ($(from).data('type') == 'procedure') {
+			if ($(from).data('type') === 'procedure') {
 				//console.log($(this).processes.offsetparent.childElementCount);
 				// console.log($(this).find(".processes").children().length);
 				if ($(this).find(".processes").children().length > 1) {
@@ -82,7 +82,7 @@ function make_new_subassembly(name) {
     });
 
     $assemblyName.click(function(){
-        if ( !( $( this ).attr("contenteditable") === null || $( this ).attr("contenteditable") == "false" ) ) {
+        if ( !( $( this ).attr("contenteditable") === null || $( this ).attr("contenteditable") === "false" ) ) {
             $(this).attr("contenteditable", "false");
         } else {
             $(this).attr("contenteditable", "true");
@@ -93,7 +93,7 @@ function make_new_subassembly(name) {
 
     $assemblyName.keypress(function (e) {
         var key = e.which;
-        if (key == 13)  // the enter key code
+        if (key === 13)  // the enter key code
         {
             // save subassembly to database
             $( '#save' ).trigger( "click" );
@@ -135,9 +135,9 @@ function make_new_subassembly(name) {
                 var item = ui.draggable[0];
                 var id = $(from).data("id");
                 var name = $(from).data("name");
-                var units = $(from).data("units")
-                if (units == ""){ units = undefined }
-                var type = $(item).data('type')
+                var units = $(from).data("units");
+                if (units === ""){ units = undefined }
+                var type = $(item).data('type');
                 var quantity = typeof quantity !=='undefined'? quantity : 1;
                 var measurement = typeof measurement !=='undefined'? measurement : "kg";
                 var $new_li = $('<li></li>', {
@@ -188,7 +188,7 @@ function make_new_subassembly(name) {
 }
 
 function add_inputs($obj, obj_type, css_type) {
-	if (obj_type == "material" || obj_type == "process") {
+	if (obj_type === "material" || obj_type === "process") {
 		var $quant = $('<label for="quantity" class="label">Quantity</label> <input id="quantity" type="number" class="input-{#obj_type}">');
 		$quant.appendTo($obj);
 		var $measure = $('<label for="measurement" class="label">Measure</label> <input id="measurement" type="text" class="input-{#obj_type}">');
@@ -230,7 +230,7 @@ function build_data() {
 	var result = [];
 	$('#build > li').each(function( index ) {
 
-        if ($(this).attr('class') == "material-section ui-droppable"){
+        if ($(this).attr('class') === "material-section ui-droppable"){
         // This is a material
             var material = {};
             material["name"] = $(this).find(".material").data("name");
@@ -246,7 +246,7 @@ function build_data() {
 
             result.push(material);
 
-        }else if ( $(this).attr('class') == "sub-assembly-section ui-droppable"){
+        }else if ( $(this).attr('class') === "sub-assembly-section ui-droppable"){
         // This is a subassembly
             subassembly = [];
             subassembly_name = {};
@@ -297,7 +297,7 @@ function fill_build(data, name) {
             var current_sub_ass_li_obj = null;
             var i;
             for ( i = 0 ; i < getPropertyCount(sub_assembly_material_array) ; i++){
-                if ( i == 0 ){
+                if ( i === 0 ){
                     // This is the name field for subassembly
                     var $li = make_new_subassembly( sub_assembly_material_array[i]["name"] );
                     current_sub_ass_li_obj = $li;
@@ -337,11 +337,36 @@ function clear_build() {
 
 function searchKeyPress(e){
 	e = e||window.event;
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
         $("#save").click();
         return false;
     }
     return true;
+}
+
+function save() {
+    Materialize.toast('Saving...', 2000);
+    $.ajax({
+        dataType: "json",
+        type: "POST",
+        url: SAVE_URL,
+        data: { build: build_data(), assembly_name: $("#assembly-title").val() },
+        success: function(response, status, xhr) {
+            var msg = response;
+            if (xhr.status !== '200'){
+                msg = "fail to save";
+            }
+            Materialize.toast( msg , 2000);
+        },
+
+        error: function(xhr, status, errorThrown) {
+            console.log(errorThrown);
+        },
+
+        complete: function (xhr, status) {
+            // console.log(status);
+        }
+    });
 }
 
 $(document).on('turbolinks:load', function() {
@@ -372,11 +397,11 @@ $(document).on('turbolinks:load', function() {
 
 	$('#assembly').droppable({
 		drop: function (event, ui) {
-			var item = ui.draggable[0]
+			var item = ui.draggable[0];
 			var name = item.innerText;
-			var id = $(item).data("id")
+			var id = $(item).data("id");
 
-			if ($(item).data('type') == 'material') {
+			if ($(item).data('type') === 'material') {
 
 				var $li = make_new_material_section(name, id, 0, 0);
 				$('#build').append($li);
@@ -393,30 +418,9 @@ $(document).on('turbolinks:load', function() {
         var $li = make_new_subassembly();
     });
 
-	$('#save').click(function() {
-		Materialize.toast('Saving...', 2000);
-		$.ajax({
-			dataType: "json",
-			type: "POST",
-			url: SAVE_URL,
-			data: { build: build_data(), assembly_name: $("#assembly-title").val() },
-			success: function(response, status, xhr) {
-                var msg = response;
-                if (xhr.status !== '200'){
-                    msg = "fail to save";
-                }
-                Materialize.toast( msg , 2000);
-			},
+	$('#save').click(save);
 
-			error: function(xhr, status, errorThrown) {
-				console.log(errorThrown);
-			},
-
-			complete: function (xhr, status) {
-				// console.log(status);
-			}
-		});
-	});
+	$('#analyze').click(save);
 
 	$.ajaxSetup({
 		headers: {
