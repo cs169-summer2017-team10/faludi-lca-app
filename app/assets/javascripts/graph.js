@@ -4,8 +4,28 @@ var context;
 var data;
 var pieData;
 var barData;
+var variableData;
+
 var chart;
 var chartExists = false;
+
+
+var topNames = ["'Italy', 'UK', 'USA', 'Germany', 'France', 'Japan'"];
+var sideNames = ['2010 customers #','2014 customers #'];
+var dataTable = [ 	[2500, 1902, 1041, 610, 1245, 952]
+					[3104, 1689, 1318, 589, 1199, 1436]	];
+
+function createArray(length) {
+    var arr = new Array(length || 0),
+        i = length;
+
+    if (arguments.length > 1) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        while(i--) arr[length-1 - i] = createArray.apply(this, args);
+    }
+
+    return arr;
+}
 
 function drawPie(){
 		data = pieData;
@@ -25,20 +45,10 @@ function drawBar(){
 		chartExists = true;
 }
 
-function parseSMP(array){
-	data = {};
-	labels = [array.length];
-	for (i = 0; i < array.length; i++) {
-    	labels[i] = array[i].name;
-	}
-	data.push(labels);
-}
 
 $(document).on('turbolinks:load', function() {
  
-	context = document.getElementById('myCanvas').getContext('2d');
-
-	
+	context = document.getElementById('myCanvas').getContext('2d');	
 
 	pieData = [
 	   {
@@ -77,8 +87,12 @@ $(document).on('turbolinks:load', function() {
             data: [3104, 1689, 1318, 589, 1199, 1436]
         }
     ]
-};
 
+
+	};
+
+	variableData = [];
+    
 
 	$('#pieGraph').click(drawPie);
 	$('#barGraph').click(drawBar);
@@ -87,3 +101,4 @@ $(document).on('turbolinks:load', function() {
 	$('#myCanvas').height(400);
 
 });
+	
