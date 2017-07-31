@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :assemblies
   resources :model
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
