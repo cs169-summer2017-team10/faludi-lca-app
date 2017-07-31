@@ -4,18 +4,18 @@ angular.module('assembly.controller', ['dndLists', 'ui.materialize'])
         $scope.$watch('models.dropzones', function(model) {
             $scope.modelAsJson = angular.toJson(model, true);
         }, true);
-        
+
         $scope.assembly = {
             "name": "Type assembly name here",
             "items": []
         }
-        
+
         $scope.subassembly = {
             "name": "Type subassembly name here",
             "type": "subassembly",
             "items": []
         }
-        
+
         $scope.library = [
             {
                 "name": "Materials",
@@ -53,15 +53,15 @@ angular.module('assembly.controller', ['dndLists', 'ui.materialize'])
                             }
                         ]
                     },
-                    
+
                     {
                         "name": "Acids",
                         "type": "category",
                         "items": []
                     }
-                ] 
+                ]
             },
-            
+
             {
                 "name": "Processes",
                 "items": [
@@ -85,7 +85,7 @@ angular.module('assembly.controller', ['dndLists', 'ui.materialize'])
                     }
                 ]
             }
-            
+
         ]
 
     }]);
