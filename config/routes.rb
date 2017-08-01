@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
+  # routes for assemblies
   resources :assemblies
+  get '/show_lib' => 'assemblies#show_lib'
+
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

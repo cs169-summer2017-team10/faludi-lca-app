@@ -32,7 +32,7 @@ angular.module('assembly.controller', ['dndLists', 'ui.materialize'])
                                         "name": "Steel",
                                         "type": "material",
                                         "processes": [],
-                                        "quantity": 0,
+                                         "quantity": 0,
                                         "units": "kg"
                                     },
                                     {

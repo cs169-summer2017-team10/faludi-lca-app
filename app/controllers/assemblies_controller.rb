@@ -1,5 +1,6 @@
 class AssembliesController < ApplicationController
   before_action :set_assembly, only: [:show, :edit, :update, :destroy]
+  skip_before_action :set_assembly, only: [:show_lib]
 
   # GET /assemblies
   # GET /assemblies.json
@@ -10,6 +11,18 @@ class AssembliesController < ApplicationController
   # GET /assemblies/1
   # GET /assemblies/1.json
   def show
+
+  end
+
+  # GET /assemblies/lib
+  # This function should show the side bar -> a list of materials/process in json form
+  def show_lib
+    @assemblies = Assembly.all
+
+    respond_to do |format|
+      format.html { render action: "show_lib" }
+      format.json { render json: @assemblies }
+    end
   end
 
   # GET /assemblies/new

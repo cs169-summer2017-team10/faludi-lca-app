@@ -22,12 +22,51 @@
 # Procedure.create!(:title => "Landfill",:material => "Copper",  :category => "EoL")
 # Procedure.create!(:title => "Recycle", :material => "Copper", :category => "EoL")
 
-user = User.create(name: "John Oliver", email: "johnoliver@hbo.com")
+# Structure for these seed data
+# John Oliver (User)
+#   -> MacBook Pro 2017 (Assembly)
+#     -> steel (Material)
+#     -> gold (Material)
+#     -> cpu (Subassembly)
+#       -> gold (Material)
+#     -> memory (Subassembly)
+#       -> iron (Material)
+#       -> ram (Subassembly)
+#         -> gold (Material)
+#         -> copper (Material)
+#       -> hdd (Subassembly)
+#         -> gold (Material)
+#         -> copper (Material)
 
-computer = Assembly.create(name: "MacBook Pro 2017", user: user)
+User.delete_all
+Assembly.delete_all
+Part.delete_all
 
-cpu = Part.create(assembly_id: computer.id)
-memory = Part.create(assembly_id: computer.id)
+# User
+user = User.create!(name: "John Oliver", email: "johnoliver@hbo.com")
 
-hardDisk = Part.create(assembly_id: computer, parent_part_id: memory.id)
-ram = Part.create(assembly_id: computer, parent_part_id: memory.id)
+# Assembly
+computer = Assembly.create!(name: "MacBook Pro 2017", user: user)
+
+# Raw Material in Assembly
+Part.create!( assembly_id: computer.id, parent: Part.new(id: nil), name: "steel")
+Part.create!( assembly_id: computer.id, parent: Part.new(id: nil), name: "gold")
+
+# Sub assembly in assembly
+cpu = Part.create!(assembly_id: computer.id, parent: Part.new(id: nil), name: "cpu")
+memory = Part.create!(assembly_id: computer.id, parent: Part.new(id: nil), name: "memory")
+
+# Material in sub assembly
+Part.create!(assembly_id: computer.id, parent: memory, name: "iron")
+Part.create!(assembly_id: computer.id, parent: cpu, name: "gold")
+
+# Sub assembly inside subassembly
+ram = Part.create!(assembly_id: computer.id, parent: memory, name: "ram")
+hdd = Part.create!(assembly_id: computer.id, parent: memory, name: "hdd")
+
+# Material inside subassembly inside subassembly
+Part.create!(assembly_id: computer.id, parent: ram, name: "gold")
+Part.create!(assembly_id: computer.id, parent: ram, name: "copper")
+
+Part.create!(assembly_id: computer.id, parent: hdd, name: "gold")
+Part.create!(assembly_id: computer.id, parent: hdd, name: "copper")

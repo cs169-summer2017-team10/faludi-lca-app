@@ -1,0 +1,17 @@
+<h1>Show all Assembly here</h1>
+
+<% @assemblies.each do |ass| %>
+    <h6> Assembly attributes: <%= ass.attribute_names %> </h6>
+    <h6> Part attributes: <%= ass.parts.attribute_names %> </h6>
+
+    <h4> Assembly ID: <%= ass.id %>, Name: <%= ass.name %> </h4>
+    <h4> Parts inside: </h4>
+    <% ass.parts.each do |p| %>
+
+        <% if p.parent_part_id.nil? %>
+            <strong> <h5> This is Subassembly/Top level Material</h5> <h6> Part ID: <%= p.id %> Part name: <%= p.name%> </h6> </strong> <br>
+        <% else %>
+            <strong> <h5> This is Material/Process</h5> <h6> Part ID: <%= p.id %> Part name: <%= p.name%> </h6>  <h6> Parent Part id: <%= p.parent_part_id %> </h6></strong> <br>
+        <% end %>
+    <% end %>
+<% end %>
