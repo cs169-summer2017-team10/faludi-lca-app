@@ -1,6 +1,3 @@
-<!--Angular script -->
-<%= javascript_include_tag "assembly/application" %>
-
 <table ng-controller="assemblyController" ng-app="assembly">
 
   <!--Angular js functions (<script> ... </script>>) should be placed inside ng-contoller and ng-app tag-->
@@ -11,7 +8,7 @@
           <h4>{{section.name}}</h4>
           <ul ng-init="list=section.columns">
             <li ng-repeat="item in list"
-                dnd-disable-if="item.type == 'container'"
+                dnd-disable-if="item.type == 'container-lib'"
                 dnd-type="item.type"
                 dnd-allowed-types="[No]"
                 dnd-draggable="item"
@@ -152,6 +149,8 @@
           <button id="save-button">Save Assembly</button><br>
           <button id="analyze-button"> Analyze </button>
         </div>
+
+        <div> {{DebugZone}}</div>
 
       </div>
     </td>
