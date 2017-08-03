@@ -1,132 +1,160 @@
-<!-- JQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
-<!-- JQuery UI -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-
-<!-- icons -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 <!--Angular script -->
 <%= javascript_include_tag "assembly/application" %>
 
 <table ng-controller="assemblyController" ng-app="assembly">
 
-  <!--Angular scripting functions (<script> ... </script>>) should be placed inside ng-contoller and ng-app tag-->
-
-  <!-- Templates for model creation view -->
-    <!--New Assebbly -->
-    <script type="text/ng-template" id="build-assembly.html">
-        <h3>{{assembly.name}}</h3>
-        <ul dnd-list="assembly" class="collapsible" data-collapsible="expandable">
-            <li ng-repeat="item in assembly.items"
-                dnd-draggable="item"
-                dnd-effect-allowed="move"
-                dnd-moved="list.splice($index, 1)"
-                dnd-selected="models.selected = item"
-                ng-class="{selected: models.selected === item}"
-                ng-include="item.type + '.html'">
-            </li>
-        </ul>
-    </script>
-
-    <!--Subassembly-->
-    <script type="text/ng-template" id="subassembly.html">
-        <h3>{{item.name}}</h3>
-        <ul dnd-list="item.items" class="collapsible" data-collapsible="expandable">
-            <li ng-repeat="item in item.items"
-                dnd-draggable="item"
-                dnd-effect-allowed="move"
-                dnd-moved="list.splice($index, 1)"
-                dnd-selected="models.selected = item"
-                ng-class="{selected: models.selected === item}"
-                ng-include="item.type + '.html'">
-            </li>
-        </ul>
-    </script>
-
-    <!--Material-->
-    <script type="text/ng-template" id="material.html">
-        <h3>{{item.name}}</h3>
-        <ul dnd-list="item.processes"
-            dnd-allowed-types="['process']" class="collapsible" data-collapsible="expandable">
-            <li ng-repeat="process in item.processes"
-                dnd-draggable="process"
-                dnd-effect-allowed="move"
-                dnd-moved="list.splice($index, 1)"
-                dnd-selected="models.selected = item"
-                ng-class="{selected: models.selected === item}"
-                ng-include="'process.html'">
-            </li>
-        </ul>
-    </script>
-
-    <!--Process-->
-    <script type="text/ng-template" id="process.html">
-        <div class="process">{{item.name}}</div>
-    </script>
+  <!--Angular js functions (<script> ... </script>>) should be placed inside ng-contoller and ng-app tag-->
   
-  <!-- Templates for Library sidebar -->
-    <!--Section-level-->
-    <script type="text/ng-template" id="library-section.html">
-        <h2>{{section.name}}!</h2>
-        <ul dnd-list="section.items" ng-init="list=section.items">
+  <!-- Templates for Library (Left side bar)-->
+      <!--Top-level-->
+      <script type="text/ng-template" id="library-section.html">
+          <h4>{{section.name}}</h4>
+          <ul ng-init="list=section.columns">
+            <li ng-repeat="item in list"
+                dnd-disable-if="item.type == 'container'"
+                dnd-type="item.type"
+                dnd-allowed-types="[No]"
+                dnd-draggable="item"
+                dnd-effect-allowed="copy"
+                dnd-moved="list.splice($index, 1)"
+                ng-class="{selected: list.selected === item}"
+                ng-include="item.type + '.html'">
+            </li>
+          </ul>
+      </script>
 
+  <!--Templates for Nested assembly-->
+      <!--List for building section -->
+      <script type="text/ng-template" id="list.html">
+        <ul dnd-list="list">
           <li ng-repeat="item in list"
-              dnd-disable-if="item.type == 'category'"
-              dnd-type="item.type"
               dnd-draggable="item"
               dnd-effect-allowed="move"
               dnd-moved="list.splice($index, 1)"
-              ng-class="{selected: list.selected === item}"
-              ng-include="'library-' + item.type + '.html'">
+              dnd-selected="assembly.selected = item"
+              ng-class="{selected: assembly.selected === item}"
+              ng-include="item.type + '.html'">
           </li>
-
         </ul>
-    </script>
+      </script>
 
-    <!--Category-level-->
-    <script type="text/ng-template" id="library-category.html">
-        <h3>{{item.name}}</h3>
-        <ul dnd-list="item.items" ng-init="list=item.items", ng-init="Item=item">
-            <li ng-repeat="item in list"
-                dnd-draggable="item"
-                dnd-effect-allowed="move"
-                dnd-moved="list.splice($index, 1)"
-                dnd-selected="Item.selected = item"
-                ng-class="{selected: Item.selected === item}"
-                ng-include="'library-' + item.type + '.html'">
-            </li>
+      <!-- List for library section -->
+      <script type="text/ng-template" id="list-lib.html">
+        <ul>
+          <li ng-repeat="item in list"
+              dnd-draggable="item"
+              dnd-effect-allowed="copy"
+              dnd-moved="list.splice($index, 1)"
+              dnd-selected="assembly.selected = item"
+              ng-class="{selected: assembly.selected === item}"
+              ng-include="item.type + '.html'">
+          </li>
         </ul>
-    </script>
+      </script>
 
-    <!--Element-level => process-->
-    <script type="text/ng-template" id="library-process.html">
-        <div class="library-process">{{item.name}}</div>
-    </script>
+      <!--Container for building section -->
+      <script type="text/ng-template" id="container.html">
+        <div class="container-element box box-blue">
+          <h4>{{item.name}}</h4>
+          <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+          <div class="clearfix"></div>
+        </div>
+      </script>
 
-    <!--Element-level => material-->
-    <script type="text/ng-template" id="library-material.html">
-      <div class="library-material">{{item.name}}</div>
-    </script>
+      <!--Container for library section -->
+      <script type="text/ng-template" id="container-lib.html">
+        <div class="container-element box box-blue">
+          <h4>{{item.name}}</h4>
+          <div class="column" ng-repeat="list in item.columns" ng-include="'list-lib.html'"></div>
+          <div class="clearfix"></div>
+        </div>
+      </script>
 
+      <!--Material-->
+      <script type="text/ng-template" id="material.html">
+        <div class="item material">{{item.name}}</div>
+      </script>
+
+      <!--Process-->
+      <script type="text/ng-template" id="process.html">
+        <div class="item process">{{item.name}}</div>
+      </script>
   <!--End of Angular app function definition-->
+
+<!--##########################################################################################-->
 
   <!--Beginning of the page -->
   <tr>
+    <!--Library section (left side bar)-->
     <td class="library">
       <h1>Library</h1>
       <ul>
-          <li ng-repeat="section in library"
+          <li ng-repeat="section in library.lib"
               ng-include="'library-section.html'">
           </li>
       </ul>
     </td>
 
-    <td class="assembly">
-      <div ng-include="'build-assembly.html'"></div>
+    <!--Drag and Drop zone -->
+    <td class="assembly" >
+      <!--Drag and drop zone -->
+      <div class="nestedDemo row">
+        <div class="col-md-10">
+          <div class="row">
+            <div ng-repeat="(zone, list) in assembly.dropzones" class="col-md-6">
+              <div class="dropzone box box-yellow">
+                <h3>{{zone}}</h3>
+                <div ng-include="'list.html'"></div>
+              </div>
+            </div>
+          </div>
+          <div view-source="nested"></div>
+        </div>
+      </div>
+    </td>
+
+    <!--New element and trash can section -->
+    <td>
+      <!--New element or trash can section -->
+      <div class="col-md-2 nestedDemo">
+        <!--Adding new elements -->
+        <div class="toolbox box box-grey box-padding">
+          <h3>New Elements (Drag to create new)</h3>
+          <ul>
+            <li ng-repeat="item in assembly.templates"
+                dnd-draggable="item"
+                dnd-effect-allowed="copy"
+                dnd-copied="item.name = 'new'"
+            >
+              <div class="btn btn-default btn-lg">{{item.type}}</div>
+            </li>
+          </ul>
+        </div>
+
+        <!--Selected section-->
+        <div ng-if="assembly.selected" class="box box-grey box-padding">
+          <h3>Selected</h3>
+          <strong>Type: </strong> {{assembly.selected.type}}<br>
+          <input type="text" ng-model="assembly.selected.id" class="form-control" style="margin-top: 5px" />
+        </div>
+
+        <!--Trashcan-->
+        <div class="trashcan box box-grey box-padding">
+          <!-- If you use [] as referenced list, the dropped elements will be lost -->
+          <h3>Trashcan</h3>
+          <ul dnd-list="[]">
+            <li><img src="/trashcan.jpg"></li>
+          </ul>
+        </div>
+
+        <!--Save button & Anayze Button -->
+        <div>
+          <button id="save-button">Save Assembly</button><br>
+          <button id="analyze-button"> Analyze </button>
+        </div>
+
+      </div>
     </td>
   </tr>
   <!--End of page-->
-
 </table>

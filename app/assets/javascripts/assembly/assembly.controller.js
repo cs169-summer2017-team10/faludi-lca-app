@@ -1,91 +1,287 @@
-angular.module('assembly.controller', ['dndLists', 'ui.materialize'])
-    .controller('assemblyController', ['$scope', function ($scope) {
+var app =angular.module('assembly.controller', ['dndLists', 'ui.materialize']);
+
+    app.controller('assemblyController', ['$scope', function ($scope) {
 
         $scope.$watch('models.dropzones', function(model) {
             $scope.modelAsJson = angular.toJson(model, true);
         }, true);
 
-        $scope.assembly = {
-            "name": "Type assembly name here",
-            "items": []
-        }
-
-        $scope.subassembly = {
-            "name": "Type subassembly name here",
-            "type": "subassembly",
-            "items": []
-        }
-
-        $scope.library = [
-            {
-                "name": "Materials",
-                "items": [
+        $scope.library = {
+            selected: null,
+            lib:
+            [{
+                //Materials
+                "type": "container",
+                "name": "Metals",
+                "columns": [
                     {
-                        "name": "Metals",
-                        "type": "category",
-                        "items": [
-                            {
-                                "name": "Common metals",
-                                "type": "category",
-                                "items": [
-                                    {
-                                        "name": "Steel",
-                                        "type": "material",
-                                        "processes": [],
-                                         "quantity": 0,
-                                        "units": "kg"
-                                    },
-                                    {
-                                        "name": "Copper",
-                                        "type": "material",
-                                        "processes": [],
-                                        "quantity": 0,
-                                        "units": "kg"
-                                    },
-                                    {
-                                        "name": "Tin",
-                                        "type": "material",
-                                        "processes": [],
-                                        "quantity": 0,
-                                        "units": "kg"
-                                    }
-                                ]
-                            }
+                        "type": "container-lib",
+                        "name": "Metal",
+                        "columns": [
+                            [
+                                {
+                                    "type": "material",
+                                    "name": "Gold"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Iron"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Silver"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Copper"
+                                },
+                            ]
                         ]
                     },
-
                     {
-                        "name": "Acids",
-                        "type": "category",
-                        "items": []
+                        "type": "container-lib",
+                        "name": "Nonmetal",
+                        "columns": [
+                            [
+                                {
+                                    "type": "material",
+                                    "name": "PVC"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Wood"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Paper"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Glass"
+                                },
+                            ]
+                        ]
                     }
                 ]
             },
-
             {
-                "name": "Processes",
-                "items": [
+                // Processes
+                "type": "container",
+                "name": "Process",
+                "columns": [
                     {
-                        "name": "Hot Rolling",
                         "type": "process",
-                        "quantity": 0,
-                        "units": "kg"
+                        "name": "Hot Rolling"
                     },
                     {
-                        "name": "Cold Rolling",
                         "type": "process",
-                        "quantity": 0,
-                        "units": "kg"
+                        "name": "Cold Rolling"
+                    }
+                ]
+            },
+            {
+                // Processes
+                "type": "container",
+                "name": "Transportation",
+                "columns": [
+                    {
+                        "type": "process",
+                        "name": "Air"
                     },
                     {
-                        "name": "Air Transport",
                         "type": "process",
-                        "quantity": 0,
-                        "units": "km"
+                        "name": "Boat"
+                    },
+                    {
+                        "type": "process",
+                        "name": "Truck"
+                    },
+                    {
+                        "type": "process",
+                        "name": "Train"
+                    },
+                ]
+            }]
+        }
+
+        $scope.assembly = {
+            selected: null,
+            templates: [
+                {type: "material", name: "new"},
+                {type: "container", name: "new", columns: [[], []]}
+            ],
+            dropzones: {
+                "MacBook Pro": [
+                    {
+                        "type": "container",
+                        "name": "Memory",
+                        "columns": [
+                            [
+                                {
+                                    "type": "container",
+                                    "name": "RAM",
+                                    "columns": [
+                                        [
+                                            {
+                                                "type": "material",
+                                                "name": "Gold"
+                                            },
+                                            {
+                                                "type": "container",
+                                                "name": "DRAM",
+                                                "columns": [
+                                                    [
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Steel"
+                                                        }
+                                                    ]
+                                                ]
+                                            }
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Copper"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Iron"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Silver"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "container",
+                        "name": "Screen",
+                        "columns":
+                        [
+                            [
+                                {
+                                    "type": "container",
+                                    "name": "LCD module",
+                                    "columns":
+                                    [
+                                        [
+                                            {
+                                                "type": "material",
+                                                "name": "Gold"
+                                            },
+                                            {
+                                                "type": "container",
+                                                "name": "LED",
+                                                "columns":
+                                                [
+                                                    [
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Glass"
+                                                        }
+                                                    ]
+                                                ]
+                                            }
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Copper"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Iron"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Silver"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "container",
+                        "name": "Motherboard",
+                        "columns": [
+                            [
+                                {
+                                    "type": "container",
+                                    "name": "PCIE-X",
+                                    "columns":
+                                    [
+                                        [
+                                            {
+                                                "type": "material",
+                                                "name": "Gold"
+                                            },
+                                            {
+                                                "type": "container",
+                                                "name": "Capacitor",
+                                                "columns": [
+                                                    [
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Wood"
+                                                        },
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Ceramics"
+                                                        }
+                                                    ]
+                                                ]
+                                            },
+                                            {
+                                                "type": "container",
+                                                "name": "Resistor",
+                                                "columns": [
+                                                    [
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Wood"
+                                                        },
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Ceramics"
+                                                        }
+                                                    ]
+                                                ]
+                                            }
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Copper"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Iron"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Silver"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "material",
+                        "name": "Wood"
+                    },
+                    {
+                        "type": "material",
+                        "name": "Glass"
+                    },
+                    {
+                        "type": "material",
+                        "name": "PVC"
                     }
                 ]
             }
-
-        ]
+        };
 
     }]);
