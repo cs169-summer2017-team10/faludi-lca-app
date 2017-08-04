@@ -14,6 +14,40 @@ class AssembliesController < ApplicationController
 
   end
 
+  # POST a string
+  def save_assembly
+    assembly_hash = params[:build]
+    if assembly_hash.nil?
+      respond_to do |format|
+        format.json { render :json => "Cannot save an empty assembly".to_json }
+      end
+      return
+    end
+
+    if session[:assembly_id] == nil
+      # This is a new subassembly
+      @assembly = Assembly.create(:user => User.where(:user_id => session[:user_id]) )
+      session[:assembly_id] = @assembly.id
+    else
+      # Existing subassembly
+      @assembly = Assembly.find(session[:assembly_id])
+    end
+
+    # Update the component in assembly
+    @assembly.components = hash
+    # Update assembly name
+    @assembly.name = params[:assembly_name]
+
+    respond_to do |format|
+      format.json { render :json => ( @assembly.name + " saved").to_json }
+    end
+
+    # The saved component will be
+    p @assembly.components
+    p @assembly.name
+
+  end
+
   # GET /show_lib
   # GET /show_lib.json
   # This function should return json data representing the library bar
@@ -137,7 +171,9 @@ class AssembliesController < ApplicationController
                                 [
                                     {
                                         "type": "material",
-                                        "name": "Gold"
+                                        "name": "Gold",
+                                        "quantity": 1,
+                                        "unit": "kg"
                                     },
                                     {
                                         "type": "container",
@@ -146,7 +182,9 @@ class AssembliesController < ApplicationController
                                             [
                                                 {
                                                     "type": "material",
-                                                    "name": "Steel"
+                                                    "name": "Steel",
+                                                    "quantity": 1,
+                                                    "unit": "kg"
                                                 }
                                             ]
                                         ]
@@ -156,15 +194,21 @@ class AssembliesController < ApplicationController
                         },
                         {
                             "type": "material",
-                            "name": "Copper"
+                            "name": "Copper",
+                            "quantity": 1,
+                            "unit": "kg"
                         },
                         {
                             "type": "material",
-                            "name": "Iron"
+                            "name": "Iron",
+                            "quantity": 1,
+                            "unit": "kg"
                         },
                         {
                             "type": "material",
-                            "name": "Silver"
+                            "name": "Silver",
+                            "quantity": 1,
+                            "unit": "kg"
                         }
                     ]
                 ]
@@ -183,7 +227,9 @@ class AssembliesController < ApplicationController
                                         [
                                             {
                                                 "type": "material",
-                                                "name": "Gold"
+                                                "name": "Gold",
+                                                "quantity": 1,
+                                                "unit": "kg"
                                             },
                                             {
                                                 "type": "container",
@@ -193,7 +239,9 @@ class AssembliesController < ApplicationController
                                                         [
                                                             {
                                                                 "type": "material",
-                                                                "name": "Glass"
+                                                                "name": "Glass",
+                                                                "quantity": 1,
+                                                                "unit": "kg"
                                                             }
                                                         ]
                                                     ]
@@ -203,15 +251,21 @@ class AssembliesController < ApplicationController
                             },
                             {
                                 "type": "material",
-                                "name": "Copper"
+                                "name": "Copper",
+                                "quantity": 1,
+                                "unit": "kg"
                             },
                             {
                                 "type": "material",
-                                "name": "Iron"
+                                "name": "Iron",
+                                "quantity": 1,
+                                "unit": "kg"
                             },
                             {
                                 "type": "material",
-                                "name": "Silver"
+                                "name": "Silver",
+                                "quantity": 1,
+                                "unit": "kg"
                             }
                         ]
                     ]
@@ -229,7 +283,9 @@ class AssembliesController < ApplicationController
                                     [
                                         {
                                             "type": "material",
-                                            "name": "Gold"
+                                            "name": "Gold",
+                                            "quantity": 1,
+                                            "unit": "kg"
                                         },
                                         {
                                             "type": "container",
@@ -238,11 +294,15 @@ class AssembliesController < ApplicationController
                                                 [
                                                     {
                                                         "type": "material",
-                                                        "name": "Wood"
+                                                        "name": "Wood",
+                                                        "quantity": 1,
+                                                        "unit": "kg"
                                                     },
                                                     {
                                                         "type": "material",
-                                                        "name": "Ceramics"
+                                                        "name": "Ceramics",
+                                                        "quantity": 1,
+                                                        "unit": "kg"
                                                     }
                                                 ]
                                             ]
@@ -254,11 +314,15 @@ class AssembliesController < ApplicationController
                                                 [
                                                     {
                                                         "type": "material",
-                                                        "name": "Wood"
+                                                        "name": "Wood",
+                                                        "quantity": 1,
+                                                        "unit": "kg"
                                                     },
                                                     {
                                                         "type": "material",
-                                                        "name": "Ceramics"
+                                                        "name": "Ceramics",
+                                                        "quantity": 1,
+                                                        "unit": "kg"
                                                     }
                                                 ]
                                             ]
@@ -268,30 +332,42 @@ class AssembliesController < ApplicationController
                         },
                         {
                             "type": "material",
-                            "name": "Copper"
+                            "name": "Copper",
+                            "quantity": 1,
+                            "unit": "kg"
                         },
                         {
                             "type": "material",
-                            "name": "Iron"
+                            "name": "Iron",
+                            "quantity": 1,
+                            "unit": "kg"
                         },
                         {
                             "type": "material",
-                            "name": "Silver"
+                            "name": "Silver",
+                            "quantity": 1,
+                            "unit": "kg"
                         }
                     ]
                 ]
             },
             {
                 "type": "material",
-                "name": "Wood"
+                "name": "Wood",
+                "quantity": 1,
+                "unit": "kg"
             },
             {
                 "type": "material",
-                "name": "Glass"
+                "name": "Glass",
+                "quantity": 1,
+                "unit": "kg"
             },
             {
                 "type": "material",
-                "name": "PVC"
+                "name": "PVC",
+                "quantity": 1,
+                "unit": "kg"
             }
         ]
     }

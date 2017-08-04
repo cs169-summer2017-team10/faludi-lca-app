@@ -22,11 +22,15 @@ var app =angular.module('assembly.controller', ['dndLists', 'ui.materialize']);
             $scope.DebugZone = response.statusText;
         });
 
+        $scope.material_units = ["kg", "ton", "lb"]
+
+        $scope.process_units = ["J", "kJ"]
+
         // var for library
         $scope.library = {
             selected: null,
             lib:[]
-    }
+        }
 
         // var for assembly
         $scope.assembly = {

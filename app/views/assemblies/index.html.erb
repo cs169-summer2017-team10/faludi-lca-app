@@ -20,13 +20,12 @@
           </ul>
       </script>
 
-  <!--Templates for Nested assembly-->
-      <!--List for building section -->
-      <script type="text/ng-template" id="list.html">
-        <ul dnd-list="list">
+      <!-- List for library section -->
+      <script type="text/ng-template" id="list-lib.html">
+        <ul>
           <li ng-repeat="item in list"
               dnd-draggable="item"
-              dnd-effect-allowed="move"
+              dnd-effect-allowed="copy"
               dnd-moved="list.splice($index, 1)"
               dnd-selected="assembly.selected = item"
               ng-class="{selected: assembly.selected === item}"
@@ -35,12 +34,22 @@
         </ul>
       </script>
 
-      <!-- List for library section -->
-      <script type="text/ng-template" id="list-lib.html">
-        <ul>
+      <!--Container for library section -->
+      <script type="text/ng-template" id="container-lib.html">
+        <div class="container-element box box-blue">
+          <h4>{{item.name}}</h4>
+          <div class="column" ng-repeat="list in item.columns" ng-include="'list-lib.html'"></div>
+          <div class="clearfix"></div>
+        </div>
+      </script>
+
+  <!--Templates for Nested assembly-->
+      <!--List for building section -->
+      <script type="text/ng-template" id="list.html">
+        <ul dnd-list="list">
           <li ng-repeat="item in list"
               dnd-draggable="item"
-              dnd-effect-allowed="copy"
+              dnd-effect-allowed="move"
               dnd-moved="list.splice($index, 1)"
               dnd-selected="assembly.selected = item"
               ng-class="{selected: assembly.selected === item}"
@@ -58,23 +67,34 @@
         </div>
       </script>
 
-      <!--Container for library section -->
-      <script type="text/ng-template" id="container-lib.html">
-        <div class="container-element box box-blue">
-          <h4>{{item.name}}</h4>
-          <div class="column" ng-repeat="list in item.columns" ng-include="'list-lib.html'"></div>
-          <div class="clearfix"></div>
-        </div>
-      </script>
-
       <!--Material-->
       <script type="text/ng-template" id="material.html">
-        <div class="item material">{{item.name}}</div>
+        <div class="item material" style="display: inline-flex">
+          <div>{{ item.name }}</div>
+          <div>
+            : Quantity
+            <input type="number" min="1" max="100" value="{{ item.quantity }}">
+             Units:
+            <select>
+              <option ng-repeat="unit in material_units" > {{ unit }} </option>
+            </select>
+          </div>
+        </div>
       </script>
 
       <!--Process-->
       <script type="text/ng-template" id="process.html">
-        <div class="item process">{{item.name}}</div>
+        <div class="item process" style="display: inline-flex">
+          <div>{{ item.name }}</div>
+          <div>
+            : Quantity:
+            <input type="number" min="1" max="100" value="{{ item.quantity }}">
+            Units:
+            <select>
+              <option ng-repeat="unit in process_units"> {{ unit }} </option>
+            </select>
+          </div>
+        </div>
       </script>
   <!--End of Angular app function definition-->
 
