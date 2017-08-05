@@ -11,22 +11,20 @@
    <br>
    <h2> Email: <%= @current_user.email %></h2>
    <br>
-   <h2> Username: <%= @current_user.username %></h2>
-   <br>
-   <h2> Number of Assemblies: <%= @current_user.assemblys.size %></h2>
+   <h2> Number of Assemblies: <%= @current_user.assemblies.size %></h2>
 </body>
 
 <br>
 
-<% if @current_user.assemblys.size > 0 %>
+<% if @current_user.assemblies.size > 0 %>
    <table class="center">
       <tr>
          <th>Assembly</th>
          <th>Last Edited</th>
       </tr>
-         <% @current_user.assemblys.order('updated_at DESC').each do |assemb| %>
+         <% @current_user.assemblies.order('updated_at DESC').each do |assemb| %>
             <tr>
-               <td><%= link_to assemb.name, root_path(:id => assemb.id), method: 'GET', class: 'nav-link' %></td>
+               <td><%= link_to assemb.name, assembly_path(:id => assemb.id), method: 'GET', class: 'nav-link' %></td>
                <td><%= assemb.updated_at %></td>
             </tr>
          <% end %>

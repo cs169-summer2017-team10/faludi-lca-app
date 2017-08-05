@@ -1,418 +1,68 @@
 class AssembliesController < ApplicationController
   before_action :set_assembly, only: [:show, :edit, :update, :destroy]
-  skip_before_action :set_assembly, only: [:show_lib]
+  before_action :authenticate_user!, only: [:create, :index, :show, :new, :edit, :update, :destroy]
+
+  # The followings action required user login
 
   # GET /assemblies
   # GET /assemblies.json
   def index
-    @assemblies = Assembly.all
+    redirect_to profile_path
   end
 
   # GET /assemblies/1
   # GET /assemblies/1.json
   def show
-
-  end
-
-  # POST a string
-  def save_assembly
-    assembly_hash = params[:build]
-    if assembly_hash.nil?
-      respond_to do |format|
-        format.json { render :json => "Cannot save an empty assembly".to_json }
-      end
+    @assembly = Assembly.where(id: params[:id]).first
+    if @assembly.nil?
+      redirect_to new_assembly_path
       return
     end
-
-    if session[:assembly_id] == nil
-      # This is a new subassembly
-      @assembly = Assembly.create(:user => User.where(:user_id => session[:user_id]) )
-      session[:assembly_id] = @assembly.id
-    else
-      # Existing subassembly
-      @assembly = Assembly.find(session[:assembly_id])
-    end
-
-    # Update the component in assembly
-    @assembly.components = hash
-    # Update assembly name
-    @assembly.name = params[:assembly_name]
-
-    respond_to do |format|
-      format.json { render :json => ( @assembly.name + " saved").to_json }
-    end
-
-    # The saved component will be
     p @assembly.components
-    p @assembly.name
-
-  end
-
-  # GET /show_lib
-  # GET /show_lib.json
-  # This function should return json data representing the library bar
-  def show_lib
-
-     sample_lib =
-        [{
-           # Materials
-           "type": "container",
-           "name": "Metals",
-           "columns": [
-              {
-                 "type": "container-lib",
-                 "name": "Metal",
-                 "columns":
-                    [[
-                       {
-                           "type": "material",
-                           "name": "Gold"
-                       },
-                       {
-                           "type": "material",
-                           "name": "Iron"
-                       },
-                       {
-                           "type": "material",
-                           "name": "Silver"
-                       },
-                       {
-                           "type": "material",
-                           "name": "Copper"
-                       }
-                    ]]
-              },
-              {
-                 "type": "container-lib",
-                 "name": "Nonmetal",
-                 "columns":
-                    [[
-                       {
-                           "type": "material",
-                           "name": "PVC"
-                       },
-                       {
-                           "type": "material",
-                           "name": "Wood"
-                       },
-                       {
-                           "type": "material",
-                           "name": "Paper"
-                       },
-                       {
-                           "type": "material",
-                           "name": "Glass"
-                       }
-                    ]]
-              }
-          ]
-        },
-        {
-           # Processes
-           "type": "container",
-           "name": "Process",
-           "columns": [
-              {
-                 "type": "process",
-                 "name": "Hot Rolling"
-              },
-              {
-                 "type": "process",
-                 "name": "Cold Rolling"
-              }
-           ]
-        },
-        {
-           # Processes
-           "type": "container",
-           "name": "Transportation",
-           "columns": [
-              {
-                 "type": "process",
-                 "name": "Air"
-              },
-              {
-                 "type": "process",
-                 "name": "Boat"
-              },
-              {
-                 "type": "process",
-                 "name": "Truck"
-              },
-              {
-                 "type": "process",
-                 "name": "Train"
-              }
-           ]
-        }]
-
     respond_to do |format|
-      format.json { render json: sample_lib.to_json }
-    end
-
-  end
-
-  # GET /show_assemblies
-  # GET /show_assemblies.json
-  # This function should return json data representing the assemblies
-  def show_assemblies
-
-    sample_assemblies = {
-        "MacBook Pro": [
-            {
-                "type": "container",
-                "name": "Memory",
-                "columns": [
-                    [
-                        {
-                            "type": "container",
-                            "name": "RAM",
-                            "columns": [
-                                [
-                                    {
-                                        "type": "material",
-                                        "name": "Gold",
-                                        "quantity": 1,
-                                        "unit": "kg"
-                                    },
-                                    {
-                                        "type": "container",
-                                        "name": "DRAM",
-                                        "columns": [
-                                            [
-                                                {
-                                                    "type": "material",
-                                                    "name": "Steel",
-                                                    "quantity": 1,
-                                                    "unit": "kg"
-                                                }
-                                            ]
-                                        ]
-                                    }
-                                ]
-                            ]
-                        },
-                        {
-                            "type": "material",
-                            "name": "Copper",
-                            "quantity": 1,
-                            "unit": "kg"
-                        },
-                        {
-                            "type": "material",
-                            "name": "Iron",
-                            "quantity": 1,
-                            "unit": "kg"
-                        },
-                        {
-                            "type": "material",
-                            "name": "Silver",
-                            "quantity": 1,
-                            "unit": "kg"
-                        }
-                    ]
-                ]
-            },
-            {
-                "type": "container",
-                "name": "Screen",
-                "columns":
-                    [
-                        [
-                            {
-                                "type": "container",
-                                "name": "LCD module",
-                                "columns":
-                                    [
-                                        [
-                                            {
-                                                "type": "material",
-                                                "name": "Gold",
-                                                "quantity": 1,
-                                                "unit": "kg"
-                                            },
-                                            {
-                                                "type": "container",
-                                                "name": "LED",
-                                                "columns":
-                                                    [
-                                                        [
-                                                            {
-                                                                "type": "material",
-                                                                "name": "Glass",
-                                                                "quantity": 1,
-                                                                "unit": "kg"
-                                                            }
-                                                        ]
-                                                    ]
-                                            }
-                                        ]
-                                    ]
-                            },
-                            {
-                                "type": "material",
-                                "name": "Copper",
-                                "quantity": 1,
-                                "unit": "kg"
-                            },
-                            {
-                                "type": "material",
-                                "name": "Iron",
-                                "quantity": 1,
-                                "unit": "kg"
-                            },
-                            {
-                                "type": "material",
-                                "name": "Silver",
-                                "quantity": 1,
-                                "unit": "kg"
-                            }
-                        ]
-                    ]
-            },
-            {
-                "type": "container",
-                "name": "Motherboard",
-                "columns": [
-                    [
-                        {
-                            "type": "container",
-                            "name": "PCIE-X",
-                            "columns":
-                                [
-                                    [
-                                        {
-                                            "type": "material",
-                                            "name": "Gold",
-                                            "quantity": 1,
-                                            "unit": "kg"
-                                        },
-                                        {
-                                            "type": "container",
-                                            "name": "Capacitor",
-                                            "columns": [
-                                                [
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Wood",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    },
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Ceramics",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    }
-                                                ]
-                                            ]
-                                        },
-                                        {
-                                            "type": "container",
-                                            "name": "Resistor",
-                                            "columns": [
-                                                [
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Wood",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    },
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Ceramics",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    }
-                                                ]
-                                            ]
-                                        }
-                                    ]
-                                ]
-                        },
-                        {
-                            "type": "material",
-                            "name": "Copper",
-                            "quantity": 1,
-                            "unit": "kg"
-                        },
-                        {
-                            "type": "material",
-                            "name": "Iron",
-                            "quantity": 1,
-                            "unit": "kg"
-                        },
-                        {
-                            "type": "material",
-                            "name": "Silver",
-                            "quantity": 1,
-                            "unit": "kg"
-                        }
-                    ]
-                ]
-            },
-            {
-                "type": "material",
-                "name": "Wood",
-                "quantity": 1,
-                "unit": "kg"
-            },
-            {
-                "type": "material",
-                "name": "Glass",
-                "quantity": 1,
-                "unit": "kg"
-            },
-            {
-                "type": "material",
-                "name": "PVC",
-                "quantity": 1,
-                "unit": "kg"
-            }
-        ]
-    }
-
-    respond_to do |format|
-      format.html { render action: "show_lib" }
-      format.json { render json: sample_assemblies.to_json }
+      format.html
+      format.json { render json: @assembly.components.to_json }
     end
   end
 
   # GET /assemblies/new
   def new
-    @assembly = Assembly.new
   end
 
   # GET /assemblies/1/edit
   def edit
+    redirect_to assembly_path
   end
 
   # POST /assemblies
   # POST /assemblies.json
   def create
-    @assembly = Assembly.new(assembly_params)
+    user = User.find(current_user)
+    assembly_name = params[:build].keys[0]
+    hash = params[:build]
+    @assembly = Assembly.new(user: user, name: assembly_name, components: hash )
 
-    respond_to do |format|
-      if @assembly.save
-        format.html { redirect_to @assembly, notice: 'Assembly was successfully created.' }
-        format.json { render :show, status: :created, location: @assembly }
-      else
-        format.html { render :new }
-        format.json { render json: @assembly.errors, status: :unprocessable_entity }
-      end
+    if @assembly.save
+      render json: {"url" => assembly_path(@assembly)}, location: assembly_path(@assembly), status: 200
+    else
+      render json: {"url" => new_assembly_path}, location: new_assembly_path , status: 500
     end
   end
 
   # PATCH/PUT /assemblies/1
   # PATCH/PUT /assemblies/1.json
   def update
+    user = User.find(current_user)
+    assembly_id = params[:assembly_id]
+    @assembly = Assembly.where( user: user, id: assembly_id ).first
+
     respond_to do |format|
-      if @assembly.update(assembly_params)
-        format.html { redirect_to @assembly, notice: 'Assembly was successfully updated.' }
-        format.json { render :show, status: :ok, location: @assembly }
+      if @assembly.nil?
+        format.json { render json: { "message" => "Fail to save" }, status: 500 }
       else
-        format.html { render :edit }
-        format.json { render json: @assembly.errors, status: :unprocessable_entity }
+        @assembly.components = params[:build]
+        @assembly.save
+        format.json { render json: { "message" => "Saved" }, status: 200 }
       end
     end
   end
@@ -421,16 +71,52 @@ class AssembliesController < ApplicationController
   # DELETE /assemblies/1.json
   def destroy
     @assembly.destroy
+    # respond_to do |format|
+    #   format.html { redirect_to assemblies_url, notice: 'Assembly was successfully destroyed.' }
+    #   format.json { head :no_content }
+    # end
+  end
+
+  # GET /empty_assembly.json
+  # This function return an empty assembly json data
+  def empty_assembly
     respond_to do |format|
-      format.html { redirect_to assemblies_url, notice: 'Assembly was successfully destroyed.' }
-      format.json { head :no_content }
+      format.json { render json: Assembly.empty_assembly }
     end
+  end
+
+  # The followings are public actions
+
+  # GET /show_lib.json
+  # This function should return json data representing the library bar
+  def show_lib
+    respond_to do |format|
+      format.json { render json: Assembly.lib }
+    end
+  end
+
+  # GET /sample_assembly.json
+  # This function return a sample assembly json data
+  def sample_assembly
+    respond_to do |format|
+      format.json { render json: Assembly.sample_assembly }
+    end
+  end
+
+  # GET /assemblies-not-exist
+  def not_exist
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_assembly
-      @assembly = Assembly.find(params[:id])
+      begin
+        @assembly = Assembly.find(params[:id])
+      rescue Exception => e
+        redirect_to :action => "not_exist"
+        print e
+        return
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

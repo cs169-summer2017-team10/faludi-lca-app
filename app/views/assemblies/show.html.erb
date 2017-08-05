@@ -1,4 +1,181 @@
-<p id="notice"><%= notice %></p>
+<table ng-controller="assembly_page_controller" ng-app="assembly_page_app"
+       ng-init='fillAssembly("<%= assembly_path( :id => @assembly.id, :format => :json ) %>");
+       fillLibrary("<%= show_lib_path(:format => :json ) %>")'>
 
-<%= link_to 'Edit', edit_assembly_path(@assembly) %> |
-<%= link_to 'Back', assemblies_path %>
+  <!--Angular js functions (<script> ... </script>>) should be placed inside ng-contoller and ng-app tag-->
+
+  <!-- Templates for Library (Left side bar)-->
+  <!--Top-level-->
+  <script type="text/ng-template" id="library-section.html">
+    <h4>{{section.name}}</h4>
+    <ul ng-init="list=section.columns">
+      <li ng-repeat="item in list"
+          dnd-disable-if="item.type == 'container-lib'"
+          dnd-type="item.type"
+          dnd-allowed-types="[No]"
+          dnd-draggable="item"
+          dnd-effect-allowed="copy"
+          dnd-moved="list.splice($index, 1)"
+          ng-class="{selected: list.selected === item}"
+          ng-include="item.type + '.html'">
+      </li>
+    </ul>
+  </script>
+
+  <!-- List for library section -->
+  <script type="text/ng-template" id="list-lib.html">
+    <ul>
+      <li ng-repeat="item in list"
+          dnd-draggable="item"
+          dnd-effect-allowed="copy"
+          dnd-moved="list.splice($index, 1)"
+          dnd-selected="assembly.selected = item"
+          ng-class="{selected: assembly.selected === item}"
+          ng-include="item.type + '.html'">
+      </li>
+    </ul>
+  </script>
+
+  <!--Container for library section -->
+  <script type="text/ng-template" id="container-lib.html">
+    <div class="container-element box box-blue">
+      <h4>{{item.name}}</h4>
+      <div class="column" ng-repeat="list in item.columns" ng-include="'list-lib.html'"></div>
+      <div class="clearfix"></div>
+    </div>
+  </script>
+
+  <!--Templates for Nested assembly-->
+  <!--List for building section -->
+  <script type="text/ng-template" id="list.html">
+    <ul dnd-list="list">
+      <li ng-repeat="item in list"
+          dnd-draggable="item"
+          dnd-effect-allowed="move"
+          dnd-moved="list.splice($index, 1)"
+          dnd-selected="assembly.selected = item"
+          ng-class="{selected: assembly.selected === item}"
+          ng-include="item.type + '.html'">
+      </li>
+    </ul>
+  </script>
+
+  <!--Container for building section -->
+  <script type="text/ng-template" id="container.html">
+    <div class="container-element box box-blue">
+      <h4>{{item.name}}</h4>
+      <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+      <div class="clearfix"></div>
+    </div>
+  </script>
+
+  <!--Material-->
+  <script type="text/ng-template" id="material.html">
+    <div class="item material" style="display: inline-flex">
+      <div>{{ item.name }}</div>
+      <div>
+        : Quantity
+        <input type="number" min="1" max="100" value="{{ item.quantity }}">
+        Units:
+        <select>
+          <option ng-repeat="unit in material_units" > {{ unit }} </option>
+        </select>
+      </div>
+    </div>
+  </script>
+
+  <!--Process-->
+  <script type="text/ng-template" id="process.html">
+    <div class="item process" style="display: inline-flex">
+      <div>{{ item.name }}</div>
+      <div>
+        : Quantity:
+        <input type="number" min="1" max="100" value="{{ item.quantity }}">
+        Units:
+        <select>
+          <option ng-repeat="unit in process_units"> {{ unit }} </option>
+        </select>
+      </div>
+    </div>
+  </script>
+  <!--End of Angular app function definition-->
+
+  <!--##########################################################################################-->
+
+  <!--Beginning of the page -->
+  <tr>
+    <!--Library section (left side bar)-->
+    <td class="library">
+      <h1>Library</h1>
+      <ul>
+        <li ng-repeat="section in library.lib"
+            ng-include="'library-section.html'">
+        </li>
+      </ul>
+    </td>
+
+    <!--Drag and Drop zone -->
+    <td class="assembly" >
+      <!--Drag and drop zone -->
+      <div class="nestedDemo row">
+        <div class="col-md-10">
+          <div class="row">
+            <div ng-repeat="(zone, list) in assembly.dropzones" class="col-md-6">
+              <div class="dropzone box box-yellow">
+                <h3>{{zone}}</h3>
+                <div ng-include="'list.html'"></div>
+              </div>
+            </div>
+          </div>
+          <div view-source="nested"></div>
+        </div>
+      </div>
+    </td>
+
+    <!--New element and trash can section -->
+    <td>
+      <!--New element or trash can section -->
+      <div class="col-md-2 nestedDemo">
+        <!--Adding new elements -->
+        <div class="toolbox box box-grey box-padding">
+          <h3>New Elements (Drag to create new)</h3>
+          <ul>
+            <li ng-repeat="item in assembly.templates"
+                dnd-draggable="item"
+                dnd-effect-allowed="copy"
+                dnd-copied="item.name = 'new'"
+            >
+              <div class="btn btn-default btn-lg">{{item.type}}</div>
+            </li>
+          </ul>
+        </div>
+
+        <!--Selected section-->
+        <div ng-if="assembly.selected" class="box box-grey box-padding">
+          <h3>Selected</h3>
+          <strong>Type: </strong> {{assembly.selected.type}}<br>
+          <input type="text" ng-model="assembly.selected.id" class="form-control" style="margin-top: 5px" />
+        </div>
+
+        <!--Trashcan-->
+        <div class="trashcan box box-grey box-padding">
+          <!-- If you use [] as referenced list, the dropped elements will be lost -->
+          <h3>Trashcan</h3>
+          <ul dnd-list="[]">
+            <li><img src="/trashcan.jpg"></li>
+          </ul>
+        </div>
+
+        <!--Save button & Anayze Button -->
+        <div>
+          <button id="save-button" ng-click='updateAssembly("<%= form_authenticity_token.to_s %>","<%=  assembly_path(@assembly, :format => :json) %>","<%= @assembly.id %>")'>Save Assembly</button><br>
+          <button id="analyze-button"> Analyze </button>
+        </div>
+
+        <div> {{DebugZone}}</div>
+
+      </div>
+    </td>
+  </tr>
+  <!--End of page-->
+</table>
