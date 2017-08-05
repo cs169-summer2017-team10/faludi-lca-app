@@ -43,7 +43,7 @@ Assembly.delete_all
 Part.delete_all
 
 # User
-user = User.create!(name: "John Oliver", email: "johnoliver@hbo.com")
+user = User.create!(name: "John Oliver", email: "johnoliver@hbo.com", password: "123456")
 
 # Assembly
 computer = Assembly.create!(name: "MacBook Pro 2017", user: user)
