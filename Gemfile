@@ -11,6 +11,7 @@ gem 'angular-rails-templates' #=> allows us to place our html views in the asset
 gem 'active_model_serializers'
 gem 'bootstrap-sass', '~> 3.3.6' #=> bootstrap also requires the 'sass-rails' gem, which should already be included in your gemfile
 gem 'jquery-rails'
+gem 'angular_rails_csrf' #=> needed for POST request made in the frontend with AngularJS (otherwise Rails doesn't accept the request)
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
@@ -66,7 +67,6 @@ group :test do
   gem 'simplecov', :require => false
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels' # basic imperative step defs
-  gem 'selenium-webdriver'
   gem 'database_cleaner' # required by Cucumber
   gem 'autotest-rails'
   gem 'factory_girl_rails' # if using FactoryGirl

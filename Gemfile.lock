@@ -54,6 +54,8 @@ GEM
       railties (>= 4.2, < 6)
       sprockets (>= 3.0, < 5)
       tilt
+    angular_rails_csrf (2.1.1)
+      railties (>= 3, < 5.2)
     arel (8.0.0)
     arrayfields (4.9.2)
     ast (2.3.0)
@@ -389,6 +391,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   angular-rails-templates
+  angular_rails_csrf
   autotest-rails
   bootstrap-sass (~> 3.3.6)
   bower-rails
