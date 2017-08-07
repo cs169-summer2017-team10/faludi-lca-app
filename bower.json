@@ -1,0 +1,18 @@
+{
+  "lib": {
+    "name": "bower-rails generated lib assets",
+    "dependencies": {
+    }
+  },
+  "vendor": {
+    "name": "bower-rails generated vendor assets",
+    "dependencies": {
+      "angular": "v1.6.5",
+      "angular-ui-router": "latest",
+      "angular-devise": "latest",
+      "angular-material": "latest",
+      "ng-scrollbars": "latest",
+      "angular-material-data-table": "latest"
+    }
+  }
+}
