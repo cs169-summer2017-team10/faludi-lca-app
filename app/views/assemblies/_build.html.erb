@@ -3,8 +3,8 @@
 <!-- Templates for Library (Left side bar)-->
 <!--Top-level-->
 <script type="text/ng-template" id="library-section.html">
-  <h4>{{section.name}}</h4>
-  <ul ng-init="list=section.columns">
+  <h4 class="collapsible-header">{{section.name}}</h4>
+  <ul ng-init="list=section.columns" class="collapsible-body">
     <li ng-repeat="item in list"
         dnd-disable-if="item.type == 'container-lib'"
         dnd-type="item.type"
@@ -13,7 +13,7 @@
         dnd-effect-allowed="copy"
         dnd-moved="list.splice($index, 1)"
         ng-class="{selected: list.selected === item}"
-        ng-include="item.type + '.html'">
+        ng-include="item.type + '.html'"
     </li>
   </ul>
 </script>
@@ -36,7 +36,7 @@
 <!--Container for library section -->
 <script type="text/ng-template" id="container-lib.html">
   <div class="container-element box box-blue">
-    <h4>{{item.name}}</h4>
+    <h4 class="collapsible-header">{{item.name}}</h4>
     <div class="column" ng-repeat="list in item.columns" ng-include="'list-lib.html'"></div>
     <div class="clearfix"></div>
   </div>
@@ -75,7 +75,7 @@
 <!--Container for building section -->
 <script type="text/ng-template" id="container.html">
   <div class="container-element box box-blue">
-    <h4>{{item.name}}</h4>
+    <h4 contenteditable="true">{{item.name}}</h4>
     <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
     <div class="clearfix"></div>
   </div>
