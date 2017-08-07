@@ -14,7 +14,7 @@
             </h2>
             <h2 class="md-toolbar-tools" ng-show="editName">
                 <md-input-container class="md-block" ng-show="editName">
-                    <input md-maxlength="20" required md-no-asterisk name="name" ng-model="assembly.name">
+                    <input md-maxlength="20" required md-no-asterisk name="name" ng-model="assembly.name" aria-label="Input Name">
                     <div ng-messages="projectForm.description.$error">
                         <div ng-message="required">This is required.</div>
                         <div ng-message="md-maxlength">The description must be less than 20 characters long.</div>
