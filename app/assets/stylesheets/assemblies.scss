@@ -30,13 +30,13 @@
   width: 70%;
 }
 
-.nestedDemo .dropzone ul[dnd-list] {
+.dropzone ul[dnd-list] {
   margin: 0px 0px 0px 0px ;
   min-height: 15px;
   min-width: 300px;
 }
 
-.nestedDemo .dropzone li {
+.dropzone li {
   background-color: white;
   border: 2px solid #ddd;
   display: block;
@@ -50,7 +50,7 @@
  * to see where he is dropping his element, even if the element is huge. The
  * .dndDragging class is automatically set during the drag operation.
  */
-.nestedDemo .dropzone .dndDragging {
+.dropzone .dndDragging {
   opacity: 0.9;
 }
 
@@ -59,7 +59,7 @@
  * operation. It makes sense to hide it to give the user the feeling that he's
  * actually moving it. Note that the source element has also .dndDragging class.
  */
-.nestedDemo .dropzone .dndDraggingSource {
+.dropzone .dndDraggingSource {
   display: none;
 }
 
@@ -67,7 +67,7 @@
  * An element with .dndPlaceholder class will be added as child of the dnd-list
  * while the user is dragging over it.
  */
-.nestedDemo .dropzone .dndPlaceholder {
+.dropzone .dndPlaceholder {
   background-color: #ddd;
   display: block;
   min-height: 30px;
@@ -75,16 +75,16 @@
 
 /***************************** Element Selection *****************************/
 
-.nestedDemo .dropzone .selected .item {
+.dropzone .selected .item {
   color: #3c763d;
   background-color: #dff0d8;
 }
 
-.nestedDemo .dropzone .selected .box {
+.dropzone .selected .box {
   border-color: #d6e9c6;
 }
 
-.nestedDemo .dropzone .selected .box > h3 {
+.dropzone .selected .box > h3 {
   background-color: #dff0d8;
   background-image: linear-gradient(to bottom,#dff0d8 0,#d0e9c6 100%);
   border-color: #d6e9c6;
@@ -93,30 +93,30 @@
 
 /***************************** Element type specific styles *****************************/
 
-.nestedDemo .dropzone .item {
+.dropzone .item {
   padding: 3px 3px;
   background-color: white;
 }
 
-.nestedDemo .dropzone .container-element {
+.dropzone .container-element {
   margin: 1% 1% 1% 1%;
   display: block;
   border: dotted 2px black;
 }
 
-.nestedDemo .dropzone .container-element .column {
+.dropzone .container-element .column {
   //background-color: red;
 }
 
 /***************************** Toolbox *****************************/
 
-.nestedDemo .toolbox ul {
+.toolbox ul {
   cursor: move;
   list-style: none;
   padding-left: 0px;
 }
 
-.nestedDemo .toolbox div {
+.toolbox div {
   margin: 5px;
   opacity: 1.0;
   width: 123px;
@@ -124,29 +124,29 @@
   border: dotted 2px deepskyblue;
 }
 
-.nestedDemo .toolbox .dndDragging {
+.toolbox .dndDragging {
   opacity: 0.5;
 }
 
-.nestedDemo .toolbox .dndDraggingSource {
+.toolbox .dndDraggingSource {
   opacity: 1.0;
 }
 
 /***************************** Trashcan *****************************/
 
-.nestedDemo .trashcan ul {
+.trashcan ul {
   list-style: none;
   padding-left: 0px;
 }
 
-.nestedDemo .trashcan img {
+.trashcan img {
   width: 50%;
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
 }
 
-.nestedDemo .trashcan .dndDragover img {
+.trashcan .dndDragover img {
   border: dotted 2px red;
   width: 70%;
   -webkit-filter: none;
@@ -154,6 +154,6 @@
   filter: none;
 }
 
-.nestedDemo .trashcan .dndPlaceholder {
+.trashcan .dndPlaceholder {
   display: none;
 }
