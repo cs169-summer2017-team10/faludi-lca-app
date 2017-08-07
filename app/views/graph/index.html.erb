@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <%= javascript_include_tag "materialize.min.js" %>
-    <% stylesheet_link_tag "materialize.min.cs", media: "all" %>
-  </head>
 
-  <body>
+<body>
+
     <p><%= link_to 'Return to model building', root_path, method: 'GET', class: 'link' %></p>
-  </body>
+    <br>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <!-- JQuery UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+
+    <% javascript_include_tag "graph" %>
+
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+
+    <div>
+      <button id="barGraph" class="butt">Bar</button>
+      <button id="blurGraph" class="butt">Blur</button>
+      </div>
+    <canvas id="myCanvas" width="800" height="500" style="border:1px solid #000000;"></canvas>
+
+</body>
 
 </html>

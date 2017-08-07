@@ -7,8 +7,10 @@
  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
  <%= csrf_meta_tags %>
+  <%= include_gon %>
 </head>
 <body>
+
   <% unless controller_name == "users" %>
     <header>
         <%= render 'users/navigation' %>

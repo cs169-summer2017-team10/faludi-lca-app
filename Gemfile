@@ -32,6 +32,8 @@ gem 'devise'
 
 gem 'jquery-turbolinks'
 
+gem 'gon'
+
 group :production do
   gem 'pg'
 

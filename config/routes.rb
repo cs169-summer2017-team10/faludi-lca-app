@@ -13,6 +13,6 @@ Rails.application.routes.draw do
   match '/signup' => 'users#signup', via: [:get, :post]
   match '/profile' => 'users#profile', via: [:get, :post]
 
-  get '/test/graph' => 'graph#impact_by_process'
+  match '/graph' => 'graph#index', via: [:get, :post]
 
 end
