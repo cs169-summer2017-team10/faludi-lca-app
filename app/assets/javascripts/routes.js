@@ -30,12 +30,22 @@ angular
             .state('assembly-new', {
                 url: '/assembly',
                 templateUrl: 'views/assembly.html',
-                controller: 'AssemblyCtrl'
+                controller: 'AssemblyCtrl',
+                resolve: {
+                    assembly: ['$stateParams', 'assemblies', function($stateParams, assemblies) {
+                        return assemblies.get($stateParams.id);
+                    }]
+                }
             })
             .state('assembly-edit', {
                 url: '/assembly/{id}',
                 templateUrl: 'views/assembly.html',
-                controller: 'AssemblyCtrl'
+                controller: 'AssemblyCtrl',
+                resolve: {
+                    assembly: ['$stateParams', 'assemblies', function($stateParams, assemblies) {
+                        return assemblies.get($stateParams.id);
+                    }]
+                }
             })
             .state('profile', {
                 url: '/profile',
