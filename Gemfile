@@ -45,6 +45,12 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'sqlite3'
+  gem 'launchy'
+  gem 'rspec-rails'
+  # gem 'selenium-webdriver' DUPLICATE
+  gem 'jasmine-rails' # if you plan to use JavaScript/CoffeeScript
+  # gem 'poltergeist' DUPLICATE
 end
 
 group :development do
@@ -54,6 +60,19 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :test do
+  gem 'codeclimate-test-reporter', require: nil
+  gem 'simplecov', :require => false
+  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails-training-wheels' # basic imperative step defs
+  gem 'selenium-webdriver'
+  gem 'database_cleaner' # required by Cucumber
+  gem 'autotest-rails'
+  gem 'factory_girl_rails' # if using FactoryGirl
+  gem 'metric_fu'        # collect code metrics
+  gem 'poltergeist'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
