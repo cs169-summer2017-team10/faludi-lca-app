@@ -1,103 +1,111 @@
+<!-- Header Toolbar -->
 <md-toolbar class="md-menu-toolbar">
-  <div layout="row" layout-align="space-between start">
-    <div>
-      <h2 class="md-toolbar-tools">Library</h2>
+    <div layout="row" layout-align="space-between start">
+        <div>
+            <h2 class="md-toolbar-tools">Library</h2>
+        </div>
+        <div>
+            <h2 class="md-toolbar-tools" ng-hide="editName">
+                {{assembly.name}}
+                <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="editName = !editName">
+                    <md-tooltip md-direction="up">Edit name</md-tooltip>
+                    <md-icon aria-label="Edit" class="material-icons">edit</md-icon>
+                </md-button>
+            </h2>
+            <h2 class="md-toolbar-tools" ng-show="editName">
+                <md-input-container class="md-block" ng-show="editName">
+                    <input md-maxlength="20" required md-no-asterisk name="name" ng-model="assembly.name">
+                    <div ng-messages="projectForm.description.$error">
+                        <div ng-message="required">This is required.</div>
+                        <div ng-message="md-maxlength">The description must be less than 20 characters long.</div>
+                    </div>
+                </md-input-container>
+                <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="editName = !editName">
+                    <md-tooltip md-direction="up">Save name</md-tooltip>
+                    <md-icon aria-label="Save" class="material-icons">save</md-icon>
+                </md-button>
+            </h2>
+        </div>
+        <div>
+            <h2 class="md-toolbar-tools">
+                <md-button class="md-icon-button test-tooltip" aria-label="Refresh">
+                    <md-tooltip md-direction="up">Add subassembly</md-tooltip>
+                    <md-icon aria-label="Add Box" class="material-icons">add_box</md-icon>
+                </md-button>
+                <md-button class="md-icon-button test-tooltip" aria-label="Analyze" ng-click="showAdvanced($event)">
+                    <md-tooltip md-direction="up">Analyze</md-tooltip>
+                    <md-icon aria-label="Insert Chart" class="material-icons">insert_chart</md-icon>
+                </md-button>
+                <md-button class="md-icon-button test-tooltip" aria-label="Save">
+                    <md-tooltip md-direction="up">Save</md-tooltip>
+                    <md-icon aria-label="Save" class="material-icons">save</md-icon>
+                </md-button>
+            </h2>
+        </div>
     </div>
-    <div>
-      <h2 class="md-toolbar-tools" ng-hide="editName">
-        {{assembly.name}}
-        <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="editName = !editName">
-          <md-tooltip md-direction="up">Edit name</md-tooltip>
-          <md-icon aria-label="Edit" class="material-icons">edit</md-icon>
-        </md-button>
-      </h2>
-      <h2 class="md-toolbar-tools" ng-show="editName">
-        <md-input-container class="md-block" ng-show="editName">
-          <input md-maxlength="20" required md-no-asterisk name="name" ng-model="assembly.name">
-          <div ng-messages="projectForm.description.$error">
-            <div ng-message="required">This is required.</div>
-            <div ng-message="md-maxlength">The description must be less than 20 characters long.</div>
-          </div>
-        </md-input-container>
-        <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="editName = !editName">
-          <md-tooltip md-direction="up">Save name</md-tooltip>
-          <md-icon aria-label="Save" class="material-icons">save</md-icon>
-        </md-button>
-      </h2>
-    </div>
-    <div>
-      <h2 class="md-toolbar-tools">
-        <md-button class="md-icon-button test-tooltip" aria-label="Refresh">
-          <md-tooltip md-direction="up">Add subassembly</md-tooltip>
-          <md-icon aria-label="AddBox" class="material-icons">add_box</md-icon>
-        </md-button>
-        <md-button class="md-icon-button test-tooltip" aria-label="Refresh">
-          <md-tooltip md-direction="up">Save</md-tooltip>
-          <md-icon aria-label="Save" class="material-icons">save</md-icon>
-        </md-button>
-      </h2>
-    </div>
-  </div>
 </md-toolbar>
 
 <md-content class="page-container" style="margin-top: 10px; height: 100%;">
-  <div id="sidebar" style="margin-right: 10px;" ng-scrollbars ng-scrollbars-config="configScrollbar"><!-- ng-scrollbars ng-scrollbars-config="configScrollbar" -->
-    <!-- <div id="split-bar"></div> -->
-    <md-list flex>
-      <!-- Materials -->
-      <md-list-item ng-click="toggle.materials = !toggle.materials">
-        <span flex>Materials</span>
-        <md-icon ng-show="!toggle.materials">expand_more</md-icon>
-        <md-icon ng-show="toggle.materials">expand_less</md-icon>
-      </md-list-item>
-      <md-list-item ng-repeat="item in data" ng-show="toggle.materials">
-        <span flex-offset="5">{{item}}</span>
-      </md-list-item>
 
-      <!-- Manufacturing -->
-      <md-list-item ng-click="toggle.manufacturing = !toggle.manufacturing">
-        <span flex>Manufacturing</span>
-        <md-icon ng-show="!toggle.manufacturing">expand_more</md-icon>
-        <md-icon ng-show="toggle.manufacturing">expand_less</md-icon>
-      </md-list-item>
-      <md-list-item ng-repeat="item in data" ng-show="toggle.manufacturing">
-        <span flex-offset="5">{{item}}</span>
-      </md-list-item>
+    <!-- Assembly Canvas -->
+    <div id="sidebar" style="margin-right: 10px;" ng-scrollbars ng-scrollbars-config="configScrollbar"><!-- ng-scrollbars ng-scrollbars-config="configScrollbar" -->
+        <!-- <div id="split-bar"></div> -->
+        <md-list flex>
+            <!-- Materials -->
+            <md-list-item ng-click="toggle.materials = !toggle.materials">
+                <span flex>Materials</span>
+                <md-icon ng-show="!toggle.materials">expand_more</md-icon>
+                <md-icon ng-show="toggle.materials">expand_less</md-icon>
+            </md-list-item>
+            <md-list-item ng-repeat="item in data" ng-show="toggle.materials">
+                <span flex-offset="5">{{item}}</span>
+            </md-list-item>
 
-      <!-- Transportation -->
-      <md-list-item ng-click="toggle.transportation = !toggle.transportation">
-        <span flex>Transportation</span>
-        <md-icon ng-show="!toggle.transportation">expand_more</md-icon>
-        <md-icon ng-show="toggle.transportation">expand_less</md-icon>
-      </md-list-item>
-      <md-list-item ng-repeat="item in data" ng-show="toggle.transportation">
-        <span flex-offset="5">{{item}}</span>
-      </md-list-item>
+            <!-- Manufacturing -->
+            <md-list-item ng-click="toggle.manufacturing = !toggle.manufacturing">
+                <span flex>Manufacturing</span>
+                <md-icon ng-show="!toggle.manufacturing">expand_more</md-icon>
+                <md-icon ng-show="toggle.manufacturing">expand_less</md-icon>
+            </md-list-item>
+            <md-list-item ng-repeat="item in data" ng-show="toggle.manufacturing">
+                <span flex-offset="5">{{item}}</span>
+            </md-list-item>
 
-      <!-- Use -->
-      <md-list-item ng-click="toggle.use = !toggle.use">
-        <span flex>Use</span>
-        <md-icon ng-show="!toggle.use">expand_more</md-icon>
-        <md-icon ng-show="toggle.use">expand_less</md-icon>
-      </md-list-item>
-      <md-list-item ng-repeat="item in data" ng-show="toggle.use">
-        <span flex-offset="5">{{item}}</span>
-      </md-list-item>
+            <!-- Transportation -->
+            <md-list-item ng-click="toggle.transportation = !toggle.transportation">
+                <span flex>Transportation</span>
+                <md-icon ng-show="!toggle.transportation">expand_more</md-icon>
+                <md-icon ng-show="toggle.transportation">expand_less</md-icon>
+            </md-list-item>
+            <md-list-item ng-repeat="item in data" ng-show="toggle.transportation">
+                <span flex-offset="5">{{item}}</span>
+            </md-list-item>
 
-      <!-- End of Life -->
-      <md-list-item ng-click="toggle.eol = !toggle.eol">
-        <span flex>End of Life</span>
-        <md-icon ng-show="!toggle.eol">expand_more</md-icon>
-        <md-icon ng-show="toggle.eol">expand_less</md-icon>
-      </md-list-item>
-      <md-list-item ng-repeat="item in data" ng-show="toggle.eol">
-        <span flex-offset="5">{{item}}</span>
-      </md-list-item>
-    </md-list>
-  </div>
+            <!-- Use -->
+            <md-list-item ng-click="toggle.use = !toggle.use">
+                <span flex>Use</span>
+                <md-icon ng-show="!toggle.use">expand_more</md-icon>
+                <md-icon ng-show="toggle.use">expand_less</md-icon>
+            </md-list-item>
+            <md-list-item ng-repeat="item in data" ng-show="toggle.use">
+                <span flex-offset="5">{{item}}</span>
+            </md-list-item>
 
-  <div id="main">
-    <md-card class="page" style="padding: 15px; height: 100%;">
-    </md-card>
-  </div>
+            <!-- End of Life -->
+            <md-list-item ng-click="toggle.eol = !toggle.eol">
+                <span flex>End of Life</span>
+                <md-icon ng-show="!toggle.eol">expand_more</md-icon>
+                <md-icon ng-show="toggle.eol">expand_less</md-icon>
+            </md-list-item>
+            <md-list-item ng-repeat="item in data" ng-show="toggle.eol">
+                <span flex-offset="5">{{item}}</span>
+            </md-list-item>
+        </md-list>
+    </div>
+
+    <!-- Assembly Canvas -->
+    <div id="main">
+        <md-card class="page" style="padding: 15px; height: 100%;">
+        </md-card>
+    </div>
 </md-content>
