@@ -1,16 +1,22 @@
 angular
     .module('focusLcaApp')
-    .controller('AssemblyCtrl', function($scope, Auth, $rootScope, $mdDialog){
+    .controller('AssemblyCtrl', function($scope, $stateParams, Auth, $rootScope, $mdDialog){
         // Assembly data
-        $scope.assembly = {
-            name: 'Untitled assembly'
-        };
+        if ($stateParams['id']) {
+            $scope.assembly = {
+                name: 'Existing assembly'
+            };
+        } else {
+            $scope.assembly = {
+                name: 'Untitled assembly'
+            };
+        }
 
         // Edit Assembly Name
         $scope.editName = false;
 
         // Expandable/Collapsable Menu Items
-        $scope.data = ["Item 1", "Item 2", "Item 3", "Item 4"]
+        $scope.data = ["Item 1", "Item 2", "Item 3", "Item 4"];
         $scope.toggle = {materials: true, manufacturing: true, transportation: true, use: true, eol: true};
 
         // Analyze/Graph Dialog

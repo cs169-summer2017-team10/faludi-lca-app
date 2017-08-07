@@ -27,8 +27,13 @@ angular
                     })
                 }
             })
-            .state('assembly', {
+            .state('assembly-new', {
                 url: '/assembly',
+                templateUrl: 'views/assembly.html',
+                controller: 'AssemblyCtrl'
+            })
+            .state('assembly-edit', {
+                url: '/assembly/{id}',
                 templateUrl: 'views/assembly.html',
                 controller: 'AssemblyCtrl'
             })
