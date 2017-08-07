@@ -238,19 +238,23 @@ class Assembly < ApplicationRecord
                        [[
                           {
                               "type": "material",
-                              "name": "Gold"
+                              "name": "Gold",
+                              "processes": [[]]
                           },
                           {
                               "type": "material",
-                              "name": "Iron"
+                              "name": "Iron",
+                              "processes": [[]]
                           },
                           {
                               "type": "material",
-                              "name": "Silver"
+                              "name": "Silver",
+                              "processes": [[]]
                           },
                           {
                               "type": "material",
-                              "name": "Copper"
+                              "name": "Copper",
+                              "processes": [[]]
                           }
                        ]]
                  },
@@ -261,19 +265,23 @@ class Assembly < ApplicationRecord
                        [[
                           {
                               "type": "material",
-                              "name": "PVC"
+                              "name": "PVC",
+                              "processes": [[]]
                           },
                           {
                               "type": "material",
-                              "name": "Wood"
+                              "name": "Wood",
+                              "processes": [[]]
                           },
                           {
                               "type": "material",
-                              "name": "Paper"
+                              "name": "Paper",
+                              "processes": [[]]
                           },
                           {
                               "type": "material",
-                              "name": "Glass"
+                              "name": "Glass",
+                              "processes": [[]]
                           }
                        ]]
                  }
