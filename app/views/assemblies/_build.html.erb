@@ -22,6 +22,7 @@
 <script type="text/ng-template" id="list-lib.html">
   <ul>
     <li ng-repeat="item in list"
+        dnd-type="item.type"
         dnd-draggable="item"
         dnd-effect-allowed="copy"
         dnd-moved="list.splice($index, 1)"
@@ -44,8 +45,23 @@
 <!--Templates for Nested assembly-->
 <!--List for building section -->
 <script type="text/ng-template" id="list.html">
-  <ul dnd-list="list" dnd-allowed-types="['process', 'container', 'material']">
+  <ul dnd-list="list">
     <li ng-repeat="item in list"
+        dnd-type="item.type"
+        dnd-draggable="item"
+        dnd-effect-allowed="move"
+        dnd-moved="list.splice($index, 1)"
+        dnd-selected="assembly.selected = item"
+        ng-class="{selected: assembly.selected === item}"
+        ng-include="item.type + '.html'">
+    </li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="processes.html">
+  <ul dnd-list="list" dnd-allowed-types="['process']">
+    <li ng-repeat="item in list"
+        dnd-type="item.type"
         dnd-draggable="item"
         dnd-effect-allowed="move"
         dnd-moved="list.splice($index, 1)"
@@ -66,18 +82,21 @@
 </script>
 
 <!--Material-->
-
 <script type="text/ng-template" id="material.html">
-  <div class="item material" style="display: inline-flex">
-    <div>{{ item.name }}</div>
-    <div class="details">
-      : Quantity:
-      <input type="number" min="1" max="100" value="{{ item.quantity }}">
-      Units:
-      <select>
-        <option ng-repeat="unit in process_units"> {{ unit }} </option>
-      </select>
+  <div class="container-element box box-blue">
+    <div class="item material" style="display: inline-flex">
+      <div>{{ item.name }}</div>
+      <div class="details">
+        : Quantity:
+        <input type="number" min="1" max="100" value="{{ item.quantity }}">
+        Units:
+        <select>
+          <option ng-repeat="unit in process_units"> {{ unit }} </option>
+        </select>
+      </div>
     </div>
+    <div class="column" ng-repeat="list in item.processes" ng-include="'processes.html'"></div>
+    <div class="clearfix"></div>
   </div>
 </script>
 
