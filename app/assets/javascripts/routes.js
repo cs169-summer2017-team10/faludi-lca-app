@@ -32,8 +32,8 @@ angular
                 templateUrl: 'views/assembly.html',
                 controller: 'AssemblyCtrl',
                 resolve: {
-                    assembly: ['$stateParams', 'assemblies', function($stateParams, assemblies) {
-                        return assemblies.get($stateParams.id);
+                    assembly: ['$stateParams', 'assembliesFactory', function($stateParams, assembliesFactory) {
+                        return assembliesFactory.get($stateParams.id);
                     }]
                 }
             })
@@ -42,8 +42,8 @@ angular
                 templateUrl: 'views/assembly.html',
                 controller: 'AssemblyCtrl',
                 resolve: {
-                    assembly: ['$stateParams', 'assemblies', function($stateParams, assemblies) {
-                        return assemblies.get($stateParams.id);
+                    assembly: ['$stateParams', 'assembliesFactory', function($stateParams, assembliesFactory) {
+                        return assembliesFactory.get($stateParams.id);
                     }]
                 }
             })
