@@ -14,6 +14,17 @@ angular
             //
             //         });
             // };
+            o.getByUserId = function(user_id) {
+                return $http({method: 'GET', url: '/assemblies.json?user_id=' + user_id})
+                    .then(function(success){
+                        console.log('Assembly getByUserId SUCCESS');
+                        // console.log(success);
+                        angular.copy(success.data, o.assemblies);
+                    }, function (error) {
+                        console.log('Assembly getByUserId ERROR');
+                        // console.log(error);
+                    });
+            };
             o.save = function(assembly) {
                 return $http({method: 'POST', url: '/assemblies.json', data: assembly})
                     .then(function(success){
