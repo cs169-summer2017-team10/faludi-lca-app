@@ -74,31 +74,40 @@
             return data;
         };
 
-        //$scope.graph_data = $scope.analyze();
+        $scope.graph_data = $scope.analyze();
 
-        //var ctx = document.getElementById('myChart').getContext('2d');
-        //console.log(document.getElementById("myChart"));
-        // console.log(angular.element(document.querySelector('#myChart')));
-        //  var ctx = angular.element("#myChart").getContext('2d');
-        // console.log(ctx);
-        // var chart = new Chart(ctx, {
-        //     // The type of chart we want to create
-        //     type: 'line',
-        //
-        //     // The data for our dataset
-        //     data: {
-        //         labels: ["January", "February", "March", "April", "May", "June", "July"],
-        //         datasets: [{
-        //             label: "My First dataset",
-        //             backgroundColor: 'rgb(255, 99, 132)',
-        //             borderColor: 'rgb(255, 99, 132)',
-        //             data: [0, 10, 5, 2, 20, 30, 45],
-        //         }]
-        //     },
-        //
-        //     // Configuration options go here
-        //     options: {}
-        // });
+        angular.element(document).ready(function() {
+            var ctx = document.getElementById('myChart').getContext("2d");
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'bar',
+
+                // The data for our dataset
+                data: {
+                    labels: $scope.graph_data.labels,
+                    datasets: [{
+                        label: "Carbon Emissions",
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: $scope.graph_data.average
+                    }]
+                },
+
+                // Configuration options go here
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: true,
+                    scales: {
+                        yAxes: [{
+                            display: true,
+                            ticks: {
+                                beginAtZero: true   // minimum value will be 0.
+                            }
+                        }]
+                    }
+                }
+            });
+        });
 
     }
 })();
