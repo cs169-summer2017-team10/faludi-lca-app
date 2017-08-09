@@ -23,172 +23,6 @@ class GraphController < ApplicationController
                 "columns": [
                     [
                         {
-                            "type": "container",
-                            "name": "RAM",
-                            "columns": [
-                                [
-                                    {
-                                        "type": "material",
-                                        "name": "Gold",
-                                        "quantity": 1,
-                                        "unit": "kg"
-                                    },
-                                    {
-                                        "type": "container",
-                                        "name": "DRAM",
-                                        "columns": [
-                                            [
-                                                {
-                                                    "type": "material",
-                                                    "name": "Steel",
-                                                    "quantity": 1,
-                                                    "unit": "kg"
-                                                }
-                                            ]
-                                        ]
-                                    }
-                                ]
-                            ]
-                        },
-                        {
-                            "type": "material",
-                            "name": "Copper",
-                            "quantity": 1,
-                            "unit": "kg"
-                        },
-                        {
-                            "type": "material",
-                            "name": "Iron",
-                            "quantity": 1,
-                            "unit": "kg"
-                        },
-                        {
-                            "type": "material",
-                            "name": "Silver",
-                            "quantity": 1,
-                            "unit": "kg"
-                        }
-                    ]
-                ]
-            },
-            {
-                "type": "container",
-                "name": "Screen",
-                "columns":
-                    [
-                        [
-                            {
-                                "type": "container",
-                                "name": "LCD module",
-                                "columns":
-                                    [
-                                        [
-                                            {
-                                                "type": "material",
-                                                "name": "Gold",
-                                                "quantity": 1,
-                                                "unit": "kg"
-                                            },
-                                            {
-                                                "type": "container",
-                                                "name": "LED",
-                                                "columns":
-                                                    [
-                                                        [
-                                                            {
-                                                                "type": "material",
-                                                                "name": "Glass",
-                                                                "quantity": 1,
-                                                                "unit": "kg"
-                                                            }
-                                                        ]
-                                                    ]
-                                            }
-                                        ]
-                                    ]
-                            },
-                            {
-                                "type": "material",
-                                "name": "Copper",
-                                "quantity": 1,
-                                "unit": "kg"
-                            },
-                            {
-                                "type": "material",
-                                "name": "Iron",
-                                "quantity": 1,
-                                "unit": "kg"
-                            },
-                            {
-                                "type": "material",
-                                "name": "Silver",
-                                "quantity": 1,
-                                "unit": "kg"
-                            }
-                        ]
-                    ]
-            },
-            {
-                "type": "container",
-                "name": "Motherboard",
-                "columns": [
-                    [
-                        {
-                            "type": "container",
-                            "name": "PCIE-X",
-                            "columns":
-                                [
-                                    [
-                                        {
-                                            "type": "material",
-                                            "name": "Gold",
-                                            "quantity": 1,
-                                            "unit": "kg"
-                                        },
-                                        {
-                                            "type": "container",
-                                            "name": "Capacitor",
-                                            "columns": [
-                                                [
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Wood",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    },
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Ceramics",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    }
-                                                ]
-                                            ]
-                                        },
-                                        {
-                                            "type": "container",
-                                            "name": "Resistor",
-                                            "columns": [
-                                                [
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Wood",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    },
-                                                    {
-                                                        "type": "material",
-                                                        "name": "Ceramics",
-                                                        "quantity": 1,
-                                                        "unit": "kg"
-                                                    }
-                                                ]
-                                            ]
-                                        }
-                                    ]
-                                ]
-                        },
-                        {
                             "type": "material",
                             "name": "Copper",
                             "quantity": 1,
@@ -237,6 +71,8 @@ class GraphController < ApplicationController
         item_hash[:"columns"].each do |child|
           total = subassembly_read(child, total)
         end
+        p "+++++++++++++++++++++++++++++"
+        p total
         avg.append(total[0])
         low_uncertainty.append(total[1])
         high_uncertainty.append(total[2])
@@ -251,8 +87,11 @@ class GraphController < ApplicationController
       end
     end
     data[:"labels"] = labels
+    p "****************************"
     data[:"average"] = avg
+    p avg
     data[:"low"] = low_uncertainty
+    p low_uncertainty
     data[:"high"] = high_uncertainty
     gon.data = data.to_json
   end
@@ -264,15 +103,31 @@ class GraphController < ApplicationController
       if hash[:"type"] == "material"
         arr[0] = arr[0] + 2  * hash[:"quantity"]
         arr[1] = arr[1] + 0.8
-        arr[2] += arr[2] + 0.8
+        arr[2] = arr[2] + 0.8
+        p "^^^^^^^^^^^^^^^^^^^^^^^^^"
+        p arr
         return arr
       else
-        subassembly_read(hash[:"columns"], arr)
+        # p "|||||||||||||||||||||||||||"
+        # p hash
+        p "!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        p hash[:"columns"]
+        return subassembly_read(hash[:"columns"], arr)
+        #
+        # arr[0] = arr[0] + trial[0]
+        # arr[1] = arr[1] + trial[1]
+        # arr[2] = arr[2] + trial[2]
       end
     else
+      p "[[[[[[[[[[[[[[[[[[[["
+      p hash
+      total = [0, 0, 0]
       hash.each do |child_hash|
-        subassembly_read(child_hash, arr)
+        # p "*************************"
+        # p child_hash
+        total = subassembly_read(child_hash, arr)
       end
+      return total
     end
   end
 

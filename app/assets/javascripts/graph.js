@@ -3,9 +3,6 @@
  */
 var context;
 //var data;
-var pieData;
-var barData;
-var variableData;
 
 var chart;
 var chartExists = false;
