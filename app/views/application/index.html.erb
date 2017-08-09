@@ -9,7 +9,15 @@
   </head>
 
   <body ng-app="focusLcaApp">
-    <nav-bar></nav-bar>
-    <ui-view></ui-view>
+
+  <div layout="row" layout-fill>
+    <div layout="column" flex>
+      <div><nav-bar></nav-bar></div>
+      <div layout="row" flex>
+        <ui-view flex></ui-view>
+      </div>
+    </div>
+  </div>
+
   </body>
 </html>

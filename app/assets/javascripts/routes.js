@@ -33,7 +33,7 @@ angular
                 controller: 'AssemblyCtrl',
                 resolve: {
                     assembly: ['$stateParams', 'assembliesFactory', function($stateParams, assembliesFactory) {
-                        return assembliesFactory.get($stateParams.id);
+                        return null;
                     }]
                 }
             })

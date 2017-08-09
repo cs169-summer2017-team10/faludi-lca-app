@@ -30,3 +30,6 @@
 
 # Ignore coverage
 /coverage
+
+# Ignore .DS_Store
+/app/assets/.DS_Store

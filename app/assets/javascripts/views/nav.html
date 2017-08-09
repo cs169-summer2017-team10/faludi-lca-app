@@ -4,7 +4,6 @@ How to use Material Icon
 Replace: <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
 By: <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
 -->
-
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2 flex md-truncate><a ui-sref="home">Focus LCA</a></h2>
@@ -15,7 +14,7 @@ By: <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
     <a ui-sref="register" ng-cloak>
       <md-button aria-label="Register" ng-hide="signedIn()">Register</md-button>
     </a>
-    <a ui-sref="assembly-new" ng-cloak>
+    <a ui-sref="assembly-new" ui-sref-opts="{reload: true}" ng-cloak>
       <md-button aria-label="New Assembly" ng-show="signedIn()">New Assembly</md-button>
     </a>
     <a ui-sref="profile" ng-cloak>

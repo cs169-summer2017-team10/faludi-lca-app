@@ -15,34 +15,113 @@
  *= require angular-material
  *= require malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css
  *= require angular-material-data-table
+ *= require angular-material-expansion-panel
+ *= require angular-resizable/angular-resizable.min.css
  */
- @import "bootstrap-sprockets";
- @import "bootstrap";
- @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
- /*
- ** Assembly Canvas
+/*
+** Assembly Page
+*/
+#assembly-toolbar {
+  padding-bottom: 15px;
+}
+#custom-grabber {
+  width: 8px;
+  height: 100%;
+  background-color: #e5e5e5;
+  background-image: url("grabber.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#custom-grabber:hover {
+  background-color: #d5d5d5;
+}
+#assembly-sidebar {
+  min-width: 400px;
+  max-width: 1000px;
+  margin-right: 15px;
+}
+.inputdemoErrors .inputErrorsApp {
+  min-height: 48px; }
+
+.inputdemoErrors md-input-container > p {
+  font-size: 0.8em;
+  text-align: left;
+  width: 100%; }
+/***************************** Dropzone Styling *****************************/
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
  */
- #main {
-     margin-left: 200px;
-     height: 100%;
- }
- #sidebar {
-     width: 300px;
-     float: left;
-     height: 100%;
- }
- #split-bar {
-     background-color: black;
-     height: 100%;
-     float: right;
-     width: 6px;
-     cursor: col-resize;
- }
- .inputdemoErrors .inputErrorsApp {
-   min-height: 48px; }
+.dropzone ul[dnd-list] {
+  margin: 0px;
+  min-height: 42px;
+  padding-left: 0px;
+}
 
- .inputdemoErrors md-input-container > p {
-   font-size: 0.8em;
-   text-align: left;
-   width: 100%; }
+.dropzone li {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  display: block;
+  padding: 0px;
+}
+
+/**
+ * Reduce opacity of elements during the drag operation. This allows the user
+ * to see where he is dropping his element, even if the element is huge. The
+ * .dndDragging class is automatically set during the drag operation.
+ */
+.dropzone .dndDragging {
+  opacity: 0.7;
+}
+
+/**
+ * The dndDraggingSource class will be applied to the source element of a drag
+ * operation. It makes sense to hide it to give the user the feeling that he's
+ * actually moving it. Note that the source element has also .dndDragging class.
+ */
+.dropzone .dndDraggingSource {
+  display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be added as child of the dnd-list
+ * while the user is dragging over it.
+ */
+.dropzone .dndPlaceholder {
+  background-color: #ddd;
+  display: block;
+  min-height: 42px;
+}
+
+/***************************** Element Selection *****************************/
+
+.dropzone .selected .item {
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+
+.dropzone .selected .box {
+  border-color: #d6e9c6;
+}
+
+.dropzone .selected .box > h3 {
+  background-color: #dff0d8;
+  background-image: linear-gradient(to bottom,#dff0d8 0,#d0e9c6 100%);
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+
+/***************************** Element type specific styles *****************************/
+
+.dropzone .item {
+  padding: 10px 15px;
+}
+
+//.dropzone .container-element {
+//  margin: 10px;
+//}

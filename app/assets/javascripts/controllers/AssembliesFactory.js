@@ -2,7 +2,8 @@ angular
     .module('focusLcaApp')
     .factory('assembliesFactory', [
         '$http',
-        function($http) {
+        '$mdToast',
+        function($http, $mdToast) {
             var o = {
                 assemblies: []
             };
@@ -26,14 +27,45 @@ angular
                     });
             };
             o.save = function(assembly) {
-                return $http({method: 'POST', url: '/assemblies.json', data: assembly})
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Saving...')
+                        .position('bottom right')
+                        .hideDelay(0)
+                );
+                // console.log("========== BEFORE POST REQUEST ==========");
+                // console.log(assembly);
+                // console.log("=========================================");
+                var method = 'POST';
+                var url = '/assemblies.json';
+                if (assembly.id) {
+                    console.log("Update assembly");
+                    method = 'PUT';
+                    url = '/assemblies/' + assembly.id + ".json";
+                }
+                return $http({method: method, url: url, data: JSON.stringify(assembly) })
                     .then(function(success){
-                        console.log('Assembly save SUCCESS');
+                        o.id = success.data.id;
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Saved!')
+                                .position('bottom right')
+                                .hideDelay(3000)
+                        );
+                        console.log('========== Assembly save SUCCESS ==========');
                         console.log(success);
-                        // o.assemblies.push(success);
+                        console.log("===========================================");
                     }, function (error) {
-                        console.log('Assembly save ERROR');
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Error :(')
+                                .position('bottom right')
+                                .hideDelay(3000)
+                        );
+                        console.log('========== Assembly save ERROR ==========');
                         console.log(error);
+                        console.log("=========================================");
+                        console.log('Assembly save ERROR');
                     });
             };
             o.get = function(id) {
