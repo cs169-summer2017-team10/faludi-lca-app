@@ -100,7 +100,7 @@
                     maintainAspectRatio: true,
                     scales: {
                         yAxes: [{
-                            display: true,
+                            display: false,
                             ticks: {
                                 beginAtZero: true   // minimum value will be 0.
                             }
