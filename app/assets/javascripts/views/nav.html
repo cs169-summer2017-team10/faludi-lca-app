@@ -8,12 +8,6 @@ By: <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
   <div class="md-toolbar-tools">
     <h2 flex md-truncate><a ui-sref="home">Focus LCA</a></h2>
 
-    <a ui-sref="login" ng-cloak>
-      <md-button aria-label="Login" ng-hide="signedIn()">Login</md-button>
-    </a>
-    <a ui-sref="register" ng-cloak>
-      <md-button aria-label="Register" ng-hide="signedIn()">Register</md-button>
-    </a>
     <a ui-sref="assembly-new" ui-sref-opts="{reload: true}" ng-cloak>
       <md-button aria-label="New Assembly" ng-show="signedIn()">New Assembly</md-button>
     </a>

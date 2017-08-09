@@ -1,3 +1,16 @@
 <div layout="row" layout-align="center center" ng-cloak>
-    <h3 ng-if="user">Welcome, {{user.name}}</h3>
+    <h3 ng-if="signedIn()">Welcome, {{user.name}}</h3>
+    <div ng-if="!signedIn()">
+        <div layout="column">
+            <h3>The Ultimate LCA Application</h3>
+            <div layout="row" layout-align="center center">
+                <a ui-sref="login" ng-cloak>
+                    <md-button class="md-raised" aria-label="Login" ng-hide="signedIn()">Login</md-button>
+                </a>
+                <a ui-sref="register" ng-cloak>
+                    <md-button class="md-raised md-primary" aria-label="Register" ng-hide="signedIn()">Register</md-button>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
