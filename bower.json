@@ -12,7 +12,8 @@
       "angular-devise": "latest",
       "angular-material": "latest",
       "ng-scrollbars": "latest",
-      "angular-material-data-table": "latest"
+      "angular-material-data-table": "latest",
+      "chart.js": "latest"
     }
   }
 }

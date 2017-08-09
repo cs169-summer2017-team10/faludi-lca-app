@@ -92,4 +92,223 @@ angular
             $(document).mouseup(function (e) {
                 $(document).unbind('mousemove');
             });
+
+            var c =
+                [
+                    {
+                        "type": "container",
+                        "name": "Memory",
+                        "columns": [
+                            [
+                                {
+                                    "type": "container",
+                                    "name": "RAM",
+                                    "columns": [
+                                        [
+                                            {
+                                                "type": "material",
+                                                "name": "Gold",
+                                                "quantity": 1,
+                                                "unit": "kg"
+                                            },
+                                            {
+                                                "type": "container",
+                                                "name": "DRAM",
+                                                "columns": [
+                                                    [
+                                                        {
+                                                            "type": "material",
+                                                            "name": "Steel",
+                                                            "quantity": 1,
+                                                            "unit": "kg"
+                                                        }
+                                                    ]
+                                                ]
+                                            }
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Copper",
+                                    "quantity": 1,
+                                    "unit": "kg"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Iron",
+                                    "quantity": 1,
+                                    "unit": "kg"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Silver",
+                                    "quantity": 1,
+                                    "unit": "kg"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "container",
+                        "name": "Screen",
+                        "columns":
+                            [
+                                [
+                                    {
+                                        "type": "container",
+                                        "name": "LCD module",
+                                        "columns":
+                                            [
+                                                [
+                                                    {
+                                                        "type": "material",
+                                                        "name": "Gold",
+                                                        "quantity": 1,
+                                                        "unit": "kg"
+                                                    },
+                                                    {
+                                                        "type": "container",
+                                                        "name": "LED",
+                                                        "columns":
+                                                            [
+                                                                [
+                                                                    {
+                                                                        "type": "material",
+                                                                        "name": "Glass",
+                                                                        "quantity": 1,
+                                                                        "unit": "kg"
+                                                                    }
+                                                                ]
+                                                            ]
+                                                    }
+                                                ]
+                                            ]
+                                    },
+                                    {
+                                        "type": "material",
+                                        "name": "Copper",
+                                        "quantity": 1,
+                                        "unit": "kg"
+                                    },
+                                    {
+                                        "type": "material",
+                                        "name": "Iron",
+                                        "quantity": 1,
+                                        "unit": "kg"
+                                    },
+                                    {
+                                        "type": "material",
+                                        "name": "Silver",
+                                        "quantity": 1,
+                                        "unit": "kg"
+                                    }
+                                ]
+                            ]
+                    },
+                    {
+                        "type": "container",
+                        "name": "Motherboard",
+                        "columns": [
+                            [
+                                {
+                                    "type": "container",
+                                    "name": "PCIE-X",
+                                    "columns":
+                                        [
+                                            [
+                                                {
+                                                    "type": "material",
+                                                    "name": "Gold",
+                                                    "quantity": 1,
+                                                    "unit": "kg"
+                                                },
+                                                {
+                                                    "type": "container",
+                                                    "name": "Capacitor",
+                                                    "columns": [
+                                                        [
+                                                            {
+                                                                "type": "material",
+                                                                "name": "Wood",
+                                                                "quantity": 1,
+                                                                "unit": "kg"
+                                                            },
+                                                            {
+                                                                "type": "material",
+                                                                "name": "Ceramics",
+                                                                "quantity": 1,
+                                                                "unit": "kg"
+                                                            }
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "container",
+                                                    "name": "Resistor",
+                                                    "columns": [
+                                                        [
+                                                            {
+                                                                "type": "material",
+                                                                "name": "Wood",
+                                                                "quantity": 1,
+                                                                "unit": "kg"
+                                                            },
+                                                            {
+                                                                "type": "material",
+                                                                "name": "Ceramics",
+                                                                "quantity": 1,
+                                                                "unit": "kg"
+                                                            }
+                                                        ]
+                                                    ]
+                                                }
+                                            ]
+                                        ]
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Copper",
+                                    "quantity": 1,
+                                    "unit": "kg"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Iron",
+                                    "quantity": 1,
+                                    "unit": "kg"
+                                },
+                                {
+                                    "type": "material",
+                                    "name": "Silver",
+                                    "quantity": 1,
+                                    "unit": "kg"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "material",
+                        "name": "Wood",
+                        "quantity": 1,
+                        "unit": "kg"
+                    },
+                    {
+                        "type": "material",
+                        "name": "Glass",
+                        "quantity": 1,
+                        "unit": "kg"
+                    },
+                    {
+                        "type": "material",
+                        "name": "PVC",
+                        "quantity": 1,
+                        "unit": "kg"
+                    }
+                ];
+            $scope.assembly = {
+                name: 'Computer',
+                content: c
+            }
+
         }]);

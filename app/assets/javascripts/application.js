@@ -25,4 +25,5 @@
 //= require malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js
 //= require ng-scrollbars
 //= require angular-material-data-table
+//= require Chart.js.js
 //= require_tree .

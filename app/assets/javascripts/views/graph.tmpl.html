@@ -12,31 +12,18 @@
 
         <md-dialog-content>
             <div class="md-dialog-content">
-                <h2>Lorem ipsum</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porta euismod odio eget vestibulum. Etiam vestibulum, odio sit amet porttitor posuere, enim turpis faucibus diam, non dictum velit nulla quis quam. Aenean sollicitudin purus tellus. Proin pulvinar in elit sed feugiat. Maecenas nec vehicula purus. Nullam eget nulla quis dolor maximus vestibulum. Fusce vitae nulla consequat, feugiat libero non, sollicitudin lectus. Ut id gravida nisi.
-
-                    Integer porta fringilla ligula, at varius felis consectetur ut. Praesent varius arcu quis sagittis interdum. Sed aliquet finibus rhoncus. Aliquam nec diam metus. Vestibulum imperdiet elit sit amet posuere venenatis. Fusce in urna libero. Sed rutrum tortor at felis vulputate, et egestas est aliquam.
-
-                    Sed ullamcorper sapien at sapien egestas posuere. Mauris mattis dolor id mi commodo interdum. Sed risus erat, ornare sit amet ex et, congue ullamcorper sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean mollis turpis lacus. Fusce eu quam suscipit, porta odio sit amet, placerat ante. Duis mattis ligula quis massa euismod porttitor. Cras ante purus, semper eu auctor in, scelerisque ut enim. Aliquam vel lorem a lorem sollicitudin gravida id id dui. Donec sed libero non nisl tristique interdum in sed sapien. Fusce non ante egestas, sollicitudin massa id, sodales elit. Aliquam erat volutpat. Nulla varius, diam et auctor auctor, lacus dolor faucibus tortor, ullamcorper sollicitudin mi ligula et erat. Aenean nunc metus, egestas ut neque at, accumsan pretium odio. Suspendisse et ex a magna eleifend auctor ut ut ligula.
-
-                    Sed hendrerit nibh tristique tortor cursus, eu maximus elit euismod. Etiam consectetur, enim eu commodo accumsan, nulla urna rhoncus neque, at malesuada magna dui vitae massa. Donec est nibh, lacinia non erat non, mollis fringilla enim. In vulputate vel lectus vel tristique. Vestibulum elementum nulla nec sapien fermentum, vitae varius lectus posuere. Nullam convallis nisl sed lacus gravida consequat. Donec id faucibus massa, sit amet ultrices metus. In pellentesque orci purus, in suscipit nibh pharetra id. Phasellus tincidunt leo at convallis ultrices. Nunc eleifend, eros et egestas aliquam, lectus erat sagittis tortor, nec iaculis sapien quam non nulla.
-
-                    Maecenas molestie nisi a quam lobortis, ut malesuada magna pharetra. Aenean nisl quam, pharetra et enim ut, pharetra ultrices tellus. Fusce nec scelerisque nunc, et iaculis leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum egestas vehicula. Fusce finibus nibh a dolor rhoncus, in vehicula nisi euismod. Sed metus enim, ultricies quis magna id, ultricies accumsan neque. In non risus neque. Praesent commodo mattis lacus. Phasellus eu erat id massa tempus molestie. Quisque magna mi, efficitur sed varius ut, cursus a ex. Nunc ut metus dapibus, gravida mauris vel, lobortis quam. Donec cursus in eros ac gravida. Phasellus in quam non mauris dignissim fermentum.
-                </p>
+                <h2>{{hello}}</h2>
+                <canvas id="myChart" width="900" height="750" class="chart">test</canvas>
             </div>
         </md-dialog-content>
 
         <md-dialog-actions layout="row">
-            <md-button>
-                Left
-            </md-button>
             <span flex></span>
             <md-button ng-click="answer('not useful')">
-                Right 1
+                Bar Graph
             </md-button>
             <md-button ng-click="answer('useful')">
-                Right 2
+                Blur Graph
             </md-button>
         </md-dialog-actions>
     </form>
