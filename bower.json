@@ -8,7 +8,7 @@
   "vendor": {
     "name": "bower-rails generated vendor assets",
     "dependencies": {
-      "angular": "v1.6.5",
+      "angular": "1.6.5",
       "angular-ui-router": "latest",
       "angular-devise": "latest",
       "angular-material": "latest",
@@ -17,6 +17,9 @@
       "angular-drag-and-drop-lists": "latest",
       "angular-material-expansion-panel": "latest",
       "angular-resizable": "latest"
+    },
+    "resolutions": {
+      "angular": "1.6.5"
     }
   }
 }
