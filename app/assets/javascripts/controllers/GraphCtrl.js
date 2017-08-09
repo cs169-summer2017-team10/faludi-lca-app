@@ -75,8 +75,10 @@
             return data;
         };
 
+        // Initialize graph data
         $scope.graph_data = $scope.analyze( $scope.assembly.content );
 
+        // Plot graph function
         $scope.plot_graph = function( _graph_data, _assembly ) {
             var ctx = document.getElementById('myChart').getContext("2d");
             var chart = new Chart(ctx, {
@@ -124,7 +126,6 @@
                         alert( " This is a material ");
                     }else{
                         // This is a container
-
                         // Update graph data
                         $scope.graph_data = $scope.analyze( _assembly[clickedElementindex].columns[0] );
 
@@ -145,7 +146,7 @@
         };
 
         angular.element(document).ready(function(){
-            // Plot graph
+            // Plot graph once the page is properly loaded
             $scope.plot_graph( $scope.graph_data, $scope.assembly.content );
         });
     }
