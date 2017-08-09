@@ -42,13 +42,14 @@
             }
         };
 
-        $scope.analyze = function() {
+        $scope.analyze = function( assembly ) {
             var data = {};
             var labels = [];
             var avg = [];
             var low_uncertainty = [];
             var high_uncertainty = [];
-            $scope.assembly.content.forEach(function(parts) {
+
+            assembly.forEach(function( parts ) {
                 labels.push(parts.name);
                 if (parts.type === "container") {
                     var total = [0, 0, 0];
@@ -74,9 +75,9 @@
             return data;
         };
 
-        $scope.graph_data = $scope.analyze();
+        $scope.graph_data = $scope.analyze( $scope.assembly.content );
 
-        angular.element(document).ready(function() {
+        $scope.plot_graph = function( _graph_data, _assembly ) {
             var ctx = document.getElementById('myChart').getContext("2d");
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
@@ -84,12 +85,12 @@
 
                 // The data for our dataset
                 data: {
-                    labels: $scope.graph_data.labels,
+                    labels: _graph_data.labels,
                     datasets: [{
                         label: "Carbon Emissions",
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
-                        data: $scope.graph_data.average
+                        data: _graph_data.average
                     }]
                 },
 
@@ -107,7 +108,45 @@
                     }
                 }
             });
-        });
 
+            // Update graph as user click on one of the bar
+            document.getElementById("myChart").onclick = function(evt)
+            {
+                var activePoints = chart.getElementsAtEvent(evt);
+
+                if(activePoints.length > 0)
+                {
+                    //get the internal index of slice in pie chart
+                    var clickedElementindex = activePoints[0]["_index"];
+
+                    if ( typeof( _assembly[clickedElementindex].columns ) === "undefined" ){
+                        // This is a material
+                        alert( " This is a material ");
+                    }else{
+                        // This is a container
+
+                        // Update graph data
+                        $scope.graph_data = $scope.analyze( _assembly[clickedElementindex].columns[0] );
+
+                        // Update current assembly
+                        _assembly = _assembly[clickedElementindex].columns[0];
+
+                        // Update chart data points
+                        chart.config.data.datasets[0].data = $scope.graph_data.average;
+
+                        // Update chart labels
+                        chart.config.data.labels = $scope.graph_data.labels;
+
+                        // Update chart
+                        chart.update();
+                    }
+                }
+            }
+        };
+
+        angular.element(document).ready(function(){
+            // Plot graph
+            $scope.plot_graph( $scope.graph_data, $scope.assembly.content );
+        });
     }
 })();
