@@ -9,7 +9,7 @@
 
         $scope.hello = "Hello World";
 
-        $scope.uncertainty = [0.8, 1.0, 1.2];
+        $scope.uncertainty = [1.0, 0.8, 1.2];
 
         // Helper function
         var roundToOneDecimal = function(x) {
@@ -49,9 +49,9 @@
                 return total;
             } else {
                 if (hash.type === "material" || hash.type === "process") {
-                    arr[0] += Math.round( 10 * $scope.uncertainty[1] * hash.quantity ) / 10;
-                    arr[1] += Math.round( 10 * $scope.uncertainty[0] * hash.quantity ) / 10;
-                    arr[2] += Math.round( 10 * $scope.uncertainty[2] * hash.quantity ) / 10;
+                    for( var i = 0 ; i < 2 ; i ++){
+                        arr[i] += $scope.cal_impact ( $scope.uncertainty[i],  hash );
+                    }
                     return arr
                 } else {
                     var temp_total =  recursive_subassembly(hash.columns, arr);
@@ -60,6 +60,22 @@
                     arr[2] += temp_total[2];
                     return arr
                 }
+            }
+        };
+
+        $scope.cal_impact = function ( uncertainty, hash ) {
+            var val = uncertainty * hash.quantity * hash.impact;
+            if ( hash.unit === 'lb' ){
+                return Math.round( 100 *  0.45359237 * val ) / 100 ;
+            }else if( hash.unit === 'oz' ){
+                return Math.round( 100 *  0.0283495231 * val ) / 100;
+            }else if( hash.unit === 'kg' ){
+                return Math.round( 100 * val ) / 100;
+            }else if( hash.unit === 'ton' ){
+                return Math.round( 100 * 1000 * val ) / 100;
+            }else{
+                console.error("Don't know how to convert " + hash.unit + " to kg");
+                return Math.round( 100 *  val ) / 100;
             }
         };
 
@@ -85,11 +101,11 @@
                     low_uncertainty.push(total[1]);
                     high_uncertainty.push(total[2]);
                 } else {
-                    var average = Math.round( 10 * $scope.uncertainty[1] * parts.quantity ) /10;
+                    var average = $scope.cal_impact( $scope.uncertainty[0], parts );
                     avg.push(average);
-                    var low = Math.round( 10 * $scope.uncertainty[0] * parts.quantity ) / 10;
+                    var low = $scope.cal_impact( $scope.uncertainty[1], parts );
                     low_uncertainty.push(low);
-                    var high = Math.round( 10 * $scope.uncertainty[2] * parts.quantity ) / 10;
+                    var high = $scope.cal_impact( $scope.uncertainty[2], parts );
                     high_uncertainty.push(high);
                 }
             });
