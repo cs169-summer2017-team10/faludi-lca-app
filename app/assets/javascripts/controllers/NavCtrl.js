@@ -17,7 +17,7 @@ angular
     });
 
     $scope.$on('devise:logout', function (e, user){
-      alert("You have been logged out.")
+      alert("You have been logged out.");
       $rootScope.user = undefined
     });
-  })
+  });

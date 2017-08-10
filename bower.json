@@ -16,10 +16,12 @@
       "angular-material-data-table": "latest",
       "angular-drag-and-drop-lists": "latest",
       "angular-material-expansion-panel": "latest",
-      "angular-resizable": "latest"
+      "angular-resizable": "latest",
+      "angular-ui-tree": "latest",
+      "chart.js": "latest"
+    }
     },
     "resolutions": {
       "angular": "1.6.5"
-    }
   }
 }
