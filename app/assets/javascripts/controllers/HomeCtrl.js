@@ -1,5 +1,9 @@
 angular
-  .module('focusLcaApp')
-  .controller('HomeCtrl', function($scope, $rootScope, Auth){
-    // $scope.hello = "Hello World";
-  });
+    .module('focusLcaApp')
+    .controller('HomeCtrl', [
+        '$scope',
+        '$rootScope',
+        'Auth',
+        function($scope, $rootScope, Auth){
+            // $scope.hello = "Hello World";
+        }]);
