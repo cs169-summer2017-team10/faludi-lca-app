@@ -2,7 +2,7 @@
     <md-content layout="column" flex>
 
         <!-- Assembly Toolbar -->
-        <md-toolbar id="assembly-toolbar" class="md-menu-toolbar">
+        <md-toolbar id="assembly-toolbar" class="md-menu-toolbar" dnd-list="[]">
             <div layout="row" layout-align="space-between start">
                 <div>
                     <h2 class="md-toolbar-tools">Library</h2>
@@ -71,6 +71,15 @@
                         </md-card>
                     </md-content>
 
+                    <md-content>
+                        <md-card>
+                            <div ng-repeat="result in results" ng-class="getBadgeClass(result.id)" style="cursor:move" dnd-draggable="initDraggable(result.name, result.id)" dnd-effect-allowed="copy">
+                                <md-list-item>{{result.name}}</md-list-item>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </div>
+                        </md-card>
+                    </md-content>
+
                     <md-expansion-panel-group md-component-id="panelGroup" multiple style="padding: 5px;" ui-tree data-drag-enabled="false">
                         <ol ui-tree-nodes="" ng-model="libraryData">
                             <li ng-repeat="node in libraryData" ng-include="'library_renderer.html'" ui-tree-node></li>
@@ -106,13 +115,13 @@
 <!-- ############################################################################# -->
 <script type="text/ng-template" id="library_renderer.html">
     <md-expansion-panel md-component-id="panel + node.title" style="margin-left: 10px; margin-right: 10px">
-        <md-expansion-panel-collapsed style="cursor:pointer">
+        <md-expansion-panel-collapsed style="cursor:pointer" ng-class="getBadgeClass(node.id)">
             <div class="md-title">{{node.title}}</div>
             <div class="md-summary"></div>
             <md-expansion-panel-icon></md-expansion-panel-icon>
         </md-expansion-panel-collapsed>
         <md-expansion-panel-expanded>
-            <md-expansion-panel-header ng-click="$panel.collapse()">
+            <md-expansion-panel-header ng-click="$panel.collapse()" ng-class="getBadgeClass(node.id)">
                 <div class="md-title">{{node.title}}</div>
                 <div class="md-summary"></div>
                 <md-expansion-panel-icon></md-expansion-panel-icon>
@@ -198,7 +207,7 @@
 </script>
 <!-- Template for a normal list item (material) -->
 <script type="text/ng-template" id="material.html">
-    <div layout="row" layout-align="start start" class="item">
+    <div layout="row" layout-align="start start" class="item material-badge">
         <div>{{item.name}}</div>
         <div>
             <md-input-container md-no-float>
@@ -218,7 +227,7 @@
 </script>
 <!-- Template for a normal list item (process) -->
 <script type="text/ng-template" id="process.html">
-    <div layout="row" layout-align="start start" class="item">
+    <div layout="row" layout-align="start start" class="item process-badge">
         <div>{{item.name}}</div>
         <div>
             <md-input-container md-no-float>
@@ -238,7 +247,7 @@
 </script>
 <!-- Template for a normal list item (transport) -->
 <script type="text/ng-template" id="transport.html">
-    <div layout="row" layout-align="start start" class="item">
+    <div layout="row" layout-align="start start" class="item transport-badge">
         <div>{{item.name}}</div>
         <div>
             <md-input-container md-no-float>
@@ -258,7 +267,7 @@
 </script>
 <!-- Template for a normal list item (use) -->
 <script type="text/ng-template" id="use.html">
-    <div layout="row" layout-align="start start" class="item">
+    <div layout="row" layout-align="start start" class="item use-badge">
         <div>{{item.name}}</div>
         <div>
             <md-input-container md-no-float>
@@ -278,7 +287,7 @@
 </script>
 <!-- Template for a normal list item (end of life) -->
 <script type="text/ng-template" id="eol.html">
-    <div layout="row" layout-align="start start" class="item">
+    <div layout="row" layout-align="start start" class="item eol-badge">
         <div>{{item.name}}</div>
         <div>
             <md-input-container md-no-float>

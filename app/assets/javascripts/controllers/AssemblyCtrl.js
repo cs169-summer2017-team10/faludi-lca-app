@@ -103,6 +103,10 @@ angular
                 }
                 deleteSelectedHelper(selected, dropzone);
             };
+            $scope.getBadgeClass = function(id) {
+                var firstDigitOfId = id.toString()[0]; // needed to know which category the part is from
+                return $scope.parts[firstDigitOfId - 1] + "-badge";
+            };
 
             // Toggle for edit Assembly Name
             $scope.editName = false;
@@ -114,19 +118,35 @@ angular
             //     scope.remove();
             // };
 
-            // Function needed for the library left sidebar
+            // Functions needed for the library left sidebar (with search bar)
             $scope.visible = function (item) {
-                if (!$scope.query)
-                    return true;
-                if (item.nodes && item.nodes.length > 0) {
-                    return true;
-                }
-                var queryLowercase = $scope.query.toLowerCase();
-                var itemTitle = item.title.toLowerCase();
-                return !(itemTitle.indexOf(queryLowercase) === -1);
+                return true;
             };
             $scope.findNodes = function () {
+                $scope.results.length = 0;
+                $scope.libraryData.forEach(function(entry) {
+                    findNodesHelper(entry);
+                });
             };
+            var findNodesHelper = function(node) {
+                if (!node.nodes || node.nodes.length <= 0) {
+                    var queryLowercase = $scope.query.toLowerCase();
+                    var nodeTitle = node.title.toLowerCase();
+                    var ret = !(nodeTitle.indexOf(queryLowercase) === -1);
+                    if (ret) {
+                        var result = {name: node.title, id: node.id};
+                        $scope.results.push(result);
+                        if (!$scope.query || $scope.query.length <= 0) {
+                            $scope.results.length = 0;
+                        }
+                    }
+                    return;
+                }
+                node.nodes.forEach(function(entry) {
+                    findNodesHelper(entry);
+                });
+            };
+            $scope.results = [];
 
             // Library left sidebar data
             $scope.parts = ["material", "process", "transport", "use", "eol"];

@@ -195,3 +195,20 @@
 .dropzone .item div {
   margin-right: 15px;
 }
+
+/**** PART BADGES COLORS ****/
+.material-badge {
+  border-left: 5px #607D8B solid;
+}
+.process-badge {
+  border-left: 5px #FFC107 solid;
+}
+.transport-badge {
+  border-left: 5px #2196F3 solid;
+}
+.use-badge {
+  border-left: 5px #673AB7 solid;
+}
+.eol-badge {
+  border-left: 5px #4CAF50 solid;
+}
