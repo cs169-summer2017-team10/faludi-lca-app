@@ -53,6 +53,7 @@ group :development, :test do
   # gem 'selenium-webdriver' DUPLICATE
   gem 'jasmine-rails' # if you plan to use JavaScript/CoffeeScript
   # gem 'poltergeist' DUPLICATE
+  gem 'factory_girl_rails'
 end
 
 group :development do
