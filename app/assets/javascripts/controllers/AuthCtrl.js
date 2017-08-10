@@ -1,30 +1,29 @@
 angular
     .module('focusLcaApp')
-    .controller('AuthCtrl', [
-        '$scope',
-        '$rootScope',
-        'Auth',
-        '$state',
-        function($scope, $rootScope, Auth, $state){
-            var config = {headers: {'X-HTTP-Method-Override': 'POST'}};
+    .controller('AuthCtrl', AuthCtrl);
 
-            $scope.register = function(){
-                Auth.register($scope.user, config).then(function(user){
-                    $rootScope.user = user;
-                    alert("Thanks for signing up, " + user.username);
-                    $state.go('home');
-                }, function(response){
-                    alert(response.data.error)
-                });
-            };
+AuthCtrl.$inject = ['$scope', '$rootScope', 'Auth', '$state'];
 
-            $scope.login = function(){
-                Auth.login($scope.user, config).then(function(user){
-                    $rootScope.user = user;
-                    alert("You're all signed in, " + user.username);
-                    $state.go('home');
-                }, function(response){
-                    alert(response.data.error)
-                });
-            }
-        }]);
+function AuthCtrl($scope, $rootScope, Auth, $state){
+    var config = {headers: {'X-HTTP-Method-Override': 'POST'}};
+
+    $scope.register = function(){
+        Auth.register($scope.user, config).then(function(user){
+            $rootScope.user = user;
+            alert("Thanks for signing up, " + user.username);
+            $state.go('home');
+        }, function(response){
+            alert(response.data.error)
+        });
+    };
+
+    $scope.login = function(){
+        Auth.login($scope.user, config).then(function(user){
+            $rootScope.user = user;
+            alert("You're all signed in, " + user.username);
+            $state.go('home');
+        }, function(response){
+            alert(response.data.error)
+        });
+    }
+}

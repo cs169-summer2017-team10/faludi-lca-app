@@ -1,9 +1,9 @@
 angular
     .module('focusLcaApp')
-    .controller('HomeCtrl', [
-        '$scope',
-        '$rootScope',
-        'Auth',
-        function($scope, $rootScope, Auth){
-            // $scope.hello = "Hello World";
-        }]);
+    .controller('HomeCtrl', HomeCtrl);
+
+HomeCtrl.$inject = ['$scope', '$rootScope', 'Auth'];
+
+function HomeCtrl($scope, $rootScope, Auth){
+    // $scope.hello = "Hello World";
+}
