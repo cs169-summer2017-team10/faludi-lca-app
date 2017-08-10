@@ -1,5 +1,14 @@
 {
   "name": "focus-lca",
   "private": true,
-  "dependencies": {}
+  "engines": {
+    "node": "8.1.4",
+    "npm": "5.3.0"
+  },
+  "dependencies": {
+    "bower": "1.8.0"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
+  }
 }
