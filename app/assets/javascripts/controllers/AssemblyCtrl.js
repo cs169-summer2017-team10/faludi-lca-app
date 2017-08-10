@@ -629,5 +629,4 @@ angular
             //     name: 'Computer',
             //     content: c
             // }
-
         }]);

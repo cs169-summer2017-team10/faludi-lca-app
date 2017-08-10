@@ -37,10 +37,15 @@
                                 </li>
                             </ul>
                         </md-button>
-                        <md-button class="md-icon-button test-tooltip" aria-label="Add Subassembly" ng-click="addSubassembly()">
-                            <md-tooltip md-direction="up">Add subassembly</md-tooltip>
-                            <md-icon aria-label="Create New Folder" class="material-icons">create_new_folder</md-icon>
-                        </md-button>
+                        <ul dnd-draggable="models.templates.subassembly"
+                            dnd-effect-allowed="copy">
+                            <li>
+                                <md-button class="md-icon-button test-tooltip" aria-label="Add Subassembly" ng-click="addSubassembly()">
+                                    <md-tooltip md-direction="up">Add subassembly</md-tooltip>
+                                    <md-icon aria-label="Create New Folder" class="material-icons">create_new_folder</md-icon>
+                                </md-button>
+                            </li>
+                        </ul>
                         <md-button class="md-icon-button test-tooltip" aria-label="Analyze" ng-click="showAnalyze($event)">
                             <md-tooltip md-direction="up">Analyze</md-tooltip>
                             <md-icon aria-label="Insert Chart" class="material-icons">insert_chart</md-icon>
