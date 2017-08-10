@@ -38,7 +38,7 @@ var a = (function() {
             }
         };
 
-        $scope.recurse_subassembly = function recursive_subassembly(hash, arr) {
+        var recursive_subassembly = function(hash, arr) {
             if (hash instanceof Array) {
                 var total = [0, 0, 0];
                 hash.forEach(function(entry) {
@@ -52,7 +52,7 @@ var a = (function() {
                     }
                     return arr
                 } else {
-                    var temp_total =  recursive_subassembly(hash.columns, arr);
+                    var temp_total = recursive_subassembly(hash.columns, arr);
                     arr[0] += temp_total[0];
                     arr[1] += temp_total[1];
                     arr[2] += temp_total[2];
