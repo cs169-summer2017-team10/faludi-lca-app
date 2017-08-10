@@ -30,17 +30,22 @@
                 <div>
                     <h2 class="md-toolbar-tools">
                         <md-button class="md-icon-button test-tooltip delete" aria-label="Delete" ng-click="deleteSelected(models.selected, models.dropzones.assembly)">
-                            <md-tooltip md-direction="up">Delete</md-tooltip>
+                            <md-tooltip md-direction="up">Delete selected</md-tooltip>
                             <ul dnd-list="[]">
                                 <li>
                                     <md-icon aria-label="Delete" class="material-icons">delete</md-icon>
                                 </li>
                             </ul>
                         </md-button>
-                        <md-button class="md-icon-button test-tooltip" aria-label="Add Subassembly" ng-click="addSubassembly()">
-                            <md-tooltip md-direction="up">Add subassembly</md-tooltip>
-                            <md-icon aria-label="Create New Folder" class="material-icons">create_new_folder</md-icon>
-                        </md-button>
+                        <ul dnd-draggable="models.templates.subassembly"
+                            dnd-effect-allowed="copy">
+                            <li>
+                                <md-button class="md-icon-button test-tooltip" aria-label="Add Subassembly" ng-click="addSubassembly()">
+                                    <md-tooltip md-direction="up">Add subassembly</md-tooltip>
+                                    <md-icon aria-label="Create New Folder" class="material-icons">create_new_folder</md-icon>
+                                </md-button>
+                            </li>
+                        </ul>
                         <md-button class="md-icon-button test-tooltip" aria-label="Analyze" ng-click="showAnalyze($event)">
                             <md-tooltip md-direction="up">Analyze</md-tooltip>
                             <md-icon aria-label="Insert Chart" class="material-icons">insert_chart</md-icon>
@@ -164,9 +169,11 @@
      the above list template to render each container column -->
 <script type="text/ng-template" id="subassembly.html">
     <div class="container-element box box-blue">
-        <md-toolbar class="md-hue-2">
+        <md-toolbar class="md-hue-2 subassembly">
             <div class="md-toolbar-tools">
-                <h2 flex md-truncate>{{item.name}}</h2>
+                <md-input-container>
+                    <input mdInput ng-model="item.name" value="item.name">
+                </md-input-container>
             </div>
         </md-toolbar>
         <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>

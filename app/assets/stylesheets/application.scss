@@ -127,7 +127,17 @@
 //  margin: 10px;
 //}
 
+
+/** Toolbar styling for delete and subassembly */
+
 #assembly-toolbar > div > div:nth-child(3) > h2 > button:nth-child(1) > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+#assembly-toolbar > div > div:nth-child(3) > h2 > ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -151,6 +161,22 @@
   line-height: 40px;
   height: 40px;
 }
+
+/* Subassembly styling */
+
+
+
+.subassembly md-input-container .md-input {
+  color: #EEEEEE;
+  border-color: transparent;
+}
+
+.subassembly md-input-container.md-input-focused .md-input {
+  color: #FAFAFA;
+  border-color: #FAFAFA !important;
+}
+
+/* Material and processes unit styles */
 
 .dropzone md-input-container {
   margin: 0;
