@@ -174,10 +174,10 @@
             var ctx = document.getElementById('myChart').getContext("2d");
 
             var gradient_blue = ctx.createLinearGradient( 0, 0, 0, 500 );
-            gradient_blue.addColorStop(1, 'blue');
+            gradient_blue.addColorStop(1, 'rgba(255, 99, 132, 1.0)');
             gradient_blue.addColorStop(0, 'white');
 
-            var solid_blue = 'rgba(0, 0, 255, 1.0)';
+            var solid = 'rgba(255, 99, 132, 1.0)';
 
             var chart = new Chart(ctx, {
                 type: 'bar',
@@ -187,8 +187,8 @@
                         {
                             label: 'Certain',
                             data: _graph_data.average,
-                            backgroundColor: solid_blue,
-                            hoverBackgroundColor: solid_blue,
+                            backgroundColor: solid,
+                            hoverBackgroundColor: solid,
                             hoverBorderWidth: 2,
                             hoverBorderColor: 'lightgrey'
                         },
@@ -240,7 +240,7 @@
             document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
 
-            var gradient_blue = [ 'rgba(0, 0, 255, 1.0)', 'rgba(0, 0, 255, 0.7)', 'rgba(0, 0, 255, 0.2)'];
+            var gradient_blue = [ 'rgba(255, 99, 132, 1.0)', 'rgba(255, 99, 132, 0.7)', 'rgba(255, 99, 132, 0.2)'];
 
             for ( var i = 0 ; i < graph_data.average.length ; i++){
                 graph_data.high[i] = graph_data.high[i] -  graph_data.average[i];
