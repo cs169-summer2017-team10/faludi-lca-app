@@ -72,6 +72,9 @@
             var high_uncertainty = [];
 
             assembly.forEach(function( parts ) {
+                if ( parts.name.length > 40 ){
+                    parts.name = String( parts.name ).substring(0, 15) + "..." + String( parts.name ).substring(parts.name.length-15, parts.name.length)
+                }
                 labels.push(parts.name);
                 if (parts.type === "subassembly") {
                     var total = [0, 0, 0];
