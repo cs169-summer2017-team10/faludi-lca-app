@@ -17,9 +17,9 @@ class AssembliesController < ApplicationController
     assembly_content = params[:content]
     assembly = Assembly.new(user_id: params[:user_id], name: assembly_name, content: assembly_content)
     if assembly.save
-      render json: {:message => 'Assembly successfully created'}, status: 201
+      res_msg( 'Assembly successfully created', 201 )
     else
-      render json: {:message => 'Assembly creation failed'}, status: 500
+      res_msg( 'Assembly creation failed' , 500 )
     end
 
     # respond_with Assembly.create(assembly_params)
@@ -33,9 +33,9 @@ class AssembliesController < ApplicationController
       assembly.name = params[:name]
       assembly.content = params[:content]
       if assembly.save
-        render json: {:message => 'Successfully updated'}, status: 200
+        res_msg( 'Successfully updated', 200 )
       else
-        render json: {:message => 'Update failed'}, status: 500
+        res_msg('Update failed', 500 );
       end
     end
 
@@ -52,6 +52,10 @@ class AssembliesController < ApplicationController
   end
 
   private
+  def res_msg( msg, code )
+    render json: {:message => msg }, status: code
+  end
+
   def assembly_params
     # params.require(:assembly).permit(:id, :name, :content, :user_id)
     params[:assembly].permit!
