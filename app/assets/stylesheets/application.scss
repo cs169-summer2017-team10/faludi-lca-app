@@ -196,6 +196,12 @@
   margin-right: 15px;
 }
 
+/* Search */
+#search-results {
+  max-height: 400px;
+  overflow: scroll;
+}
+
 /**** PART BADGES COLORS ****/
 .material-badge {
   border-left: 5px #607D8B solid;

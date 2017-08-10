@@ -69,16 +69,16 @@
                         <md-card>
                             <input id="custom-search-input" type="search" ng-model="query" ng-change="findNodes()" placeholder="Search">
                         </md-card>
-                    </md-content>
 
-                    <md-content>
-                        <md-card>
+                        <md-card id="search-results">
                             <div ng-repeat="result in results" ng-class="getBadgeClass(result.id)" style="cursor:move" dnd-draggable="initDraggable(result.name, result.id)" dnd-effect-allowed="copy">
                                 <md-list-item>{{result.name}}</md-list-item>
                                 <md-divider ng-if="!$last"></md-divider>
                             </div>
                         </md-card>
                     </md-content>
+
+                    <md-divider></md-divider>
 
                     <md-expansion-panel-group md-component-id="panelGroup" multiple style="padding: 5px;" ui-tree data-drag-enabled="false">
                         <ol ui-tree-nodes="" ng-model="libraryData">

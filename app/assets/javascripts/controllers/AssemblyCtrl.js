@@ -458,7 +458,7 @@ angular
             // Config custom scrollbar for sidebar and assembly canvas
             // $scope.configScrollbar = {
             //     autoHideScrollbar: true,
-            //     theme: 'minimal-dark',
+            //     theme: 'dark-3',
             //     advanced:{
             //         updateOnContentResize: true
             //     },
