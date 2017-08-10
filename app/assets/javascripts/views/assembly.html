@@ -81,7 +81,7 @@
 
             <!-- Assembly Canvas -->
             <div id="assembly-canvas" style="overflow: scroll" flex>
-                <md-card class="page" style="padding: 15px;">
+                <md-card class="page" style="padding: 15px;" flex>
                     <div ng-repeat="(zone, list) in models.dropzones">
                         <div class="dropzone box box-yellow">
                             <!-- The dropzone also uses the list template -->
@@ -165,7 +165,20 @@
         </md-card>
     </ul>
 </script>
-<!-- This template is responsible for rendering a container element. It uses
+
+<script type="text/ng-template" id="sub-list.html">
+    <ul id="sub-list" dnd-list="list" style="height: 100%; padding-left: 0; list-style: none;">
+        <md-card ng-repeat="item in list"
+                 dnd-draggable="item"
+                 dnd-effect-allowed="move"
+                 dnd-moved="list.splice($index, 1)"
+                 dnd-selected="models.selected = item"
+                 ng-class="{selected: models.selected === item}"
+                 ng-include="item.type + '.html'">
+        </md-card>
+    </ul>
+</script>
+<!-- This template is responsible for rendering a container element (subassembly). It uses
      the above list template to render each container column -->
 <script type="text/ng-template" id="subassembly.html">
     <div class="container-element box box-blue">
@@ -179,13 +192,13 @@
                 </div>
             </div>
         </md-toolbar>
-        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'sub-list.html'"></div>
         <div class="clearfix"></div>
     </div>
 </script>
 <!-- Template for a normal list item (material) -->
 <script type="text/ng-template" id="material.html">
-    <div layout="row" layout-align="start start" class="item" layout-fill>
+    <div layout="row" layout-align="start start" class="item">
         <div>{{item.name}}</div>
         <div>
             <md-input-container md-no-float>
@@ -205,14 +218,14 @@
 </script>
 <!-- Template for a normal list item (process) -->
 <script type="text/ng-template" id="process.html">
-    <div layout="row" layout-align="start start" layout-fill>
-        <div class="item">{{item.name}}</div>
-        <div class="item">
+    <div layout="row" layout-align="start start" class="item">
+        <div>{{item.name}}</div>
+        <div>
             <md-input-container md-no-float>
                 <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
             </md-input-container>
         </div>
-        <div class="item">
+        <div>
             <md-input-container md-no-float>
                 <md-select ng-model="item.unit" aria-label="Unit">
                     <md-option ng-repeat="areaUnit in areaUnits" value="{{areaUnit}}">
@@ -225,14 +238,14 @@
 </script>
 <!-- Template for a normal list item (transport) -->
 <script type="text/ng-template" id="transport.html">
-    <div layout="row" layout-align="start start" layout-fill>
-        <div class="item">{{item.name}}</div>
-        <div class="item">
+    <div layout="row" layout-align="start start" class="item">
+        <div>{{item.name}}</div>
+        <div>
             <md-input-container md-no-float>
                 <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
             </md-input-container>
         </div>
-        <div class="item">
+        <div>
             <md-input-container md-no-float>
                 <md-select ng-model="item.unit" aria-label="Unit">
                     <md-option ng-repeat="transportUnit in transportUnits" value="{{transportUnit}}">
@@ -245,14 +258,14 @@
 </script>
 <!-- Template for a normal list item (use) -->
 <script type="text/ng-template" id="use.html">
-    <div layout="row" layout-align="start start" layout-fill>
-        <div class="item">{{item.name}}</div>
-        <div class="item">
+    <div layout="row" layout-align="start start" class="item">
+        <div>{{item.name}}</div>
+        <div>
             <md-input-container md-no-float>
                 <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
             </md-input-container>
         </div>
-        <div class="item">
+        <div>
             <md-input-container md-no-float>
                 <md-select ng-model="item.unit" aria-label="Unit">
                     <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
@@ -265,14 +278,14 @@
 </script>
 <!-- Template for a normal list item (end of life) -->
 <script type="text/ng-template" id="eol.html">
-    <div layout="row" layout-align="start start" layout-fill>
-        <div class="item">{{item.name}}</div>
-        <div class="item">
+    <div layout="row" layout-align="start start" class="item">
+        <div>{{item.name}}</div>
+        <div>
             <md-input-container md-no-float>
                 <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
             </md-input-container>
         </div>
-        <div class="item">
+        <div>
             <md-input-container md-no-float>
                 <md-select ng-model="item.unit" aria-label="Unit">
                     <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
