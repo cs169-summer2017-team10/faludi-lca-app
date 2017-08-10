@@ -5,4 +5,4 @@ angular
       templateUrl: 'views/nav.html',
       controller: 'NavCtrl'
     }
-})
+});
