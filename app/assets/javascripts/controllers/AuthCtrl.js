@@ -12,9 +12,8 @@ function AuthCtrl($scope, $rootScope, Auth, $state){
             $rootScope.user = user;
             alert("Thanks for signing up, " + user.username);
             $state.go('home');
-        }, function(response){
-            alert(response.data.error)
-        });
+        },
+        error(response));
     };
 
     $scope.login = function(){
@@ -22,8 +21,11 @@ function AuthCtrl($scope, $rootScope, Auth, $state){
             $rootScope.user = user;
             alert("You're all signed in, " + user.username);
             $state.go('home');
-        }, function(response){
-            alert(response.data.error)
-        });
+        },
+        error(response));
     }
+}
+
+function error(response) {
+    alert(response.data.error)
 }

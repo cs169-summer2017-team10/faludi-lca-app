@@ -191,6 +191,33 @@ var a = (function() {
             $scope.zoom_in_subassembly( _assembly, chart );
         };
 
+        $scope.step_and_blur_options = {
+            animation: {
+                duration: 10
+            },
+            tooltips: {
+                mode: 'label',
+                    callbacks: {
+                    label: function(tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].label + ": " + roundToOneDecimal(tooltipItem.yLabel);
+                    }
+                }
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    gridLines: { display: false }
+                }],
+                    yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        callback: function(value) { return roundToOneDecimal(value); }
+                    }
+                }]
+            }, // scales
+            legend: {display: true}
+        };
+
         // Plot graph function
         $scope.plot_blur_graph = function( _graph_data ) {
 
@@ -226,32 +253,7 @@ var a = (function() {
                         }
                     ]
                 },
-                options: {
-                    animation: {
-                        duration: 10
-                    },
-                    tooltips: {
-                        mode: 'label',
-                        callbacks: {
-                            label: function(tooltipItem, data) {
-                                return data.datasets[tooltipItem.datasetIndex].label + ": " + roundToOneDecimal(tooltipItem.yLabel);
-                            }
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            stacked: true,
-                            gridLines: { display: false }
-                        }],
-                        yAxes: [{
-                            stacked: true,
-                            ticks: {
-                                callback: function(value) { return roundToOneDecimal(value); }
-                            }
-                        }]
-                    }, // scales
-                    legend: {display: true}
-                } // options
+                options: $scope.step_and_blur_options
             });
         };
 
@@ -302,32 +304,8 @@ var a = (function() {
                         }
                     ]
                 },
-                options: {
-                    animation: {
-                        duration: 10
-                    },
-                    tooltips: {
-                        mode: 'label',
-                        callbacks: {
-                            label: function(tooltipItem, data) {
-                                return data.datasets[tooltipItem.datasetIndex].label + ": " + roundToOneDecimal(tooltipItem.yLabel);
-                            }
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            stacked: true,
-                            gridLines: { display: false }
-                        }],
-                        yAxes: [{
-                            stacked: true,
-                            ticks: {
-                                callback: function(value) { return roundToOneDecimal(value); }
-                            }
-                        }]
-                    }, // scales
-                    legend: {display: true}
-                } // options
+                options: $scope.step_and_blur_options
+
             });
         };
 
