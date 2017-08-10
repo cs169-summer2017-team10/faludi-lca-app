@@ -176,7 +176,7 @@
 </script>
 
 <script type="text/ng-template" id="sub-list.html">
-    <ul id="sub-list" dnd-list="list" style="height: 100%; padding-left: 0; list-style: none;">
+    <ul dnd-list="list" id="sub-list" style="height: 100%; padding-left: 0; list-style: none;">
         <md-card ng-repeat="item in list"
                  dnd-draggable="item"
                  dnd-effect-allowed="move"
@@ -207,21 +207,27 @@
 </script>
 <!-- Template for a normal list item (material) -->
 <script type="text/ng-template" id="material.html">
-    <div layout="row" layout-align="start start" class="item material-badge">
-        <div>{{item.name}}</div>
-        <div>
-            <md-input-container md-no-float>
-                <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
-            </md-input-container>
+    <div layout="column">
+        <div layout="row" layout-align="start start" class="item material-badge">
+            <div>{{item.name}}</div>
+            <div>
+                <md-input-container md-no-float>
+                    <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container md-no-float>
+                    <md-select ng-model="item.unit" aria-label="Unit">
+                        <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
+                            {{massUnit}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
         </div>
         <div>
-            <md-input-container md-no-float>
-                <md-select ng-model="item.unit" aria-label="Unit">
-                    <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
-                        {{massUnit}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+            <div class="column" ng-repeat="list in item.columns" ng-include="'sub-list.html'"></div>
+            <div class="clearfix"></div>
         </div>
     </div>
 </script>

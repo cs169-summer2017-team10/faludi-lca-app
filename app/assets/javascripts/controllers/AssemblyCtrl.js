@@ -23,12 +23,12 @@ angular
             $scope.models = {
                 selected: null,
                 templates: {
-                    material: {type: "material", name: "New material", quantity: 1, unit: "kg", processes: [[]]},
-                    process: {type: "process", name: "New process", quantity: 1, unit: "m2", processes: [[]]},
-                    transport: {type: "transport", name: "New transport", quantity: 1, unit: "ton*km", processes: [[]]},
-                    use: {type: "use", name: "New use", quantity: 1, unit: "kg", processes: [[]]},
-                    eol: {type: "eol", name: "New eol", quantity: 1, unit: "kg", processes: [[]]},
-                    subassembly: {type: "subassembly", name: "New subassembly", columns: [[]], processes: [[]]}
+                    material: {type: "material", name: "New material", quantity: 1, unit: "kg", columns: [[]]},
+                    process: {type: "process", name: "New process", quantity: 1, unit: "m2"},
+                    transport: {type: "transport", name: "New transport", quantity: 1, unit: "ton*km"},
+                    use: {type: "use", name: "New use", quantity: 1, unit: "kg"},
+                    eol: {type: "eol", name: "New eol", quantity: 1, unit: "kg"},
+                    subassembly: {type: "subassembly", name: "New subassembly", columns: [[]]}
                 },
                 dropzones: {
                     "assembly": [
