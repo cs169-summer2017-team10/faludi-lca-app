@@ -1,4 +1,4 @@
-<div id="assembly-page" layout="row" layout-fill dnd-list="[]" style="list-style: none;">
+<div id="assembly-page" layout="row" layout-fill style="list-style: none;">
     <div layout="column" style="background-color: #eeeeee;" flex>
 
         <!-- Assembly Toolbar -->
@@ -30,6 +30,14 @@
                 </div>
                 <div>
                     <h2 class="md-toolbar-tools">
+                        <md-button class="md-icon-button test-tooltip delete" aria-label="Delete" ng-click="deleteSelected(models.selected, models.dropzones.assembly)">
+                            <md-tooltip md-direction="up">Delete</md-tooltip>
+                            <ul dnd-list="[]">
+                                <li>
+                                    <md-icon aria-label="Delete" class="material-icons">delete</md-icon>
+                                </li>
+                            </ul>
+                        </md-button>
                         <md-button class="md-icon-button test-tooltip" aria-label="Add Subassembly" ng-click="addSubassembly()">
                             <md-tooltip md-direction="up">Add subassembly</md-tooltip>
                             <md-icon aria-label="Create New Folder" class="material-icons">create_new_folder</md-icon>
