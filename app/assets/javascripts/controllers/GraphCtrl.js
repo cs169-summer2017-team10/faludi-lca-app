@@ -130,8 +130,8 @@ var a = (function() {
 
                     if ( typeof( _assembly[clickedElementindex].columns ) === "undefined" ){
                         // This is a material
-                        console.log( " This is a material " );
-                        // alert( " This is a material ");
+                        // console.log( " This is a material " );
+                        alert( " This is a material ");
                     }else{
                         // This is a container
                         // Update graph data
@@ -164,12 +164,9 @@ var a = (function() {
                 // The data for our dataset
                 data: {
                     labels: _graph_data.labels,
-                    datasets: [{
-                        label: "Carbon Emissions",
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: _graph_data.average
-                    }]
+                    datasets: [
+                        $scope.dataset_template("Carbon Emissions", _graph_data.average,  'rgb(255, 99, 132)' )
+                    ]
                 },
 
                 // Configuration options go here
@@ -235,22 +232,8 @@ var a = (function() {
                 data: {
                     labels: _graph_data.labels,
                     datasets: [
-                        {
-                            label: 'Certain',
-                            data: _graph_data.average,
-                            backgroundColor: solid,
-                            hoverBackgroundColor: solid,
-                            hoverBorderWidth: 2,
-                            hoverBorderColor: 'lightgrey'
-                        },
-                        {
-                            label: 'Uncertain',
-                            data: _graph_data.high,
-                            backgroundColor: gradient_blue ,
-                            hoverBackgroundColor: gradient_blue,
-                            hoverBorderWidth: 2,
-                            hoverBorderColor: 'lightgrey'
-                        }
+                        $scope.dataset_template('Certain', _graph_data.average, solid),
+                        $scope.dataset_template('Uncertain', _graph_data.high, gradient_blue),
                     ]
                 },
                 options: $scope.step_and_blur_options
@@ -266,7 +249,7 @@ var a = (function() {
 
             var ctx = document.getElementById('myChart').getContext("2d");
 
-            var gradient_blue = [ 'rgba(255, 99, 132, 1.0)', 'rgba(255, 99, 132, 0.7)', 'rgba(255, 99, 132, 0.2)'];
+            var gradient_blue = [ 'rgba(255, 99, 132, 0.7)', 'rgba(255, 99, 132, 1.0)', 'rgba(255, 99, 132, 0.2)'];
 
             for ( var i = 0 ; i < graph_data.average.length ; i++){
                 graph_data.high[i] = graph_data.high[i] -  graph_data.average[i];
@@ -278,35 +261,25 @@ var a = (function() {
                 data: {
                     labels: _graph_data.labels,
                     datasets: [
-                        {
-                            label: 'Low',
-                            data: graph_data.low,
-                            backgroundColor: gradient_blue[0],
-                            hoverBackgroundColor: gradient_blue[0],
-                            hoverBorderWidth: 2,
-                            hoverBorderColor: 'lightgrey'
-                        },
-                        {
-                            label: 'Average',
-                            data: graph_data.average,
-                            backgroundColor: gradient_blue[1] ,
-                            hoverBackgroundColor: gradient_blue[1],
-                            hoverBorderWidth: 2,
-                            hoverBorderColor: 'lightgrey'
-                        },
-                        {
-                            label: 'High',
-                            data: graph_data.high,
-                            backgroundColor: gradient_blue[2] ,
-                            hoverBackgroundColor: gradient_blue[2],
-                            hoverBorderWidth: 2,
-                            hoverBorderColor: 'lightgrey'
-                        }
+                        $scope.dataset_template('Low', graph_data.low, gradient_blue[1]),
+                        $scope.dataset_template('Avg', graph_data.average, gradient_blue[0]),
+                        $scope.dataset_template('High', graph_data.high, gradient_blue[2])
                     ]
                 },
                 options: $scope.step_and_blur_options
 
             });
+        };
+
+        $scope.dataset_template = function(_label, _data, _color){
+            return {
+                label: _label,
+                data: _data,
+                backgroundColor: _color ,
+                hoverBackgroundColor: _color,
+                hoverBorderWidth: 2,
+                hoverBorderColor: 'lightgrey'
+            }
         };
 
         // This function remove the graph canvas
