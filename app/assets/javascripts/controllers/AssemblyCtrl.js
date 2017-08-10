@@ -490,7 +490,7 @@ angular
 
             // Units tables
             $scope.massUnits = ["kg", "oz", "lb", "ton"];
-            $scope.areaUnits = [("m" + "2"), ("in" + "2"), ("ft" + "2")];
+            $scope.areaUnits = [("m2"), ("in2"), ("ft2")];
             // ("m" + "2".sup())
             $scope.transportUnits = ["ton*km"];
 

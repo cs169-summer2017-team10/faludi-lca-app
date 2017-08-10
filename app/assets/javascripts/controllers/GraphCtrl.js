@@ -1,4 +1,4 @@
-(function() {
+var a = (function() {
     angular.module('focusLcaApp')
         .controller('GraphCtrl', GraphCtrl);
 
@@ -35,8 +35,6 @@
             }else if( option === 'step-graph'){
                 $scope.reset_graph();
                 $scope.plot_step_graph( $scope.graph_data, $scope.assembly.content );
-            }else{
-
             }
         };
 
@@ -132,7 +130,8 @@
 
                     if ( typeof( _assembly[clickedElementindex].columns ) === "undefined" ){
                         // This is a material
-                        alert( " This is a material ");
+                        console.log( " This is a material " );
+                        // alert( " This is a material ");
                     }else{
                         // This is a container
                         // Update graph data
@@ -224,12 +223,12 @@
                             hoverBackgroundColor: gradient_blue,
                             hoverBorderWidth: 2,
                             hoverBorderColor: 'lightgrey'
-                        },
+                        }
                     ]
                 },
                 options: {
                     animation: {
-                        duration: 10,
+                        duration: 10
                     },
                     tooltips: {
                         mode: 'label',
@@ -242,14 +241,14 @@
                     scales: {
                         xAxes: [{
                             stacked: true,
-                            gridLines: { display: false },
+                            gridLines: { display: false }
                         }],
                         yAxes: [{
                             stacked: true,
                             ticks: {
-                                callback: function(value) { return roundToOneDecimal(value); },
-                            },
-                        }],
+                                callback: function(value) { return roundToOneDecimal(value); }
+                            }
+                        }]
                     }, // scales
                     legend: {display: true}
                 } // options
@@ -300,12 +299,12 @@
                             hoverBackgroundColor: gradient_blue[2],
                             hoverBorderWidth: 2,
                             hoverBorderColor: 'lightgrey'
-                        },
+                        }
                     ]
                 },
                 options: {
                     animation: {
-                        duration: 10,
+                        duration: 10
                     },
                     tooltips: {
                         mode: 'label',
@@ -318,14 +317,14 @@
                     scales: {
                         xAxes: [{
                             stacked: true,
-                            gridLines: { display: false },
+                            gridLines: { display: false }
                         }],
                         yAxes: [{
                             stacked: true,
                             ticks: {
-                                callback: function(value) { return roundToOneDecimal(value); },
+                                callback: function(value) { return roundToOneDecimal(value); }
                             },
-                        }],
+                        }]
                     }, // scales
                     legend: {display: true}
                 } // options
