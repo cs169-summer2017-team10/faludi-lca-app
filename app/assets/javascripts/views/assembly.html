@@ -175,14 +175,14 @@
 </script>
 <!-- Template for a normal list item (material) -->
 <script type="text/ng-template" id="material.html">
-    <div layout="row" layout-align="start start" layout-fill>
-        <div class="item">{{item.name}}</div>
-        <div class="item">
+    <div layout="row" layout-align="start start" class="item" layout-fill>
+        <div>{{item.name}}</div>
+        <div>
             <md-input-container md-no-float>
                 <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
             </md-input-container>
         </div>
-        <div class="item">
+        <div>
             <md-input-container md-no-float>
                 <md-select ng-model="item.unit" aria-label="Unit">
                     <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
