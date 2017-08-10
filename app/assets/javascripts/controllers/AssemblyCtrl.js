@@ -23,11 +23,11 @@ angular
             $scope.models = {
                 selected: null,
                 templates: {
-                    material: {type: "material", name: "New material", quantity: 1, unit: "kg", processes: [[]]},
-                    process: {type: "process", name: "New process", quantity: 1, unit: "m2", processes: [[]]},
-                    transport: {type: "transport", name: "New transport", quantity: 1, unit: "ton*km", processes: [[]]},
-                    use: {type: "use", name: "New use", quantity: 1, unit: "kg", processes: [[]]},
-                    eol: {type: "eol", name: "New eol", quantity: 1, unit: "kg", processes: [[]]},
+                    material: {type: "material", name: "New material", quantity: 1, unit: "kg", impact: 1 , processes: [[]]},
+                    process: {type: "process", name: "New process", quantity: 1, unit: "m2", impact: 1, processes: [[]]},
+                    transport: {type: "transport", name: "New transport", quantity: 1, unit: "ton*km",impact: 1, processes: [[]]},
+                    use: {type: "use", name: "New use", quantity: 1, unit: "kg", impact: 1, processes: [[]]},
+                    eol: {type: "eol", name: "New eol", quantity: 1, unit: "kg", impact: 1, processes: [[]]},
                     subassembly: {type: "subassembly", name: "New subassembly", columns: [[]], processes: [[]]}
                 },
                 dropzones: {
@@ -38,10 +38,12 @@ angular
             $scope.$watch('models.dropzones', function(model) {
                 $scope.modelAsJson = angular.toJson(model, true);
             }, true);
-            $scope.initDraggable = function(name, id) {
+            $scope.initDraggable = function(name, id, impact) {
+
                 var firstDigitOfId = id.toString()[0]; // needed to know which category the part is from
                 var draggable = JSON.parse(JSON.stringify($scope.models.templates[$scope.parts[firstDigitOfId - 1]]));
                 draggable.name = name;
+                draggable.impact = impact;
                 return draggable;
             };
 
@@ -166,14 +168,17 @@ angular
                                         {
                                             'id': 1111,
                                             'title': 'Acetic acid production, product in 98% solution state',
+                                            'impact': 1,
                                             'nodes': []
                                         }, {
                                             'id': 1112,
                                             'title': 'Acrylic acid production',
+                                            'impact': 1,
                                             'nodes': []
                                         }, {
                                             'id': 1113,
                                             'title': 'Formic acid production, methyl formate route',
+                                            'impact': 1,
                                             'nodes': []
                                         }
                                     ]
@@ -184,14 +189,17 @@ angular
                                         {
                                             'id': 1121,
                                             'title': 'Acrylic varnish production, product in 87.5% solution state',
+                                            'impact': 1,
                                             'nodes': []
                                         }, {
                                             'id': 1122,
                                             'title': 'Polyurethane production, flexible foam',
+                                            'impact': 1,
                                             'nodes': []
                                         }, {
                                             'id': 1123,
                                             'title': 'Polyurethane production, rigid foam',
+                                            'impact': 1,
                                             'nodes': []
                                         }
                                     ]
@@ -212,10 +220,12 @@ angular
                                                 {
                                                     'id': 12111,
                                                     'title': 'Aluminium alloy production, AlMg3',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 12112,
                                                     'title': 'Aluminium drilling, conventional',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }
                                             ]
@@ -226,26 +236,32 @@ angular
                                                 {
                                                     'id': 12121,
                                                     'title': 'Copper carbonate production',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 121212,
                                                     'title': 'Brass drilling, conventional',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 121213,
                                                     'title': 'Brass production',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 121214,
                                                     'title': 'Brass turning, average, conventional',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 121215,
                                                     'title': 'Bronze production',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 121216,
                                                     'title': 'Casting, bronze',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }
                                             ]
@@ -262,10 +278,12 @@ angular
                                                 {
                                                     'id': 1221,
                                                     'title': 'Cast iron milling, average',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }, {
                                                     'id': 1222,
                                                     'title': 'Cast iron milling, large parts',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }
                                             ]
@@ -276,6 +294,7 @@ angular
                                                 {
                                                     'id': 1221,
                                                     'title': 'Steel production, chromium steel 18/8',
+                                                    'impact': 1,
                                                     'nodes': []
                                                 }
                                             ]
@@ -294,10 +313,12 @@ angular
                                         {
                                             'id': 1311,
                                             'title': 'Door production, inner, glass-wood',
+                                            'impact': 1,
                                             'nodes': []
                                         }, {
                                             'id': 1312,
                                             'title': 'Fibreboard production, hard, from virgin wood',
+                                            'impact': 1,
                                             'nodes': []
                                         }
                                     ]
@@ -312,26 +333,31 @@ angular
                         {
                             'id': 21,
                             'title': 'Anodising, aluminium sheet',
+                            'impact': 1,
                             'nodes': []
                         },
                         {
                             'id': 22,
                             'title': 'Section bar extrusion, aluminium',
+                            'impact': 1,
                             'nodes': []
                         },
                         {
                             'id': 23,
                             'title': 'Drawing of pipe, steel',
+                            'impact': 1,
                             'nodes': []
                         },
                         {
                             'id': 24,
                             'title': 'Hot rolling, steel',
+                            'impact': 1,
                             'nodes': []
                         },
                         {
                             'id': 25,
                             'title': 'Powder coating, steel',
+                            'impact': 1,
                             'nodes': []
                         }
                     ]
@@ -342,18 +368,22 @@ angular
                         {
                             'id': 31,
                             'title': 'Market for transport, freight train',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 32,
                             'title': 'Market for transport, freight, aircraft',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 33,
                             'title': 'Market for transport, freight, light commercial vehicle',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 34,
                             'title': 'Market for transport, freight, sea, transoceanic ship',
+                            'impact': 1,
                             'nodes': []
                         }
                     ]
@@ -364,30 +394,37 @@ angular
                         {
                             'id': 41,
                             'title': 'Market for water, completely softened, from decarbonised water, at user',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 42,
                             'title': 'Market for water, deionised, from tap water, at user',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 43,
                             'title': 'Market for water, ultrapure',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 44,
                             'title': 'Electricity production, hard coal',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 45,
                             'title': 'Electricity production, hydro, pumped storage',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 46,
                             'title': 'Electricity production, oil',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 47,
                             'title': 'Market for electricity, low voltage',
+                            'impact': 1,
                             'nodes': []
                         }
                     ]
@@ -398,14 +435,17 @@ angular
                         {
                             'id': 51,
                             'title': 'Market for process-specific burden, sanitary landfill',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 52,
                             'title': 'Market for process-specific burdens, municipal waste incineration',
+                            'impact': 1,
                             'nodes': []
                         }, {
                             'id': 53,
                             'title': 'Recycling',
+                            'impact': 1,
                             'nodes': []
                         }
                     ]

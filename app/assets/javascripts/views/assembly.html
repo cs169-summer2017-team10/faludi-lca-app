@@ -151,8 +151,8 @@
 
     <!-- this if condition means it's a final child -->
     <div ng-if="!node.nodes || node.nodes.length <= 0" ng-show="visible(node)">
-        <md-list-item style="cursor:move" dnd-draggable="initDraggable(node.title, node.id)" dnd-effect-allowed="copy">
-            <span>{{node.title}}</span>
+        <md-list-item style="cursor:move" dnd-draggable="initDraggable(node.title, node.id, node.impact)" dnd-effect-allowed="copy">
+            <span>{{node.title}}</span> <span>  Co2 intensity(/kg)={{node.impact}}</span>
             <!--<md-divider ng-if="!$last"></md-divider>-->
         </md-list-item>
     </div>
