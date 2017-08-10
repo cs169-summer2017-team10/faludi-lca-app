@@ -323,7 +323,7 @@ var a = (function() {
                             stacked: true,
                             ticks: {
                                 callback: function(value) { return roundToOneDecimal(value); }
-                            },
+                            }
                         }]
                     }, // scales
                     legend: {display: true}
