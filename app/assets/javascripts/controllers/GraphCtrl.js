@@ -11,6 +11,11 @@
 
         $scope.uncertainty = [0.8, 1.0, 1.2];
 
+        // Helper function
+        var roundToOneDecimal = function(x) {
+            return Math.round( 10 * x )/10;
+        };
+
         $scope.hide = function() {
             $mdDialog.hide();
         };
@@ -44,9 +49,9 @@
                 return total;
             } else {
                 if (hash.type === "material") {
-                    arr[0] += $scope.uncertainty[1] * hash.quantity;
-                    arr[1] += $scope.uncertainty[0] * hash.quantity;
-                    arr[2] += $scope.uncertainty[2] * hash.quantity;
+                    arr[0] += Math.round( 10 * $scope.uncertainty[1] * hash.quantity ) / 10;
+                    arr[1] += Math.round( 10 * $scope.uncertainty[0] * hash.quantity ) / 10;
+                    arr[2] += Math.round( 10 * $scope.uncertainty[2] * hash.quantity ) / 10;
                     return arr
                 } else {
                     var temp_total =  recursive_subassembly(hash.columns, arr);
@@ -76,11 +81,11 @@
                     low_uncertainty.push(total[1]);
                     high_uncertainty.push(total[2]);
                 } else {
-                    var average = $scope.uncertainty[1] * parts.quantity;
+                    var average = Math.round( 10 * $scope.uncertainty[1] * parts.quantity ) /10;
                     avg.push(average);
-                    var low = $scope.uncertainty[0] * parts.quantity;
+                    var low = Math.round( 10 * $scope.uncertainty[0] * parts.quantity ) / 10;
                     low_uncertainty.push(low);
-                    var high = $scope.uncertainty[2] * parts.quantity;
+                    var high = Math.round( 10 * $scope.uncertainty[2] * parts.quantity ) / 10;
                     high_uncertainty.push(high);
                 }
             });
@@ -165,11 +170,6 @@
         // Plot graph function
         $scope.plot_blur_graph = function( _graph_data ) {
 
-            // Helper function
-            var numberWithCommas = function(x) {
-                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            };
-
             document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
 
@@ -210,7 +210,7 @@
                         mode: 'label',
                         callbacks: {
                             label: function(tooltipItem, data) {
-                                return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                                return data.datasets[tooltipItem.datasetIndex].label + ": " + roundToOneDecimal(tooltipItem.yLabel);
                             }
                         }
                     },
@@ -222,7 +222,7 @@
                         yAxes: [{
                             stacked: true,
                             ticks: {
-                                callback: function(value) { return numberWithCommas(value); },
+                                callback: function(value) { return roundToOneDecimal(value); },
                             },
                         }],
                     }, // scales
@@ -236,11 +236,6 @@
 
             // Clone the data
             var graph_data = JSON.parse(JSON.stringify(_graph_data));
-
-            // Helper function
-            var numberWithCommas = function(x) {
-                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            };
 
             document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
@@ -291,7 +286,7 @@
                         mode: 'label',
                         callbacks: {
                             label: function(tooltipItem, data) {
-                                return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                                return data.datasets[tooltipItem.datasetIndex].label + ": " + roundToOneDecimal(tooltipItem.yLabel);
                             }
                         }
                     },
@@ -303,7 +298,7 @@
                         yAxes: [{
                             stacked: true,
                             ticks: {
-                                callback: function(value) { return numberWithCommas(value); },
+                                callback: function(value) { return roundToOneDecimal(value); },
                             },
                         }],
                     }, // scales
