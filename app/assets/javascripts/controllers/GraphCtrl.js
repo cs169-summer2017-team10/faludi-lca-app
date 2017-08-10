@@ -339,7 +339,7 @@ var a = (function() {
 
         angular.element(document).ready(function(){
             // Plot graph once the page is properly loaded
-            $scope.plot_bar_graph( $scope.graph_data, $scope.assembly.content );
+            $scope.plot_graph( 'bar-graph' );
         });
     }
 })();
