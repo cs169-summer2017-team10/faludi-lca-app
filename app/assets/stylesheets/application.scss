@@ -140,3 +140,16 @@
   line-height: 40px;
   height: 40px;
 }
+
+.dropzone md-input-container {
+  margin: 0;
+  padding: 0;
+}
+
+.dropzone .md-errors-spacer {
+  min-height: 0;
+  height: 0;
+  min-width: 0;
+  width: 0;
+}
+

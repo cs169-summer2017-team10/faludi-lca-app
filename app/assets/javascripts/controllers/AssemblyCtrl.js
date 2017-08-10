@@ -23,9 +23,11 @@ angular
             $scope.models = {
                 selected: null,
                 templates: {
-                    // item: {type: "item", name: "New item", id: 2},
-                    // container: {type: "container", name: "New container", id: 1, columns: [[]]}
-                    material: {type: "material", name: "New material", processes: [[]]},
+                    material: {type: "material", name: "New material", quantity: 1, unit: "kg", processes: [[]]},
+                    process: {type: "process", name: "New process", quantity: 1, unit: "m2", processes: [[]]},
+                    transport: {type: "transport", name: "New transport", quantity: 1, unit: "ton*km", processes: [[]]},
+                    use: {type: "use", name: "New use", quantity: 1, unit: "kg", processes: [[]]},
+                    eol: {type: "eol", name: "New eol", quantity: 1, unit: "kg", processes: [[]]},
                     subassembly: {type: "subassembly", name: "New subassembly", columns: [[]], processes: [[]]}
                 },
                 dropzones: {
@@ -36,9 +38,9 @@ angular
             $scope.$watch('models.dropzones', function(model) {
                 $scope.modelAsJson = angular.toJson(model, true);
             }, true);
-            $scope.initDraggable = function(name) {
-                $scope.models.templates.material.id++;
-                var draggable = JSON.parse(JSON.stringify($scope.models.templates.material));
+            $scope.initDraggable = function(name, id) {
+                var firstDigitOfId = id.toString()[0]; // needed to know which category the part is from
+                var draggable = JSON.parse(JSON.stringify($scope.models.templates[$scope.parts[firstDigitOfId - 1]]));
                 draggable.name = name;
                 return draggable;
             };
@@ -86,11 +88,11 @@ angular
             $scope.editName = false;
 
             // Library data (left sidebar)
-            $scope.fakeLibrary = ["Materials", "Manufacturing", "Transportation", "Use", "End of Life"];
-            $scope.fakeData = ["Steel", "Iron", "Copper", "Acid"];
-            $scope.remove = function (scope) {
-                scope.remove();
-            };
+            // $scope.fakeLibrary = ["Materials", "Manufacturing", "Transportation", "Use", "End of Life"];
+            // $scope.fakeData = ["Steel", "Iron", "Copper", "Acid"];
+            // $scope.remove = function (scope) {
+            //     scope.remove();
+            // };
 
             // Function needed for the library left sidebar
             $scope.visible = function (item) {
@@ -107,265 +109,267 @@ angular
             };
 
             // Library left sidebar data
-            $scope.libraryData = [{
-                'id': 1,
-                'title': 'Materials',
-                'nodes': [
-                    {
-                        'id': 11,
-                        'title': 'Chemicals',
-                        'nodes': [
-                            {
-                                'id': 111,
-                                'title': 'Acids',
-                                'nodes': [
-                                    {
-                                        'id': 1111,
-                                        'title': 'Acetic acid production, product in 98% solution state',
-                                        'nodes': []
-                                    }, {
-                                        'id': 1112,
-                                        'title': 'Acrylic acid production',
-                                        'nodes': []
-                                    }, {
-                                        'id': 1113,
-                                        'title': 'Formic acid production, methyl formate route',
-                                        'nodes': []
-                                    }
-                                ]
-                            }, {
-                                'id': 112,
-                                'title': 'Coastings, finishings',
-                                'nodes': [
-                                    {
-                                        'id': 1121,
-                                        'title': 'Acrylic varnish production, product in 87.5% solution state',
-                                        'nodes': []
-                                    }, {
-                                        'id': 1122,
-                                        'title': 'Polyurethane production, flexible foam',
-                                        'nodes': []
-                                    }, {
-                                        'id': 1123,
-                                        'title': 'Polyurethane production, rigid foam',
-                                        'nodes': []
-                                    }
-                                ]
-                            }
-                        ]
-                    }, {
-                        'id': 12,
-                        'title': 'Metals',
-                        'nodes': [
-                            {
-                                'id': 121,
-                                'title': 'Non-ferrous',
-                                'nodes': [
-                                    {
-                                        'id': 1211,
-                                        'title': 'Aluminum',
-                                        'nodes': [
-                                            {
-                                                'id': 12111,
-                                                'title': 'Aluminium alloy production, AlMg3',
-                                                'nodes': []
-                                            }, {
-                                                'id': 12112,
-                                                'title': 'Aluminium drilling, conventional',
-                                                'nodes': []
-                                            }
-                                        ]
-                                    }, {
-                                        'id': 1212,
-                                        'title': 'Copper',
-                                        'nodes': [
-                                            {
-                                                'id': 12121,
-                                                'title': 'Copper carbonate production',
-                                                'nodes': []
-                                            }, {
-                                                'id': 121212,
-                                                'title': 'Brass drilling, conventional',
-                                                'nodes': []
-                                            }, {
-                                                'id': 121213,
-                                                'title': 'Brass production',
-                                                'nodes': []
-                                            }, {
-                                                'id': 121214,
-                                                'title': 'Brass turning, average, conventional',
-                                                'nodes': []
-                                            }, {
-                                                'id': 121215,
-                                                'title': 'Bronze production',
-                                                'nodes': []
-                                            }, {
-                                                'id': 121216,
-                                                'title': 'Casting, bronze',
-                                                'nodes': []
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }, {
-                                'id': 122,
-                                'title': 'Ferrous',
-                                'nodes': [
-                                    {
-                                        'id': 1221,
-                                        'title': 'Iron alloy',
-                                        'nodes': [
-                                            {
-                                                'id': 1221,
-                                                'title': 'Cast iron milling, average',
-                                                'nodes': []
-                                            }, {
-                                                'id': 1222,
-                                                'title': 'Cast iron milling, large parts',
-                                                'nodes': []
-                                            }
-                                        ]
-                                    }, {
-                                        'id': 1222,
-                                        'title': 'Steel',
-                                        'nodes': [
-                                            {
-                                                'id': 1221,
-                                                'title': 'Steel production, chromium steel 18/8',
-                                                'nodes': []
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }, {
-                        'id': 13,
-                        'title': 'Natural materials',
-                        'nodes': [
-                            {
-                                'id': 131,
-                                'title': 'Wood',
-                                'nodes': [
-                                    {
-                                        'id': 1311,
-                                        'title': 'Door production, inner, glass-wood',
-                                        'nodes': []
-                                    }, {
-                                        'id': 1312,
-                                        'title': 'Fibreboard production, hard, from virgin wood',
-                                        'nodes': []
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }, {
-                'id': 2,
-                'title': 'Processes',
-                'nodes': [
-                    {
-                        'id': 21,
-                        'title': 'Anodising, aluminium sheet',
-                        'nodes': []
-                    },
-                    {
-                        'id': 22,
-                        'title': 'Section bar extrusion, aluminium',
-                        'nodes': []
-                    },
-                    {
-                        'id': 23,
-                        'title': 'Drawing of pipe, steel',
-                        'nodes': []
-                    },
-                    {
-                        'id': 24,
-                        'title': 'Hot rolling, steel',
-                        'nodes': []
-                    },
-                    {
-                        'id': 25,
-                        'title': 'Powder coating, steel',
-                        'nodes': []
-                    }
-                ]
-            }, {
-                'id': 3,
-                'title': 'Transportation',
-                'nodes': [
-                    {
-                        'id': 31,
-                        'title': 'Market for transport, freight train',
-                        'nodes': []
-                    }, {
-                        'id': 32,
-                        'title': 'Market for transport, freight, aircraft',
-                        'nodes': []
-                    }, {
-                        'id': 33,
-                        'title': 'Market for transport, freight, light commercial vehicle',
-                        'nodes': []
-                    }, {
-                        'id': 34,
-                        'title': 'Market for transport, freight, sea, transoceanic ship',
-                        'nodes': []
-                    }
-                ]
-            }, {
-                'id': 4,
-                'title': 'Use',
-                'nodes': [
-                    {
-                        'id': 41,
-                        'title': 'Market for water, completely softened, from decarbonised water, at user',
-                        'nodes': []
-                    }, {
-                        'id': 42,
-                        'title': 'Market for water, deionised, from tap water, at user',
-                        'nodes': []
-                    }, {
-                        'id': 43,
-                        'title': 'Market for water, ultrapure',
-                        'nodes': []
-                    }, {
-                        'id': 44,
-                        'title': 'Electricity production, hard coal',
-                        'nodes': []
-                    }, {
-                        'id': 45,
-                        'title': 'Electricity production, hydro, pumped storage',
-                        'nodes': []
-                    }, {
-                        'id': 46,
-                        'title': 'Electricity production, oil',
-                        'nodes': []
-                    }, {
-                        'id': 47,
-                        'title': 'Market for electricity, low voltage',
-                        'nodes': []
-                    }
-                ]
-            }, {
-                'id': 5,
-                'title': 'End of Life',
-                'nodes': [
-                    {
-                        'id': 51,
-                        'title': 'Market for process-specific burden, sanitary landfill',
-                        'nodes': []
-                    }, {
-                        'id': 52,
-                        'title': 'Market for process-specific burdens, municipal waste incineration',
-                        'nodes': []
-                    }, {
-                        'id': 53,
-                        'title': 'Recycling',
-                        'nodes': []
-                    }
-                ]
-            }
+            $scope.parts = ["material", "process", "transport", "use", "eol"];
+            $scope.libraryData = [
+                {
+                    'id': 1,
+                    'title': 'Materials',
+                    'nodes': [
+                        {
+                            'id': 11,
+                            'title': 'Chemicals',
+                            'nodes': [
+                                {
+                                    'id': 111,
+                                    'title': 'Acids',
+                                    'nodes': [
+                                        {
+                                            'id': 1111,
+                                            'title': 'Acetic acid production, product in 98% solution state',
+                                            'nodes': []
+                                        }, {
+                                            'id': 1112,
+                                            'title': 'Acrylic acid production',
+                                            'nodes': []
+                                        }, {
+                                            'id': 1113,
+                                            'title': 'Formic acid production, methyl formate route',
+                                            'nodes': []
+                                        }
+                                    ]
+                                }, {
+                                    'id': 112,
+                                    'title': 'Coastings, finishings',
+                                    'nodes': [
+                                        {
+                                            'id': 1121,
+                                            'title': 'Acrylic varnish production, product in 87.5% solution state',
+                                            'nodes': []
+                                        }, {
+                                            'id': 1122,
+                                            'title': 'Polyurethane production, flexible foam',
+                                            'nodes': []
+                                        }, {
+                                            'id': 1123,
+                                            'title': 'Polyurethane production, rigid foam',
+                                            'nodes': []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            'id': 12,
+                            'title': 'Metals',
+                            'nodes': [
+                                {
+                                    'id': 121,
+                                    'title': 'Non-ferrous',
+                                    'nodes': [
+                                        {
+                                            'id': 1211,
+                                            'title': 'Aluminum',
+                                            'nodes': [
+                                                {
+                                                    'id': 12111,
+                                                    'title': 'Aluminium alloy production, AlMg3',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 12112,
+                                                    'title': 'Aluminium drilling, conventional',
+                                                    'nodes': []
+                                                }
+                                            ]
+                                        }, {
+                                            'id': 1212,
+                                            'title': 'Copper',
+                                            'nodes': [
+                                                {
+                                                    'id': 12121,
+                                                    'title': 'Copper carbonate production',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 121212,
+                                                    'title': 'Brass drilling, conventional',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 121213,
+                                                    'title': 'Brass production',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 121214,
+                                                    'title': 'Brass turning, average, conventional',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 121215,
+                                                    'title': 'Bronze production',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 121216,
+                                                    'title': 'Casting, bronze',
+                                                    'nodes': []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }, {
+                                    'id': 122,
+                                    'title': 'Ferrous',
+                                    'nodes': [
+                                        {
+                                            'id': 1221,
+                                            'title': 'Iron alloy',
+                                            'nodes': [
+                                                {
+                                                    'id': 1221,
+                                                    'title': 'Cast iron milling, average',
+                                                    'nodes': []
+                                                }, {
+                                                    'id': 1222,
+                                                    'title': 'Cast iron milling, large parts',
+                                                    'nodes': []
+                                                }
+                                            ]
+                                        }, {
+                                            'id': 1222,
+                                            'title': 'Steel',
+                                            'nodes': [
+                                                {
+                                                    'id': 1221,
+                                                    'title': 'Steel production, chromium steel 18/8',
+                                                    'nodes': []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            'id': 13,
+                            'title': 'Natural materials',
+                            'nodes': [
+                                {
+                                    'id': 131,
+                                    'title': 'Wood',
+                                    'nodes': [
+                                        {
+                                            'id': 1311,
+                                            'title': 'Door production, inner, glass-wood',
+                                            'nodes': []
+                                        }, {
+                                            'id': 1312,
+                                            'title': 'Fibreboard production, hard, from virgin wood',
+                                            'nodes': []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }, {
+                    'id': 2,
+                    'title': 'Processes',
+                    'nodes': [
+                        {
+                            'id': 21,
+                            'title': 'Anodising, aluminium sheet',
+                            'nodes': []
+                        },
+                        {
+                            'id': 22,
+                            'title': 'Section bar extrusion, aluminium',
+                            'nodes': []
+                        },
+                        {
+                            'id': 23,
+                            'title': 'Drawing of pipe, steel',
+                            'nodes': []
+                        },
+                        {
+                            'id': 24,
+                            'title': 'Hot rolling, steel',
+                            'nodes': []
+                        },
+                        {
+                            'id': 25,
+                            'title': 'Powder coating, steel',
+                            'nodes': []
+                        }
+                    ]
+                }, {
+                    'id': 3,
+                    'title': 'Transportation',
+                    'nodes': [
+                        {
+                            'id': 31,
+                            'title': 'Market for transport, freight train',
+                            'nodes': []
+                        }, {
+                            'id': 32,
+                            'title': 'Market for transport, freight, aircraft',
+                            'nodes': []
+                        }, {
+                            'id': 33,
+                            'title': 'Market for transport, freight, light commercial vehicle',
+                            'nodes': []
+                        }, {
+                            'id': 34,
+                            'title': 'Market for transport, freight, sea, transoceanic ship',
+                            'nodes': []
+                        }
+                    ]
+                }, {
+                    'id': 4,
+                    'title': 'Use',
+                    'nodes': [
+                        {
+                            'id': 41,
+                            'title': 'Market for water, completely softened, from decarbonised water, at user',
+                            'nodes': []
+                        }, {
+                            'id': 42,
+                            'title': 'Market for water, deionised, from tap water, at user',
+                            'nodes': []
+                        }, {
+                            'id': 43,
+                            'title': 'Market for water, ultrapure',
+                            'nodes': []
+                        }, {
+                            'id': 44,
+                            'title': 'Electricity production, hard coal',
+                            'nodes': []
+                        }, {
+                            'id': 45,
+                            'title': 'Electricity production, hydro, pumped storage',
+                            'nodes': []
+                        }, {
+                            'id': 46,
+                            'title': 'Electricity production, oil',
+                            'nodes': []
+                        }, {
+                            'id': 47,
+                            'title': 'Market for electricity, low voltage',
+                            'nodes': []
+                        }
+                    ]
+                }, {
+                    'id': 5,
+                    'title': 'End of Life',
+                    'nodes': [
+                        {
+                            'id': 51,
+                            'title': 'Market for process-specific burden, sanitary landfill',
+                            'nodes': []
+                        }, {
+                            'id': 52,
+                            'title': 'Market for process-specific burdens, municipal waste incineration',
+                            'nodes': []
+                        }, {
+                            'id': 53,
+                            'title': 'Recycling',
+                            'nodes': []
+                        }
+                    ]
+                }
             ];
 
             // Analyze/Graph Dialog configuration
@@ -381,6 +385,12 @@ angular
                     fullscreen: true // Only for -xs, -sm breakpoints.
                 })
             };
+
+            // Units tables
+            $scope.massUnits = ["kg", "oz", "lb", "ton"];
+            $scope.areaUnits = [("m" + "2"), ("in" + "2"), ("ft" + "2")];
+            // ("m" + "2".sup())
+            $scope.transportUnits = ["ton*km"];
 
             // Config custom scrollbar for sidebar and assembly canvas
             // $scope.configScrollbar = {
