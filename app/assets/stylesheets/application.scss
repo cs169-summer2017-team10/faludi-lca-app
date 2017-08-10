@@ -161,7 +161,10 @@
 /* Subassembly styling */
 .subassembly md-input-container .md-input {
   color: #EEEEEE;
-  border-color: transparent;
+}
+
+.subassembly md-input-container .md-input:hover {
+  border-color: #DCDCDC;
 }
 
 .subassembly md-input-container.md-input-focused .md-input {

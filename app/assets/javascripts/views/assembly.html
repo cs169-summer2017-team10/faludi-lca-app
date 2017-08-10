@@ -171,9 +171,12 @@
     <div class="container-element box box-blue">
         <md-toolbar class="md-hue-2 subassembly">
             <div class="md-toolbar-tools">
-                <md-input-container>
-                    <input mdInput ng-model="item.name" value="item.name">
-                </md-input-container>
+                <div layout="row" layout-align="start center">
+                    <md-icon aria-label="Folder" class="material-icons" style="margin-right: 15px;">folder</md-icon>
+                    <md-input-container md-no-float>
+                        <input type="text" ng-model="item.name" value="item.name" placeholder="Subassembly name" aria-label="Sub assembly name" required />
+                    </md-input-container>
+                </div>
             </div>
         </md-toolbar>
         <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
