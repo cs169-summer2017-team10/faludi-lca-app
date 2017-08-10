@@ -8,13 +8,13 @@ rvm:
 before_script:
   - npm install -g bower
   - rake bower:install
-  - rake jasmine:ci
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rspec
   - bundle exec cucumber
+  - bundle exec rake jasmine:ci
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 after_script:
   - bundle exec rake send_to_codeclimate
