@@ -99,40 +99,7 @@
         // Initialize graph data
         $scope.graph_data = $scope.analyze( $scope.assembly.content );
 
-        // Plot graph function
-        $scope.plot_bar_graph = function( _graph_data, _assembly ) {
-            document.getElementById('myChart').innerHTML = "";
-            var ctx = document.getElementById('myChart').getContext("2d");
-            var chart = new Chart(ctx, {
-                // The type of chart we want to create
-                type: 'bar',
-
-                // The data for our dataset
-                data: {
-                    labels: _graph_data.labels,
-                    datasets: [{
-                        label: "Carbon Emissions",
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: _graph_data.average
-                    }]
-                },
-
-                // Configuration options go here
-                options: {
-                    responsive: false,
-                    maintainAspectRatio: true,
-                    scales: {
-                        yAxes: [{
-                            display: false,
-                            ticks: {
-                                beginAtZero: true   // minimum value will be 0.
-                            }
-                        }]
-                    }
-                }
-            });
-
+        $scope.zoom_in = function( _assembly, chart ){
             // Update graph as user click on one of the bar
             document.getElementById("myChart").onclick = function(evt)
             {
@@ -168,7 +135,45 @@
         };
 
         // Plot graph function
-        $scope.plot_blur_graph = function( _graph_data ) {
+        $scope.plot_bar_graph = function( _graph_data, _assembly ) {
+            document.getElementById('myChart').innerHTML = "";
+            var ctx = document.getElementById('myChart').getContext("2d");
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'bar',
+
+                // The data for our dataset
+                data: {
+                    labels: _graph_data.labels,
+                    datasets: [{
+                        label: "Carbon Emissions",
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: _graph_data.average
+                    }]
+                },
+
+                // Configuration options go here
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: true,
+                    scales: {
+                        yAxes: [{
+                            display: false,
+                            ticks: {
+                                beginAtZero: true   // minimum value will be 0.
+                            }
+                        }]
+                    }
+                }
+            });
+
+            // Update graph as user click on one of the bar
+            $scope.zoom_in( _assembly, chart );
+        };
+
+        // Plot graph function
+        $scope.plot_blur_graph = function( _graph_data, _assembly) {
 
             document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
