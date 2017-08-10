@@ -1,0 +1,21 @@
+<!--
+How to use Material Icon
+
+Replace: <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+By: <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
+-->
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2 flex md-truncate><a ui-sref="home">Focus LCA</a></h2>
+
+    <a ui-sref="assembly-new" ui-sref-opts="{reload: true}" ng-cloak>
+      <md-button aria-label="New Assembly" ng-show="signedIn()">New Assembly</md-button>
+    </a>
+    <a ui-sref="profile" ng-cloak>
+      <md-button aria-label="Profile" ng-show="signedIn()">Profile</md-button>
+    </a>
+    <a ng-click="logout()" ng-cloak>
+      <md-button aria-label="Log out" ng-show="signedIn()">Log out</md-button>
+    </a>
+  </div>
+</md-toolbar>

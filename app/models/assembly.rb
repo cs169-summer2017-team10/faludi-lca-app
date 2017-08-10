@@ -1,4 +1,4 @@
 class Assembly < ApplicationRecord
-	serialize :components
-	belongs_to :user
+  belongs_to :user
+  serialize :content, JSON
 end

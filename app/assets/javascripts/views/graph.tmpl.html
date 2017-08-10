@@ -1,0 +1,33 @@
+<md-dialog aria-label="{{assembly.name}} analysis">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{assembly.name}} Analysis</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon aria-label="Close" class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" id="myChartParent">
+                <h2>Environmental Impact of {{assembly.name}}</h2>
+                <canvas id="myChart" width="900px" height="375px">test</canvas>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="plot_graph('bar-graph')">
+                Bar Graph
+            </md-button>
+            <md-button ng-click="plot_graph('blur-graph')">
+                Blur Graph
+            </md-button>
+            <md-button ng-click="plot_graph('step-graph')">
+                Step Graph
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

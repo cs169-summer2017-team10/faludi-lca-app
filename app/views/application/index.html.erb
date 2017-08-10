@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Focus LCA</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body ng-app="focusLcaApp">
+
+  <div layout="row" layout-fill>
+    <div layout="column" flex>
+      <div><nav-bar></nav-bar></div>
+      <div layout="row" flex>
+        <ui-view flex></ui-view>
+      </div>
+    </div>
+  </div>
+
+  </body>
+</html>

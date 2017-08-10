@@ -1,0 +1,314 @@
+<div id="assembly-page" layout="row" layout-fill style="list-style: none;">
+    <md-content layout="column" flex>
+
+        <!-- Assembly Toolbar -->
+        <md-toolbar id="assembly-toolbar" class="md-menu-toolbar" dnd-list="[]">
+            <div layout="row" layout-align="space-between start">
+                <div>
+                    <h2 class="md-toolbar-tools">Library</h2>
+                </div>
+                <div>
+                    <h2 class="md-toolbar-tools" ng-hide="editName">
+                        {{assembly.name}}
+                        <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="editName = !editName">
+                            <md-tooltip md-direction="up">Edit name</md-tooltip>
+                            <md-icon aria-label="Edit" class="material-icons">edit</md-icon>
+                        </md-button>
+                    </h2>
+                    <h2 class="md-toolbar-tools" ng-show="editName">
+                        <md-input-container class="md-block" ng-show="editName">
+                            <input required md-no-asterisk name="name" ng-model="assembly.name" aria-label="Input Name">
+                            <div ng-messages="projectForm.name.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="(assembly.name.length > 0) ? (editName = !editName) : (editName = editName)">
+                            <md-icon aria-label="Check" class="material-icons">check</md-icon>
+                        </md-button>
+                    </h2>
+                </div>
+                <div>
+                    <h2 class="md-toolbar-tools">
+                        <md-button class="md-icon-button test-tooltip delete" aria-label="Delete" ng-click="deleteSelected(models.selected, models.dropzones.assembly)">
+                            <md-tooltip md-direction="up">Delete selected</md-tooltip>
+                            <ul dnd-list="[]">
+                                <li>
+                                    <md-icon aria-label="Delete" class="material-icons">delete</md-icon>
+                                </li>
+                            </ul>
+                        </md-button>
+                        <ul dnd-draggable="models.templates.subassembly"
+                            dnd-effect-allowed="copy">
+                            <li>
+                                <md-button class="md-icon-button test-tooltip" aria-label="Add Subassembly" ng-click="addSubassembly()">
+                                    <md-tooltip md-direction="up">Add subassembly</md-tooltip>
+                                    <md-icon aria-label="Create New Folder" class="material-icons">create_new_folder</md-icon>
+                                </md-button>
+                            </li>
+                        </ul>
+                        <md-button class="md-icon-button test-tooltip" aria-label="Analyze" ng-click="showAnalyze($event)">
+                            <md-tooltip md-direction="up">Analyze</md-tooltip>
+                            <md-icon aria-label="Insert Chart" class="material-icons">insert_chart</md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button test-tooltip" aria-label="Save" ng-click="saveAssembly()">
+                            <md-tooltip md-direction="up">Save</md-tooltip>
+                            <md-icon aria-label="Save" class="material-icons">save</md-icon>
+                        </md-button>
+                    </h2>
+                </div>
+            </div>
+        </md-toolbar>
+
+        <!-- Main div -->
+        <div layout="row" flex>
+
+            <!-- Left sidebar -->
+            <div id="assembly-sidebar" resizable r-directions="['right']" r-grabber="{{customGrabber}}">
+                <div style="height: 100%; overflow: scroll"><!-- ng-scrollbars ng-scrollbars-config="configScrollbar" -->
+                    <md-content>
+                        <md-card>
+                            <input id="custom-search-input" type="search" ng-model="query" ng-change="findNodes()" placeholder="Search">
+                        </md-card>
+
+                        <md-card id="search-results">
+                            <div ng-repeat="result in results" ng-class="getBadgeClass(result.id)" style="cursor:move" dnd-draggable="initDraggable(result.name, result.id)" dnd-effect-allowed="copy">
+                                <md-list-item>{{result.name}}</md-list-item>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </div>
+                        </md-card>
+                    </md-content>
+
+                    <md-divider></md-divider>
+
+                    <md-expansion-panel-group md-component-id="panelGroup" multiple style="padding: 5px;" ui-tree data-drag-enabled="false">
+                        <ol ui-tree-nodes="" ng-model="libraryData">
+                            <li ng-repeat="node in libraryData" ng-include="'library_renderer.html'" ui-tree-node></li>
+                        </ol>
+                    </md-expansion-panel-group>
+                </div>
+            </div>
+
+            <!-- Assembly Canvas -->
+            <div id="assembly-canvas" style="overflow: scroll" flex>
+                <md-card class="page" style="padding: 15px;" flex>
+                    <div ng-repeat="(zone, list) in models.dropzones">
+                        <div class="dropzone box box-yellow">
+                            <!-- The dropzone also uses the list template -->
+                            <div ng-include="'list.html'"></div>
+                        </div>
+                    </div>
+                </md-card>
+
+                <div view-source="nested"></div>
+            </div>
+        </div>
+    </md-content>
+    <!--Main area with dropzones and source code -->
+    <!--<div>-->
+    <!--<h2>Generated Model</h2>-->
+    <!--<pre>{{modelAsJson}}</pre>-->
+    <!--</div>-->
+</div>
+
+<!-- ############################################################################# -->
+<!-- ################# Nested node templates for angular-ui-tree ################# -->
+<!-- ############################################################################# -->
+<script type="text/ng-template" id="library_renderer.html">
+    <md-expansion-panel md-component-id="panel + node.title" style="margin-left: 10px; margin-right: 10px">
+        <md-expansion-panel-collapsed style="cursor:pointer" ng-class="getBadgeClass(node.id)">
+            <div class="md-title">{{node.title}}</div>
+            <div class="md-summary"></div>
+            <md-expansion-panel-icon></md-expansion-panel-icon>
+        </md-expansion-panel-collapsed>
+        <md-expansion-panel-expanded>
+            <md-expansion-panel-header ng-click="$panel.collapse()" ng-class="getBadgeClass(node.id)">
+                <div class="md-title">{{node.title}}</div>
+                <div class="md-summary"></div>
+                <md-expansion-panel-icon></md-expansion-panel-icon>
+            </md-expansion-panel-header>
+            <md-expansion-panel-content style="padding: 0;">
+                <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visible(node)">
+                    </li>
+                </ol>
+            </md-expansion-panel-content>
+        </md-expansion-panel-expanded>
+    </md-expansion-panel>
+</script>
+
+<script type="text/ng-template" id="nodes_renderer.html">
+    <!-- this if condition means it's still a parent of multiple nodes -->
+    <div ng-if="node.nodes && node.nodes.length > 0">
+        <md-list-item ng-click="toggle(this)">
+            {{node.title}}
+            <md-icon aria-label="Expand" class="material-icons">{{ collapsed ? 'expand_less' : 'expand_more' }}</md-icon>
+        </md-list-item>
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+            </li>
+        </ol>
+    </div>
+
+    <!-- this if condition means it's a final child -->
+    <div ng-if="!node.nodes || node.nodes.length <= 0" ng-show="visible(node)">
+        <md-list-item style="cursor:move" dnd-draggable="initDraggable(node.title, node.id, node.impact)" dnd-effect-allowed="copy">
+            <span>{{node.title}}</span>
+            <!--<span>  Co2 intensity(/kg)={{node.impact}}</span>-->
+            <!--<md-divider ng-if="!$last"></md-divider>-->
+        </md-list-item>
+    </div>
+</script>
+
+
+<!-- ############################################################################# -->
+<!-- ############ Templates definitions for the drag and drop library ############ -->
+<!-- ############################################################################# -->
+<script type="text/ng-template" id="list.html">
+    <ul dnd-list="list" style="height: 100%; padding-left: 0; list-style: none;">
+        <md-card ng-repeat="item in list"
+                 dnd-draggable="item"
+                 dnd-effect-allowed="move"
+                 dnd-moved="list.splice($index, 1)"
+                 dnd-selected="models.selected = item"
+                 ng-class="{selected: models.selected === item}"
+                 ng-include="item.type + '.html'">
+        </md-card>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="sub-list.html">
+    <ul dnd-list="list" id="sub-list" style="height: 100%; padding-left: 0; list-style: none;">
+        <md-card ng-repeat="item in list"
+                 dnd-draggable="item"
+                 dnd-effect-allowed="move"
+                 dnd-moved="list.splice($index, 1)"
+                 dnd-selected="models.selected = item"
+                 ng-class="{selected: models.selected === item}"
+                 ng-include="item.type + '.html'">
+        </md-card>
+    </ul>
+</script>
+<!-- This template is responsible for rendering a container element (subassembly). It uses
+     the above list template to render each container column -->
+<script type="text/ng-template" id="subassembly.html">
+    <div class="container-element box box-blue">
+        <md-toolbar class="md-hue-2 subassembly">
+            <div class="md-toolbar-tools">
+                <div layout="row" layout-align="start center">
+                    <md-icon aria-label="Folder" class="material-icons" style="margin-right: 15px;">folder</md-icon>
+                    <md-input-container md-no-float>
+                        <input type="text" ng-model="item.name" value="item.name" placeholder="Subassembly name" aria-label="Sub assembly name" required />
+                    </md-input-container>
+                </div>
+            </div>
+        </md-toolbar>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'sub-list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+<!-- Template for a normal list item (material) -->
+<script type="text/ng-template" id="material.html">
+    <div layout="column">
+        <div layout="row" layout-align="start start" class="item material-badge">
+            <div>{{item.name}}</div>
+            <div>
+                <md-input-container md-no-float>
+                    <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container md-no-float>
+                    <md-select ng-model="item.unit" aria-label="Unit">
+                        <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
+                            {{massUnit}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+        <div>
+            <div class="column" ng-repeat="list in item.columns" ng-include="'sub-list.html'"></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</script>
+<!-- Template for a normal list item (process) -->
+<script type="text/ng-template" id="process.html">
+    <div layout="row" layout-align="start start" class="item process-badge">
+        <div>{{item.name}}</div>
+        <div>
+            <md-input-container md-no-float>
+                <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
+            </md-input-container>
+        </div>
+        <div>
+            <md-input-container md-no-float>
+                <md-select ng-model="item.unit" aria-label="Unit">
+                    <md-option ng-repeat="areaUnit in areaUnits" value="{{areaUnit}}">
+                        {{ areaUnit | limitTo : areaUnit.length - 1}}<sup>{{ areaUnit | limitTo : areaUnit.length : areaUnit.length - 1}}</sup>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+</script>
+<!-- Template for a normal list item (transport) -->
+<script type="text/ng-template" id="transport.html">
+    <div layout="row" layout-align="start start" class="item transport-badge">
+        <div>{{item.name}}</div>
+        <div>
+            <md-input-container md-no-float>
+                <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
+            </md-input-container>
+        </div>
+        <div>
+            <md-input-container md-no-float>
+                <md-select ng-model="item.unit" aria-label="Unit">
+                    <md-option ng-repeat="transportUnit in transportUnits" value="{{transportUnit}}">
+                        {{transportUnit}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+</script>
+<!-- Template for a normal list item (use) -->
+<script type="text/ng-template" id="use.html">
+    <div layout="row" layout-align="start start" class="item use-badge">
+        <div>{{item.name}}</div>
+        <div>
+            <md-input-container md-no-float>
+                <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
+            </md-input-container>
+        </div>
+        <div>
+            <md-input-container md-no-float>
+                <md-select ng-model="item.unit" aria-label="Unit">
+                    <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
+                        {{massUnit}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+</script>
+<!-- Template for a normal list item (end of life) -->
+<script type="text/ng-template" id="eol.html">
+    <div layout="row" layout-align="start start" class="item eol-badge">
+        <div>{{item.name}}</div>
+        <div>
+            <md-input-container md-no-float>
+                <input required type="number" step="any" ng-model="item.quantity" min="0" placeholder="Quantity" />
+            </md-input-container>
+        </div>
+        <div>
+            <md-input-container md-no-float>
+                <md-select ng-model="item.unit" aria-label="Unit">
+                    <md-option ng-repeat="massUnit in massUnits" value="{{massUnit}}">
+                        {{massUnit}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+</script>
