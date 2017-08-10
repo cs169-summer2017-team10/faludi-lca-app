@@ -15,21 +15,13 @@ function routesConfig($stateProvider, $urlRouterProvider){
             url: '/login',
             templateUrl: 'views/login.html',
             controller: 'AuthCtrl',
-            onEnter: ['Auth', '$state', function(Auth, $state) {
-                Auth.currentUser().then(function() {
-                    $state.go('home');
-                })
-            }]
+            onEnter: ['Auth', '$state', goHome(Auth, $state)]
         })
         .state('register', {
             url: '/register',
             templateUrl: 'views/register.html',
             controller: 'AuthCtrl',
-            onEnter: ['Auth', '$state', function(Auth, $state) {
-                Auth.currentUser().then(function() {
-                    $state.go('home');
-                })
-            }]
+            onEnter: ['Auth', '$state', goHome(Auth, $state)]
         })
         .state('assembly-new', {
             url: '/assembly',
@@ -57,4 +49,10 @@ function routesConfig($stateProvider, $urlRouterProvider){
             controller: 'ProfileCtrl'
         });
     $urlRouterProvider.otherwise('/home')
+}
+
+function goHome(Auth, $state) {
+    Auth.currentUser().then(function() {
+        $state.go('home');
+    })
 }
