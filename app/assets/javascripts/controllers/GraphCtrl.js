@@ -4,8 +4,12 @@
 
     GraphCtrl.$inject = ['$scope', '$mdDialog'];
 
+
     function GraphCtrl($scope, $mdDialog) {
+
         $scope.hello = "Hello World";
+
+        $scope.uncertainty = [0.8, 1.0, 1.2];
 
         $scope.hide = function() {
             $mdDialog.hide();
@@ -15,8 +19,20 @@
             $mdDialog.cancel();
         };
 
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
+        $scope.plot_graph = function( option ) {
+            // $mdDialog.hide(answer);
+            if (option === 'blur-graph'){
+                $scope.reset_graph();
+                $scope.plot_blur_graph( $scope.graph_data );
+            }else if( option === 'bar-graph'){
+                $scope.reset_graph();
+                $scope.plot_bar_graph( $scope.graph_data, $scope.assembly.content );
+            }else if( option === 'step-graph'){
+                $scope.reset_graph();
+                $scope.plot_step_graph( $scope.graph_data, $scope.assembly.content );
+            }else{
+
+            }
         };
 
         $scope.recurse_subassembly = function recursive_subassembly(hash, arr) {
@@ -28,9 +44,9 @@
                 return total;
             } else {
                 if (hash.type === "material") {
-                    arr[0] += 2 *  hash.quantity ;
-                    arr[1] += 0.8;
-                    arr[2] += 0.8;
+                    arr[0] += $scope.uncertainty[1] * hash.quantity;
+                    arr[1] += $scope.uncertainty[0] * hash.quantity;
+                    arr[2] += $scope.uncertainty[2] * hash.quantity;
                     return arr
                 } else {
                     var temp_total =  recursive_subassembly(hash.columns, arr);
@@ -60,11 +76,11 @@
                     low_uncertainty.push(total[1]);
                     high_uncertainty.push(total[2]);
                 } else {
-                    var average = 2 * parts.quantity;
+                    var average = $scope.uncertainty[1] * parts.quantity;
                     avg.push(average);
-                    var low = 0.8;
+                    var low = $scope.uncertainty[0] * parts.quantity;
                     low_uncertainty.push(low);
-                    var high = 0.8;
+                    var high = $scope.uncertainty[2] * parts.quantity;
                     high_uncertainty.push(high);
                 }
             });
@@ -79,7 +95,8 @@
         $scope.graph_data = $scope.analyze( $scope.assembly.content );
 
         // Plot graph function
-        $scope.plot_graph = function( _graph_data, _assembly ) {
+        $scope.plot_bar_graph = function( _graph_data, _assembly ) {
+            document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
@@ -145,9 +162,165 @@
             }
         };
 
+        // Plot graph function
+        $scope.plot_blur_graph = function( _graph_data ) {
+
+            // Helper function
+            var numberWithCommas = function(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            };
+
+            document.getElementById('myChart').innerHTML = "";
+            var ctx = document.getElementById('myChart').getContext("2d");
+
+            var gradient_blue = ctx.createLinearGradient( 0, 0, 0, 500 );
+            gradient_blue.addColorStop(1, 'blue');
+            gradient_blue.addColorStop(0, 'white');
+
+            var solid_blue = 'rgba(0, 0, 255, 1.0)';
+
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: _graph_data.labels,
+                    datasets: [
+                        {
+                            label: 'Certain',
+                            data: _graph_data.average,
+                            backgroundColor: solid_blue,
+                            hoverBackgroundColor: solid_blue,
+                            hoverBorderWidth: 2,
+                            hoverBorderColor: 'lightgrey'
+                        },
+                        {
+                            label: 'Uncertain',
+                            data: _graph_data.high,
+                            backgroundColor: gradient_blue ,
+                            hoverBackgroundColor: gradient_blue,
+                            hoverBorderWidth: 2,
+                            hoverBorderColor: 'lightgrey'
+                        },
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 10,
+                    },
+                    tooltips: {
+                        mode: 'label',
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                            }
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            gridLines: { display: false },
+                        }],
+                        yAxes: [{
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) { return numberWithCommas(value); },
+                            },
+                        }],
+                    }, // scales
+                    legend: {display: true}
+                } // options
+            });
+        };
+
+        // Plot graph function
+        $scope.plot_step_graph = function( _graph_data ) {
+
+            // Clone the data
+            var graph_data = JSON.parse(JSON.stringify(_graph_data));
+
+            // Helper function
+            var numberWithCommas = function(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            };
+
+            document.getElementById('myChart').innerHTML = "";
+            var ctx = document.getElementById('myChart').getContext("2d");
+
+            var gradient_blue = [ 'rgba(0, 0, 255, 1.0)', 'rgba(0, 0, 255, 0.7)', 'rgba(0, 0, 255, 0.2)'];
+
+            for ( var i = 0 ; i < graph_data.average.length ; i++){
+                graph_data.high[i] = graph_data.high[i] -  graph_data.average[i];
+                graph_data.average[i] = graph_data.average[i] -  graph_data.low[i];
+            }
+
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: _graph_data.labels,
+                    datasets: [
+                        {
+                            label: 'Low',
+                            data: graph_data.low,
+                            backgroundColor: gradient_blue[0],
+                            hoverBackgroundColor: gradient_blue[0],
+                            hoverBorderWidth: 2,
+                            hoverBorderColor: 'lightgrey'
+                        },
+                        {
+                            label: 'Average',
+                            data: graph_data.average,
+                            backgroundColor: gradient_blue[1] ,
+                            hoverBackgroundColor: gradient_blue[1],
+                            hoverBorderWidth: 2,
+                            hoverBorderColor: 'lightgrey'
+                        },
+                        {
+                            label: 'High',
+                            data: graph_data.high,
+                            backgroundColor: gradient_blue[2] ,
+                            hoverBackgroundColor: gradient_blue[2],
+                            hoverBorderWidth: 2,
+                            hoverBorderColor: 'lightgrey'
+                        },
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 10,
+                    },
+                    tooltips: {
+                        mode: 'label',
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                            }
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            gridLines: { display: false },
+                        }],
+                        yAxes: [{
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) { return numberWithCommas(value); },
+                            },
+                        }],
+                    }, // scales
+                    legend: {display: true}
+                } // options
+            });
+        };
+
+        // This function remove the graph canvas
+        $scope.reset_graph = function(){
+            $('#myChart').remove(); // this is my <canvas> element
+            $('#myChartParent').append('<canvas id="myChart" width="900px" height="375px"></canvas>');
+        };
+
         angular.element(document).ready(function(){
             // Plot graph once the page is properly loaded
-            $scope.plot_graph( $scope.graph_data, $scope.assembly.content );
+            $scope.plot_bar_graph( $scope.graph_data, $scope.assembly.content );
         });
     }
 })();
