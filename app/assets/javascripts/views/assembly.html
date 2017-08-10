@@ -1,5 +1,5 @@
 <div id="assembly-page" layout="row" layout-fill dnd-list="[]" style="list-style: none;">
-    <div layout="column" style="background-color: #eeeeee;" flex>
+    <md-content layout="column" flex>
 
         <!-- Assembly Toolbar -->
         <md-toolbar id="assembly-toolbar" class="md-menu-toolbar">
@@ -20,7 +20,6 @@
                             <input required md-no-asterisk name="name" ng-model="assembly.name" aria-label="Input Name">
                             <div ng-messages="projectForm.name.$error">
                                 <div ng-message="required">This is required.</div>
-                                <div ng-message="md-maxlength">The description must be less than 20 characters long.</div>
                             </div>
                         </md-input-container>
                         <md-button class="md-icon-button test-tooltip" aria-label="Refresh" style="margin-left: 5px;" ng-click="(assembly.name.length > 0) ? (editName = !editName) : (editName = editName)">
@@ -53,29 +52,16 @@
             <!-- Left sidebar -->
             <div id="assembly-sidebar" resizable r-directions="['right']" r-grabber="{{customGrabber}}">
                 <div style="height: 100%; overflow: scroll"><!-- ng-scrollbars ng-scrollbars-config="configScrollbar" -->
-                    <md-expansion-panel-group md-component-id="panelGroup" multiple style="padding: 5px;">
-                        <md-expansion-panel ng-repeat="element in library" md-component-id="panel + element" style="margin-left: 10px; margin-right: 10px">
-                            <md-expansion-panel-collapsed style="cursor:pointer">
-                                <div class="md-title">{{element}}</div>
-                                <div class="md-summary"></div>
-                                <md-expansion-panel-icon></md-expansion-panel-icon>
-                            </md-expansion-panel-collapsed>
-                            <md-expansion-panel-expanded>
-                                <md-expansion-panel-header ng-click="$panel.collapse()">
-                                    <div class="md-title">{{element}}</div>
-                                    <div class="md-summary"></div>
-                                    <md-expansion-panel-icon></md-expansion-panel-icon>
-                                </md-expansion-panel-header>
-                                <md-expansion-panel-content style="padding: 0;">
-                                    <md-list>
-                                        <md-list-item style="cursor:move" ng-repeat="material in data" dnd-draggable="initDraggable(material)" dnd-effect-allowed="copy">
-                                            <span>{{material}}</span>
-                                            <md-divider ng-if="!$last"></md-divider>
-                                        </md-list-item>
-                                    </md-list>
-                                </md-expansion-panel-content>
-                            </md-expansion-panel-expanded>
-                        </md-expansion-panel>
+                    <md-content>
+                        <md-card>
+                            <input id="custom-search-input" type="search" ng-model="query" ng-change="findNodes()" placeholder="Search">
+                        </md-card>
+                    </md-content>
+
+                    <md-expansion-panel-group md-component-id="panelGroup" multiple style="padding: 5px;" ui-tree data-drag-enabled="false">
+                        <ol ui-tree-nodes="" ng-model="libraryData">
+                            <li ng-repeat="node in libraryData" ng-include="'library_renderer.html'" ui-tree-node></li>
+                        </ol>
                     </md-expansion-panel-group>
                 </div>
             </div>
@@ -94,18 +80,67 @@
                 <div view-source="nested"></div>
             </div>
         </div>
-    </div>
+    </md-content>
     <!--Main area with dropzones and source code -->
     <!--<div>-->
-        <!--<h2>Generated Model</h2>-->
-        <!--<pre>{{modelAsJson}}</pre>-->
+    <!--<h2>Generated Model</h2>-->
+    <!--<pre>{{modelAsJson}}</pre>-->
     <!--</div>-->
 </div>
 
 <!-- ############################################################################# -->
+<!-- ################# Nested node templates for angular-ui-tree ################# -->
+<!-- ############################################################################# -->
+<script type="text/ng-template" id="library_renderer.html">
+
+    <md-expansion-panel md-component-id="panel + node.title" style="margin-left: 10px; margin-right: 10px">
+        <md-expansion-panel-collapsed style="cursor:pointer">
+            <div class="md-title">{{node.title}}</div>
+            <div class="md-summary"></div>
+            <md-expansion-panel-icon></md-expansion-panel-icon>
+        </md-expansion-panel-collapsed>
+        <md-expansion-panel-expanded>
+            <md-expansion-panel-header ng-click="$panel.collapse()">
+                <div class="md-title">{{node.title}}</div>
+                <div class="md-summary"></div>
+                <md-expansion-panel-icon></md-expansion-panel-icon>
+            </md-expansion-panel-header>
+            <md-expansion-panel-content style="padding: 0;">
+                <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visible(node)">
+                    </li>
+                </ol>
+            </md-expansion-panel-content>
+        </md-expansion-panel-expanded>
+    </md-expansion-panel>
+</script>
+
+<script type="text/ng-template" id="nodes_renderer.html">
+    <!-- this if condition means it's still a parent of multiple nodes -->
+    <div ng-if="node.nodes && node.nodes.length > 0">
+        <md-list-item ng-click="toggle(this)">
+            {{node.title}}
+            <md-icon aria-label="Expand" class="material-icons">{{ collapsed ? 'expand_less' : 'expand_more' }}</md-icon>
+        </md-list-item>
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+            </li>
+        </ol>
+    </div>
+
+    <!-- this if condition means it's a final child -->
+    <div ng-if="!node.nodes || node.nodes.length <= 0" ng-show="visible(node)">
+        <md-list-item style="cursor:move" dnd-draggable="initDraggable(node.title)" dnd-effect-allowed="copy">
+            <span>{{node.title}}</span>
+            <!--<md-divider ng-if="!$last"></md-divider>-->
+        </md-list-item>
+    </div>
+</script>
+
+
+<!-- ############################################################################# -->
 <!-- ############ Templates definitions for the drag and drop library ############ -->
 <!-- ############################################################################# -->
-
 <script type="text/ng-template" id="list.html">
     <ul dnd-list="list" style="height: 100%; padding-left: 0; list-style: none;">
         <md-card ng-repeat="item in list"
@@ -118,7 +153,6 @@
         </md-card>
     </ul>
 </script>
-
 <!-- This template is responsible for rendering a container element. It uses
      the above list template to render each container column -->
 <script type="text/ng-template" id="subassembly.html">
@@ -132,7 +166,6 @@
         <div class="clearfix"></div>
     </div>
 </script>
-
 <!-- Template for a normal list item -->
 <script type="text/ng-template" id="material.html">
     <div class="item">{{item.name}}</div>

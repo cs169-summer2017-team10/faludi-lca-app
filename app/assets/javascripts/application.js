@@ -28,4 +28,5 @@
 //= require angular-drag-and-drop-lists
 //= require angular-material-expansion-panel
 //= require angular-resizable/angular-resizable.min.js
+//= require angular-ui-tree
 //= require_tree .
