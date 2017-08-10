@@ -1,4 +1,6 @@
 Rails.application.configure do
+  bower_rails.install_before_precompile = true
+  
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
