@@ -99,7 +99,7 @@
         // Initialize graph data
         $scope.graph_data = $scope.analyze( $scope.assembly.content );
 
-        $scope.zoom_in = function( _assembly, chart ){
+        $scope.zoom_in_subassembly = function(_assembly, chart ){
             // Update graph as user click on one of the bar
             document.getElementById("myChart").onclick = function(evt)
             {
@@ -169,11 +169,11 @@
             });
 
             // Update graph as user click on one of the bar
-            $scope.zoom_in( _assembly, chart );
+            $scope.zoom_in_subassembly( _assembly, chart );
         };
 
         // Plot graph function
-        $scope.plot_blur_graph = function( _graph_data, _assembly) {
+        $scope.plot_blur_graph = function( _graph_data ) {
 
             document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
