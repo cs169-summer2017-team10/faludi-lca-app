@@ -236,6 +236,7 @@ GEM
     parser (2.4.0.0)
       ast (~> 2.2)
     path_expander (1.0.2)
+    pg (0.21.0)
     phantomjs (2.1.1.0)
     poltergeist (1.15.0)
       capybara (~> 2.1)
@@ -410,6 +411,7 @@ DEPENDENCIES
   launchy
   listen (>= 3.0.5, < 3.2)
   metric_fu
+  pg
   poltergeist
   puma (~> 3.7)
   rails (~> 5.1.3)
