@@ -33,9 +33,9 @@ class AssembliesController < ApplicationController
       assembly.name = params[:name]
       assembly.content = params[:content]
       if assembly.save
-        render json: {:message => 'Assembly successfully saved'}, status: 200
+        render json: {:message => 'Successfully updated'}, status: 200
       else
-        render json: {:message => 'Assembly update failed'}, status: 500
+        render json: {:message => 'Update failed'}, status: 500
       end
     end
 
