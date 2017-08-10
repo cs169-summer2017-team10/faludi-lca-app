@@ -122,51 +122,51 @@ When /^I sign in with a wrong password$/ do
   sign_in
 end
 
-When(/^I save the edit form$/) do
-  click_button "Update"
-end
-
-When /^I edit my account name$/ do
-  click_link "Edit account"
-  fill_in "user_name", :with => "newname"
-  fill_in "user_current_password", :with => @visitor[:password]
-end
-
-When /^I edit my email address$/ do
-  click_link "Edit account"
-  fill_in "user_email", :with => "newemail@example.com"
-  fill_in "user_current_password", :with => @visitor[:password]
-end
-
-When(/^I don't enter my current password$/) do
-  fill_in "user_current_password", :with => ""
-end
-
-When(/^I edit my email address with an invalid email$/) do
-  click_link "Edit account"
-  fill_in "user_email", :with => "notanemail"
-  fill_in "user_current_password", :with => @visitor[:password]
-end
-
-When(/^I edit my password$/) do
-  click_link "Edit account"
-  fill_in "user_password", :with => "newpassword"
-  fill_in "user_password_confirmation", :with => "newpassword"
-  fill_in "user_current_password", :with => @visitor[:password]
-end
-
-When(/^I edit my password with missing confirmation$/) do
-  click_link "Edit account"
-  fill_in "user_password", :with => "newpassword"
-  fill_in "user_current_password", :with => @visitor[:password]
-end
-
-When(/^I edit my password with missmatched confirmation$/) do
-  click_link "Edit account"
-  fill_in "user_password", :with => "newpassword"
-  fill_in "user_password_confirmation", :with => "newpassword123"
-  fill_in "user_current_password", :with => @visitor[:password]
-end
+# When(/^I save the edit form$/) do
+#   click_button "Update"
+# end
+#
+# When /^I edit my account name$/ do
+#   click_link "Edit account"
+#   fill_in "user_name", :with => "newname"
+#   fill_in "user_current_password", :with => @visitor[:password]
+# end
+#
+# When /^I edit my email address$/ do
+#   click_link "Edit account"
+#   fill_in "user_email", :with => "newemail@example.com"
+#   fill_in "user_current_password", :with => @visitor[:password]
+# end
+#
+# When(/^I don't enter my current password$/) do
+#   fill_in "user_current_password", :with => ""
+# end
+#
+# When(/^I edit my email address with an invalid email$/) do
+#   click_link "Edit account"
+#   fill_in "user_email", :with => "notanemail"
+#   fill_in "user_current_password", :with => @visitor[:password]
+# end
+#
+# When(/^I edit my password$/) do
+#   click_link "Edit account"
+#   fill_in "user_password", :with => "newpassword"
+#   fill_in "user_password_confirmation", :with => "newpassword"
+#   fill_in "user_current_password", :with => @visitor[:password]
+# end
+#
+# When(/^I edit my password with missing confirmation$/) do
+#   click_link "Edit account"
+#   fill_in "user_password", :with => "newpassword"
+#   fill_in "user_current_password", :with => @visitor[:password]
+# end
+#
+# When(/^I edit my password with missmatched confirmation$/) do
+#   click_link "Edit account"
+#   fill_in "user_password", :with => "newpassword"
+#   fill_in "user_password_confirmation", :with => "newpassword123"
+#   fill_in "user_current_password", :with => @visitor[:password]
+# end
 
 When /^I look at the list of users$/ do
   visit '/'
