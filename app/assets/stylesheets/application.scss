@@ -164,17 +164,29 @@
 
 /* Subassembly styling */
 
-md-input-container .md-errors-spacer{
-  min-height: 0px !important;
-}
 
-md-input-container .md-input {
+
+.subassembly md-input-container .md-input {
   color: #EEEEEE;
   border-color: transparent;
 }
 
-md-input-container.md-input-focused .md-input {
+.subassembly md-input-container.md-input-focused .md-input {
   color: #FAFAFA;
   border-color: #FAFAFA !important;
+}
+
+/* Material and processes unit styles */
+
+.dropzone md-input-container {
+  margin: 0;
+  padding: 0;
+}
+
+.dropzone .md-errors-spacer {
+  min-height: 0;
+  height: 0;
+  min-width: 0;
+  width: 0;
 }
 

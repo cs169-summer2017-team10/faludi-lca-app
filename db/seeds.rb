@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+User.delete_all
+Assembly.delete_all
+user = User.create!(name: "Michael", email: "abc@mail.com", password: "123456");
+Assembly.create!(user: user, content: "{}");
