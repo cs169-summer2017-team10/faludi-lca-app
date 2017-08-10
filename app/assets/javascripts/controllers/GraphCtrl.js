@@ -48,7 +48,7 @@
                 });
                 return total;
             } else {
-                if (hash.type === "material") {
+                if (hash.type === "material" || hash.type === "process") {
                     arr[0] += Math.round( 10 * $scope.uncertainty[1] * hash.quantity ) / 10;
                     arr[1] += Math.round( 10 * $scope.uncertainty[0] * hash.quantity ) / 10;
                     arr[2] += Math.round( 10 * $scope.uncertainty[2] * hash.quantity ) / 10;
@@ -64,6 +64,7 @@
         };
 
         $scope.analyze = function( assembly ) {
+            console.log( assembly );
             var data = {};
             var labels = [];
             var avg = [];
@@ -72,7 +73,7 @@
 
             assembly.forEach(function( parts ) {
                 labels.push(parts.name);
-                if (parts.type === "container") {
+                if (parts.type === "subassembly") {
                     var total = [0, 0, 0];
                     parts.columns.forEach(function(child) {
                         total = $scope.recurse_subassembly(child, total);
