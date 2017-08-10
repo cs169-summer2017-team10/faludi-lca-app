@@ -127,6 +127,17 @@
 //  margin: 10px;
 //}
 
+#assembly-toolbar > div > div:nth-child(3) > h2 > button:nth-child(1) > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.delete .dndDragover .material-icons {
+  color: #F44336;
+}
+
+
 /* Custom style for search input (input inside a card, copied from Angular Material md-autocomplete) */
 #custom-search-input {
   font-size: 14px;
