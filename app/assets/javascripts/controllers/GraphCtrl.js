@@ -155,7 +155,7 @@ var a = (function() {
 
         // Plot graph function
         $scope.plot_bar_graph = function( _graph_data, _assembly ) {
-            document.getElementById('myChart').innerHTML = "";
+            // document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
@@ -194,7 +194,7 @@ var a = (function() {
         // Plot graph function
         $scope.plot_blur_graph = function( _graph_data ) {
 
-            document.getElementById('myChart').innerHTML = "";
+            // document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
 
             var gradient_blue = ctx.createLinearGradient( 0, 0, 0, 500 );
@@ -258,10 +258,10 @@ var a = (function() {
         // Plot graph function
         $scope.plot_step_graph = function( _graph_data ) {
 
+            // document.getElementById('myChart').innerHTML = "";
             // Clone the data
             var graph_data = JSON.parse(JSON.stringify(_graph_data));
 
-            document.getElementById('myChart').innerHTML = "";
             var ctx = document.getElementById('myChart').getContext("2d");
 
             var gradient_blue = [ 'rgba(255, 99, 132, 1.0)', 'rgba(255, 99, 132, 0.7)', 'rgba(255, 99, 132, 0.2)'];
