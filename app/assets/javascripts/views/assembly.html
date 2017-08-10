@@ -51,8 +51,8 @@
         <div layout="row" flex>
 
             <!-- Left sidebar -->
-            <div id="assembly-sidebar" resizable r-directions="['right']" r-grabber="{{customGrabber}}"><!-- ng-scrollbars ng-scrollbars-config="configScrollbar" -->
-                <div style="height: 100%;" ng-scrollbars ng-scrollbars-config="configScrollbar">
+            <div id="assembly-sidebar" resizable r-directions="['right']" r-grabber="{{customGrabber}}">
+                <div style="height: 100%; overflow: scroll"><!-- ng-scrollbars ng-scrollbars-config="configScrollbar" -->
                     <md-expansion-panel-group md-component-id="panelGroup" multiple style="padding: 5px;">
                         <md-expansion-panel ng-repeat="element in library" md-component-id="panel + element" style="margin-left: 10px; margin-right: 10px">
                             <md-expansion-panel-collapsed style="cursor:pointer">
@@ -81,7 +81,7 @@
             </div>
 
             <!-- Assembly Canvas -->
-            <div id="assembly-canvas" ng-scrollbars ng-scrollbars-config="configScrollbar" flex>
+            <div id="assembly-canvas" style="overflow: scroll" flex>
                 <md-card class="page" style="padding: 15px;">
                     <div ng-repeat="(zone, list) in models.dropzones">
                         <div class="dropzone box box-yellow">

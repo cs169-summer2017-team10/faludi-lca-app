@@ -104,14 +104,14 @@ angular
             };
 
             // Block scrolling on page
-            var assemblyCanvas = $('#assembly-page');
-            var height = assemblyCanvas.height();
-            var scrollHeight = assemblyCanvas.get(0).scrollHeight;
-            assemblyCanvas.bind('mousewheel', function(e, d) {
-              if((this.scrollTop === (scrollHeight - height) && d < 0) || (this.scrollTop === 0 && d > 0)) {
-                e.preventDefault();
-              }
-            });
+            // var assemblyCanvas = $('#assembly-page');
+            // var height = assemblyCanvas.height();
+            // var scrollHeight = assemblyCanvas.get(0).scrollHeight;
+            // assemblyCanvas.bind('mousewheel', function(e, d) {
+            //   if((this.scrollTop === (scrollHeight - height) && d < 0) || (this.scrollTop === 0 && d > 0)) {
+            //     e.preventDefault();
+            //   }
+            // });
             // Config custom scrollbar for sidebar and assembly canvas
             $scope.configScrollbar = {
                 autoHideScrollbar: true,
