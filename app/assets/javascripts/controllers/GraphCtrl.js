@@ -93,7 +93,7 @@ var a = (function() {
                 if (parts.type === "subassembly") {
                     var total = [0, 0, 0];
                     parts.columns.forEach(function(child) {
-                        total = $scope.recurse_subassembly(child, total);
+                        total = recursive_subassembly(child, total);
                     });
                     avg.push(total[0]);
                     low_uncertainty.push(total[1]);
