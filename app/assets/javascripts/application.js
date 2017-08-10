@@ -29,4 +29,5 @@
 //= require angular-material-expansion-panel
 //= require angular-resizable/angular-resizable.min.js
 //= require angular-ui-tree
+//= require Chart.js.js
 //= require_tree .
