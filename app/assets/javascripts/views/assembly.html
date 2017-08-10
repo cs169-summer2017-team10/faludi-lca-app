@@ -170,9 +170,11 @@
      the above list template to render each container column -->
 <script type="text/ng-template" id="subassembly.html">
     <div class="container-element box box-blue">
-        <md-toolbar class="md-hue-2">
+        <md-toolbar class="md-hue-2 subassembly">
             <div class="md-toolbar-tools">
-                <h2 flex md-truncate>{{item.name}}</h2>
+                <md-input-container>
+                    <input mdInput ng-model="item.name" value="item.name">
+                </md-input-container>
             </div>
         </md-toolbar>
         <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>

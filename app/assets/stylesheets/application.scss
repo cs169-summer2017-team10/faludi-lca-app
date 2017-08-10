@@ -127,11 +127,15 @@
 //  margin: 10px;
 //}
 
+
+/** Toolbar styling for delete and subassembly */
+
 #assembly-toolbar > div > div:nth-child(3) > h2 > button:nth-child(1) > ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
+
 
 #assembly-toolbar > div > div:nth-child(3) > h2 > ul {
   list-style-type: none;
@@ -157,3 +161,20 @@
   line-height: 40px;
   height: 40px;
 }
+
+/* Subassembly styling */
+
+md-input-container .md-errors-spacer{
+  min-height: 0px !important;
+}
+
+md-input-container .md-input {
+  color: #EEEEEE;
+  border-color: transparent;
+}
+
+md-input-container.md-input-focused .md-input {
+  color: #FAFAFA;
+  border-color: #FAFAFA !important;
+}
+

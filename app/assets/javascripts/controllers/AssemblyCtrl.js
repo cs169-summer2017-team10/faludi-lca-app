@@ -383,6 +383,7 @@ angular
             };
 
             $scope.deleteSelected = function(selected, dropzone) {
+                console.log(selected);
                 function deleteSelectedHelper(selected, dropzone) {
                     for (var i = 0; i < dropzone.length; i++){
                         if (dropzone[i] === selected) {
