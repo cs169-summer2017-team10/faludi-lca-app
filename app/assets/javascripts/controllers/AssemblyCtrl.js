@@ -382,7 +382,27 @@ angular
                 })
             };
 
-            // Config custom scrollbar for sidebar and assembly canvas
+            $scope.deleteSelected = function(selected, dropzone) {
+                function deleteSelectedHelper(selected, dropzone) {
+                    for (var i = 0; i < dropzone.length; i++){
+                        if (dropzone[i] === selected) {
+                            dropzone.splice(i, 1);
+                            return;
+                        } else {
+                            var columns = dropzone[i].columns;
+                            var processes = dropzone[i].processes;
+                            if (typeof columns !== 'undefined' && columns) {
+                                deleteSelectedHelper(selected, columns[0]);
+                            }
+                            if (typeof processes !== 'undefined' && processes){
+                                deleteSelectedHelper(selected, processes[0]);
+                            }
+                        }
+                    }
+                }
+                deleteSelectedHelper(selected, dropzone);
+            };
+
             // $scope.configScrollbar = {
             //     autoHideScrollbar: true,
             //     theme: 'minimal-dark',
@@ -609,4 +629,5 @@ angular
             //     name: 'Computer',
             //     content: c
             // }
+
         }]);

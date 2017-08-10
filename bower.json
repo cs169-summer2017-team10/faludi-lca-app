@@ -19,9 +19,9 @@
       "angular-resizable": "latest",
       "angular-ui-tree": "latest",
       "chart.js": "latest"
-    }
     },
     "resolutions": {
       "angular": "1.6.5"
+    }
   }
 }
