@@ -146,7 +146,7 @@ function AssemblyCtrl($scope, assembliesFactory, assembly, $stateParams, Auth, $
 
     // Library left sidebar data
     $scope.parts = ["material", "process", "transport", "use", "eol"];
-    $scope.libraryData = [
+    $scope.libraryData = JSON.parse(`[
         {
             'id': 1,
             'title': 'Materials',
@@ -445,7 +445,7 @@ function AssemblyCtrl($scope, assembliesFactory, assembly, $stateParams, Auth, $
                 }
             ]
         }
-    ];
+    ]`);
 
     // Analyze/Graph Dialog configuration
     $scope.showAnalyze = function(ev) {
