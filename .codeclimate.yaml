@@ -16,5 +16,5 @@ exclude_paths:
 - config/
 - app/assets/javascripts/application.js
 - spec/
-- assets/javascripts/routes.js
-- assets/javascripts/controllers/AuthCtrl.js
+- app/assets/javascripts/routes.js
+- app/assets/javascripts/controllers/AuthCtrl.js
