@@ -7,6 +7,7 @@
 This website is meant to facilitate engineers in measuring the environmental impact of their products.
 A simple, easy to use UI will allow the users to easily add information about their products (parts, materials, shipping methods) which will then be analyzed and displayed with numerous graphs.
 
+Heroku deployment: https://focus-lca-summer2017.herokuapp.com
 
 ## Requirements
 
@@ -36,6 +37,49 @@ $ rails db:setup
 $ rake bower:install
 $ rails s
 ```
+
+## Project hierarchy
+
+### Frontend (AngularJS)
+```
+└── app/
+    ├── assets/
+    │   ├── images/
+    │   │   └── ...
+    │   ├── javascripts/
+    │   │   ├── controllers/
+    │   │   │   └── ...
+    │   │   ├── directives/
+    │   │   │   └── ...
+    │   │   ├── views/
+    │   │   │   └── ...
+    │   │   ├── app.js
+    │   │   ├── application.js
+    │   │   └── routes.js
+    │   └── stylesheets/
+    │       └── application.scss
+    │
+    └── views/
+        └── application/
+            └── index.html.erb
+```
+
+### Backend (Ruby on Rails)
+```
+└── app/
+    ├── controllers/
+    │   ├── application_controller.rb
+    │   ├── assemblies_controller.rb
+    │   └── users_controller.rb
+    │
+    ├── models/
+    │   ├── assembly.rb
+    │   └── user.rb
+    │
+    └── serializers/
+        └── user_serializer.rb
+```
+
 ## Resources
 
 * [Setting Up an Angular SPA on Rails with Devise and Bootstrap](https://www.sitepoint.com/setting-up-an-angular-spa-on-rails-with-devise-and-bootstrap/)
@@ -49,8 +93,6 @@ $ rails s
 * [Rails asset pipeline: Why things break in production and what precompilation does to your assets](https://makandracards.com/makandra/8951-rails-asset-pipeline-why-things-break-in-production-and-what-precompilation-does-to-your-assets)
 
 ## Misc
-
-[Current app deployment on Heroku](https://focus-lca-summer2017.herokuapp.com)
 
 [Pivotal Tracker Project](https://www.pivotaltracker.com/n/projects/2070305)
 
