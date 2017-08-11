@@ -5,6 +5,8 @@ engines:
     config:
       languages:
       - ruby
+        javascript:
+          mass_threshold: 80
   fixme:
     enabled: true
   rubocop:
