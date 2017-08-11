@@ -40,6 +40,7 @@ $ rails s
 
 * [Setting Up an Angular SPA on Rails with Devise and Bootstrap](https://www.sitepoint.com/setting-up-an-angular-spa-on-rails-with-devise-and-bootstrap/)
 * [Learn to Build Modern Web Apps with AngularJS and Ruby on Rails](https://thinkster.io/tutorials/angular-rails)
+* [Deploying Rails + Bower on Heroku](https://medium.com/for-the-public-benefit/deploying-rails-bower-on-heroku-3b4ca4908a59)
 
 ## Troubleshooting
 
