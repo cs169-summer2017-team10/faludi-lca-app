@@ -24,21 +24,19 @@ var a = (function() {
             $mdDialog.cancel();
         };
 
-        angular.element(document).ready(function () {
-            $scope.plot_graph = function( option ) {
-                // $mdDialog.hide(answer);
+        $scope.plot_graph = function( option ) {
+            // $mdDialog.hide(answer);
+            $scope.reset_graph();
+            angular.element(document).ready(function() {
                 if (option === 'blur-graph'){
-                    $scope.reset_graph();
                     $scope.plot_blur_graph( $scope.graph_data );
                 }else if( option === 'bar-graph'){
-                    $scope.reset_graph();
                     $scope.plot_bar_graph( $scope.graph_data, $scope.assembly.content );
                 }else if( option === 'step-graph'){
-                    $scope.reset_graph();
                     $scope.plot_step_graph( $scope.graph_data, $scope.assembly.content );
                 }
-            };
-        });
+            });
+        };
 
         var recursive_subassembly = function(hash, arr) {
             if (hash instanceof Array) {
