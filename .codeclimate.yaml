@@ -5,6 +5,8 @@ engines:
     config:
       languages:
       - ruby
+        javascript:
+          mass_threshold: 80
   fixme:
     enabled: true
   rubocop:
@@ -16,3 +18,5 @@ exclude_paths:
 - config/
 - app/assets/javascripts/application.js
 - spec/
+- app/assets/javascripts/routes.js
+- app/assets/javascripts/controllers/AuthCtrl.js
