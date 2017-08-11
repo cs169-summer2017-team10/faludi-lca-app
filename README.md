@@ -22,7 +22,7 @@ Guide: http://railsapps.github.io/installrubyonrails-mac.html
 
 Guide: http://blog.teamtreehouse.com/install-node-js-npm-mac
 
-### Bower
+### Install Bower
 
 `npm install -g bower`
 
